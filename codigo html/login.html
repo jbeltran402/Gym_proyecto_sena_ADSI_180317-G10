@@ -821,9 +821,9 @@ img {
 }
 
 .login-page .card-login .logo-container {
-    width: 65px;
+    width: 70%;
     margin: 0 auto;
-    margin-bottom: 55px;
+    margin-bottom: 5%;
 }
 
 .login-page .card-login .logo-container img {
@@ -924,7 +924,6 @@ img {
     min-height: 100vh;
     max-height: 999px;
     padding: 0;
-    color: #FFFFFF;
     position: relative;
     overflow: hidden;
 }
@@ -1352,7 +1351,7 @@ img {
     <div class="container">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" rel="tooltip" title="Pagina de inicio" data-placement="bottom" href="inicio.php" target="_blank">
+            <a class="nav-link" rel="tooltip" title="Pagina de inicio" data-placement="bottom" href="index.html" target="_blank">
               <i class="fas fa-home"></i>
             </a>
           </li>
@@ -1369,7 +1368,7 @@ img {
             <form class="form" method="post" action="ingresar.php">
               <div class="card-header text-center">
                 <div class="logo-container">
-                  <img src="https://raw.githack.com/creativetimofficial/now-ui-kit/master/assets/img/now-logo.png" alt="">
+                  <img src="logo.png" alt="">
                 </div>
               </div>
 
@@ -1397,18 +1396,60 @@ img {
                     </span>
                   </div>
                   <input type="password" placeholder="contraseña" class="form-control" name="contrasena" required/>
+
                 </div>
+                <a href="javascript:;" class="forget" data-toggle="modal" data-target=".forget-modal">¿Olvidaste tu contraseña?</a>
               </div>
               <div class="card-footer text-center">
                 <input type="submit" class="btn btn-primary btn-round btn-lg btn-block" value="Ingresar">
                 <div class="pull-left">
             </form>
+           
+                
             </div>
           </div>
         </div>
       </div>
     </div>
-    <footer class="footer">
+<style type="text/css">
+
+/*    --------------------------------------------------
+    :: Inputs & Buttons
+    -------------------------------------------------- */
+
+.form-control {
+    color: #212121;
+}
+.btn-custom {
+    color: #fff;
+    background-color: rgb(74,92,247);;
+}
+.btn-custom:hover,
+.btn-custom:focus {
+    color: #fff;
+}
+    </style>     
+                <div class="modal fade forget-modal" tabindex="-1" role="dialog" aria-labelledby="myForgetModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-md">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Recuperar contraseña</h4>
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">×</span>
+                                    <span class="sr-only">Cerrar</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Ingrese el correo electronico asosiado a la cuenta que desea recuperar la contraseña </p>
+                                <input type="email" name="recovery-email" id="recovery-email" class="form-control" autocomplete="off">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                                <button type="button" class="btn btn-custom">Recuperar</button>
+                            </div>    
+                        </div> <!-- /.modal-content -->
+                    </div> <!-- /.modal-dialog -->
+                </div> <!-- /.modal -->
 
     </footer>
   </div>
@@ -1420,7 +1461,23 @@ img {
 
 
 <script type="text/javascript">
-
+function showPassword() {
+    
+    var key_attr = $('#key').attr('type');
+    
+    if(key_attr != 'text') {
+        
+        $('.checkbox').addClass('show');
+        $('#key').attr('type', 'text');
+        
+    } else {
+        
+        $('.checkbox').removeClass('show');
+        $('#key').attr('type', 'password');
+        
+    }
+    
+}
 </script>
 </body>
 </html>
