@@ -3,17 +3,21 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-HttpSession sesion= request.getSession();
+    HttpSession sesion = request.getSession();
 
-if (sesion.getAttribute("nivel")== null) {
-    response.sendRedirect("vistas/Login.jsp");
-     }else{   
-    String nivel = sesion.getAttribute("nivel").toString();
-    if (!nivel.equals("3")) {
-        response.sendRedirect("vistas/Login.jsp");            
+    if (sesion.getAttribute("nivel") == null) {
+        response.sendRedirect("vistas/Login.jsp");
+    } else {
+        String nivel = sesion.getAttribute("nivel").toString();
+        if (!nivel.equals("3")) {
+            response.sendRedirect("vistas/Login.jsp");
         }
-}
+    }
 %>
+
+<!--..................................... Revisar cambiar documento .................................................-->
+<!--..................................... Revisar enlaces .................................................-->
+<!--..................................... 27/11/2019 .................................................-->
 
 <!DOCTYPE html>
 <html>
@@ -22,11 +26,11 @@ if (sesion.getAttribute("nivel")== null) {
         <title>JSP Page</title>
         <!--<link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>-->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-   <link rel="stylesheet" href="../css/style.css">
-     <style>
-             .colrr {
-             
-       background-color: #0069d9;                
+        <link rel="stylesheet" href="../css/style.css">
+        <style>
+            .colrr {
+
+                background-color: #0069d9;                
             }
         </style>
     </head>
@@ -71,57 +75,62 @@ if (sesion.getAttribute("nivel")== null) {
                 </div>       
             </div>
         </nav>        
-        
-        <div class="container">
-            <div class="col-lg-6" style="padding-top:2%; margin-bottom: 5%;">
-                <%
-                    Operaciones dao = new Operaciones();
-                    int doc = Integer.parseInt((String) request.getAttribute("idper"));
-                    Constructor_Usuarios p = (Constructor_Usuarios) dao.list(doc);
-                %>
-                <h1> Editar Usuario </h1>
-                <form method="post" action="Controlador">
-                    Documento<br>
-                    <input class="form-control" type="text" name="txtDocumento" value="<%= p.getDoc()%>"><br>
-                    Rol<br>
-                    <select class="form-control" id="exampleFormControlSelect1"name="txtRol">
-                        <option value="1">Usuario</option>
-                        <option value="2">Administrador</option>
-                    </select><br>
-                    Tipo de documento<br>
-                    <select class="form-control" id="exampleFormControlSelect1" name="txtTipo_doc">
-                        <option value="C.C">Cedula</option>
-                        <option value="T.I">Tarjeta de identidad</option>
-                        <option value="P.A">Pasaporte</option>
-                        <option value="C.E">Cedula de extranjeria</option>
-                    </select><br>
-                    Primer nombre<br>
-                    <input class="form-control" type="text" name="txtNom1" value="<%= p.getNomb_1()%>"><br>
-                    Segundo nombre<br>
-                    <input class="form-control" type="text" name="txtNom2" value="<%= p.getNomb_2()%>"><br>
-                    Primer apellido<br>
-                    <input class="form-control" type="text" name="txtApellido" value="<%= p.getApel_1()%>"><br>
-                    Segundo apellido<br>
-                    <input class="form-control" type="text" name="txtApe2" value="<%= p.getApel_2()%>"><br>
-                    Telefono<br>
-                    <input class="form-control" type="text" name="txtTel" value="<%= p.getTel()%>"><br>
-                    Correo electronico<br>
-                    <input class="form-control" type="text" name="txtCorreo" value="<%= p.getCorreo()%>"><br>
-                    <div class="alert alert-primary" role="alert">
-                        
-                    <input type="checkbox" name="contra">
-                    ¿Desea restablecer la contraseña?
-                    
-                    </div>
 
-                    <input class="btn btn-primary" type="submit" name="accion" value="Actualizar">
-                    <a class="btn btn-danger" href="Controlador?accion=listar" >Regresar</a>                  
-                </form>
+        <div class="container">
+            <div class="container">
+                <div class="col-lg-6" style="padding-top:2%; margin-bottom: 5%;">
+                    <%
+                        Operaciones dao = new Operaciones();
+                        int doc = Integer.parseInt((String) request.getAttribute("idper"));
+                        Constructor_Usuarios p = (Constructor_Usuarios) dao.list(doc);
+                    %>
+                    <h1>Moficar Persona</h1>
+                    <form method="post" action="Controlador">
+                        Documento<br>
+                        <input class="form-control" type="text" name="txtDocumento" value="<%= p.getDoc()%>"><br>
+                        Tipo de documento<br>
+                        <select name="txtTipo_doc">
+                            <option value="C.C">Cedula</option>
+                            <option value="T.I">Tarjeta de identidad</option>
+                            <option value="P.A">Pasaporte</option>
+                            <option value="C.E">Cedula de extranjeria</option>
+                        </select><br>
+                        Rol<br>
+                        <select name="txtRol">
+                            <option value="1">Usuario</option>
+                            <option value="2">Administrador</option>
+                        </select><br>                        
+                        Primer nombre<br>
+                        <input class="form-control" type="text" name="txtNom1" value="<%= p.getNomb_1()%>"><br>
+                        Segundo nombre<br>
+                        <input class="form-control" type="text" name="txtNom2" value="<%= p.getNomb_2()%>"><br>
+                        Primer apellido<br>
+                        <input class="form-control" type="text" name="txtApellido" value="<%= p.getApel_1()%>"><br>
+                        Segundo apellido<br>
+                        <input class="form-control" type="text" name="txtApe2" value="<%= p.getApel_2()%>"><br>
+                        Telefono<br>
+                        <input class="form-control" type="text" name="txtTel" value="<%= p.getTel()%>"><br>
+                        Correo electronico<br>
+                        <input class="form-control" type="text" name="txtCorreo" value="<%= p.getCorreo()%>"><br>
+                        Contraseña nueva<br>
+                        <div class="alert alert-primary" role="alert">
+
+                            <input type="checkbox" name="contra" value="con">
+                            ¿Desea restablecer la contraseña?
+
+                        </div>  
+                        
+                        <input type="hidden" name="txtId" value="<%= p.getDoc()%>">
+
+                        <input class="btn btn-primary" type="submit" name="accion" value="Actualizar"><br>
+                        <a href="Controlador?accion=listar_admin">Regresar</a>
+                    </form>
+                </div>
             </div>
-        </div>                    
+
     </body>
-       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
 </html>

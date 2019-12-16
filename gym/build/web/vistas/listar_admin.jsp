@@ -19,80 +19,126 @@
 
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Listar</title>
-        <!--<link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>-->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel="stylesheet" href="../css/style.css">
         
-        <style>
-             .colrr {
-             
-       background-color: #0069d9;                
-            }
+        <title>Listar</title>
+        <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+          
+        <!--<link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>-->
+        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>  
+
+        <!-------------------------menú WILMER----------------------------------->
+
+
+
+        <!-- This file has been downloaded from Bootsnipp.com. Enjoy! -->
+
+       <style type="text/css">
+    /*
+        Color fondo: #632432;
+        Color header: 246355;
+        Color borde: 0F362D;
+        Color iluminado: 369681;
+*/
+body{
+    background-color: #0069d9;                
+    font-family: Arial;
+}
+
+#main-container{
+    margin: 150px auto;
+    width: 600px;
+}
+
+table{
+    background-color: white;
+    text-align: left;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td{
+    padding: 20px;
+}
+
+thead{
+    background-color: #585858;
+    border-bottom: solid 5px #0F362D;
+    color: white;
+}
+
+tr:nth-child(even){
+    background-color: #ddd;
+}
+
+tr:hover td{
+    background-color: #2E64FE;
+    color: white;
+}
+
+
+
+
         </style>
     </head>
-    <body class="colrr">
-        <!-------------------------menú WILMER----------------------------------->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <body>
+        <br><br>
+        <div class="navbar-wrapper">
+            <div class="container">
+                <div class="navbar navbar-inverse navbar-static-top">
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
+                    <div class="navbar-header">
 
-
-                    <li class="nav-item dropdown">
-                        <a class=" navbar-toggler-icon" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Planes</a>
-                            <a class="dropdown-item" href="listar.jsp">Usuarios</a>
-                            <a class="dropdown-item" href="#">Modificar Info</a>
-                            <a class="dropdown-item" href="#">crear administrador</a>
-                            <a class="dropdown-item" href="#">...</a>
-                            <a class="dropdown-item" href="#">...</a>
-                            <a class="dropdown-item" href="#">...</a>
-                            <a class="dropdown-item" href="#">...</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Mi perfil</a>
-                        </div>
-                    </li>
-
-                </ul>
-                <div class="dropdown">
-
-                    <a  style="color:white" href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Cerrar Sesion</a>    
-
-                    <div class="dropdown-menu text-center">
-                        <a><img src="../imagenes/avatar.png"  heidht="80" width="80"/></a><br>
-                        <a>${Nombres}</a>
-                        <a>${Correo}</a>
-                        <div class="dropdown-divider"></div>
-                        <a href="vistas/Login.jsp?cerrar=true" class="dropdown-item">Salir</a>
-
+                        <a class="navbar-brand" href="#"><img src="img/logo.png" style="width: 83px; position: relative; top:-19px; "/></a>
                     </div>
-                </div>       
-            </div>
-        </nav>
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="administrador.jsp">Home</a></li>
+                            <li><a href="Controlador?accion=listar_admin" target="ext">Usuarios</a></li>
 
+                            <li><a href="">Planes</a></li>
+
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-menu-left" data-toggle="dropdown">Opciones<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Modificar Info</a></li>
+                                    <li><a href="#">.........</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="vistas/Login.jsp?cerrar=true">Cerrar sesion</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div><!-- /container -->
+        </div>
         <!------------------------Listar Juan David------------------------------------->
 
-        <div class="container-fluid" style="padding-top: 2%; padding-left: 10%; padding-right: 10% ">
+        <div class="container-fluid" style="padding-top: 0.5%; padding-left: 10%; padding-right: 10% ">
             <h1>Personas</h1>
             <a class="btn btn-success " href="Controlador?accion=add_admin">Agregar Nuevo</a>
             <br>
             <br>
-            <table class="table table-bordered">
-                <thead class="thead-dark">
+
+
+            <table>
+                <thead>
                     <tr>
-                        <th class="text-center">Documento</th>
-                        <th class="text-center">Tipo Documento</th>
-                        <th class="text-center">Nombres</th>
-                        <th class="text-center">Apellidos</th>
-                        <th class="text-center">Telefono</th>
-                        <th class="text-center">Correo</th>
-                        <th class="text-center">ACCIONES</th>
+                        <th>Documento</th>
+                        <th>Tipo Documento</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Telefono</th>
+                        <th>Correo</th>
+                        <th>ACCIONES</th>
                     </tr>
                 </thead>
                 <%
@@ -103,28 +149,24 @@
                     while (iter.hasNext()) {
                         per = iter.next();
                 %>
-                <tbody>
-                    <tr>
-                        <td class="table-secondary text-center"><%= per.getDoc()%></td>
-                        <td class="table-secondary text-center"><%= per.getTipo_doc()%></td>
-                        <td class="table-secondary text-center"><%= per.getNomb_1()%> <%=per.getNomb_2()%></td>
-                        <td class="table-secondary text-center"><%= per.getApel_1()%> <%= per.getApel_2()%></td>
-                        <td class="table-secondary text-center"><%= per.getTel()%></td>
-                        <td class="table-secondary text-center"><%= per.getCorreo()%></td>                        
 
-                        <td class="table-secondary text-center">
-                            <a class="btn btn-warning" href="Controlador?accion=editar_admin&id=<%= per.getDoc()%>">Editar</a>
-                            <a class="btn btn-danger" href="Controlador?accion=eliminar_admin&id=<%= per.getDoc()%>">Eliminar</a>
-                        </td>
-                    </tr>
-                    <%}%>
-                </tbody>
+                <tr>
+                    <td ><%= per.getDoc()%></td>
+                    <td><%= per.getTipo_doc()%></td>
+                    <td><%= per.getNomb_1()%> <%=per.getNomb_2()%></td>
+                    <td><%= per.getApel_1()%> <%= per.getApel_2()%></td>
+                    <td><%= per.getTel()%></td>
+                    <td><%= per.getCorreo()%></td>                        
+
+                    <td>
+                        <a class="btn btn-warning" href="Controlador?accion=editar_admin&id=<%= per.getDoc()%>">Editar</a>
+                        <a class="btn btn-danger" href="Controlador?accion=eliminar_admin&id=<%= per.getDoc()%>">Eliminar</a>
+                    </td>
+                </tr>
+                <%}%>
+
             </table>
-
         </div>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     </body>
 </html>
