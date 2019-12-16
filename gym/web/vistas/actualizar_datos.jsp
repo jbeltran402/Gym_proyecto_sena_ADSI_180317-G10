@@ -77,55 +77,51 @@
         </nav>        
 
         <div class="container">
-            <div class="container">
-                <div class="col-lg-6" style="padding-top:2%; margin-bottom: 5%;">
-                    <%
-                        Operaciones dao = new Operaciones();
-                        int doc = Integer.parseInt((String) request.getAttribute("idper"));
-                        Constructor_Usuarios p = (Constructor_Usuarios) dao.list(doc);
-                    %>
-                    <h1>Moficar Usuario</h1>
-                    <form method="post" action="Controlador">
-                        Documento<br>
-                        <input class="form-control" type="text" name="txtDocumento" value="<%= p.getDoc()%>"><br>
-                        Tipo de documento<br>
-                        <select class="form-control" id="exampleFormControlSelect1" name="txtTipo_doc">
-                            <option value="C.C">Cedula</option>
-                            <option value="T.I">Tarjeta de identidad</option>
-                            <option value="P.A">Pasaporte</option>
-                            <option value="C.E">Cedula de extranjeria</option>
-                        </select><br>
-                        Rol<br>
-                        <select class="form-control" id="exampleFormControlSelect1" name="txtRol">
-                            <option value="1">Usuario</option>
-                            <option value="2">Administrador</option>
-                        </select><br>                        
-                        Primer nombre<br>
-                        <input class="form-control" type="text" name="txtNom1" value="<%= p.getNomb_1()%>"><br>
-                        Segundo nombre<br>
-                        <input class="form-control" type="text" name="txtNom2" value="<%= p.getNomb_2()%>"><br>
-                        Primer apellido<br>
-                        <input class="form-control" type="text" name="txtApellido" value="<%= p.getApel_1()%>"><br>
-                        Segundo apellido<br>
-                        <input class="form-control" type="text" name="txtApe2" value="<%= p.getApel_2()%>"><br>
-                        Telefono<br>
-                        <input class="form-control" type="text" name="txtTel" value="<%= p.getTel()%>"><br>
-                        Correo electronico<br>
-                        <input class="form-control" type="text" name="txtCorreo" value="<%= p.getCorreo()%>"><br>
-                        <div class="alert alert-primary" role="alert">
+            <div class="col-lg-6" style="padding-top:2%; margin-bottom: 5%;">
+                <%
+                    Operaciones dao = new Operaciones();
+                    String doc = sesion.getAttribute("nombre").toString();
+                    int docu = Integer.parseInt(doc);
+                    Constructor_Usuarios p = (Constructor_Usuarios) dao.list(docu);
+                %>
+                <h1> Editar Usuario </h1>
+                <form method="post" action="Controlador">
+                    Documento<br>
+                    <input class="form-control" type="text" value="<%= p.getDoc()%>" disabled="true"><br>
+                    Tipo de documento<br>
+                    <select class="form-control" id="exampleFormControlSelect1" name="txtTipo_doc" required="">
+                        <option value="C.C">Cedula</option>
+                        <option value="T.I">Tarjeta de identidad</option>
+                        <option value="P.A">Pasaporte</option>
+                        <option value="C.E">Cedula de extranjeria</option>
+                    </select><br>
+                    Primer nombre<br>
+                    <input class="form-control" type="text" name="txtNom1" value="<%= p.getNomb_1()%>" required=""><br>
+                    Segundo nombre<br>
+                    <input class="form-control" type="text" name="txtNom2" value="<%= p.getNomb_2()%>"><br>
+                    Primer apellido<br>
+                    <input class="form-control" type="text" name="txtApellido" value="<%= p.getApel_1()%>" required=""><br>
+                    Segundo apellido<br>
+                    <input class="form-control" type="text" name="txtApe2" value="<%= p.getApel_2()%>"><br>
+                    Telefono<br>
+                    <input class="form-control" type="text" name="txtTel" value="<%= p.getTel()%>"><br>
+                    Correo electronico<br>
+                    <input class="form-control" type="email" name="txtCorreo" value="<%= p.getCorreo()%>" required=""><br>
+                    Contraseña Nueva<br>
+                    <input class="form-control" type="password" name="txtContra"><br>
+ 
+                    <input type="hidden" name="Id" value="<%= p.getDoc()%>">
+                    
+                    <input type="hidden" name="tipo" value="1">
 
-                            <input type="checkbox" name="contra" value="con">
-                            ¿Desea restablecer la contraseña?
-
-                        </div>  
-                        
-                        <input type="hidden" name="txtId" value="<%= p.getDoc()%>">
-
-                        <input class="btn btn-primary" type="submit" name="accion" value="Actualizar">
-                        <a class="btn btn-danger" href="Controlador?accion=listar">Regresar</a>
-                    </form>
-                </div>
+                    <input class="btn btn-primary" type="submit" name="accion" value="Actualizar Datos">      
+                    
+                </form>
             </div>
+        </div>
+                 
+        </div>
+        <img src="img/logo.png" width="400" height="300" style="position: relative; left: 1240px; top: -650px;">
 
     </body>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

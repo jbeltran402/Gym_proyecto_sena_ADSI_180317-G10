@@ -19,7 +19,7 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="es">
     <head>
         
         <title>Listar</title>
@@ -122,8 +122,8 @@ tr:hover td{
         </div>
         <!------------------------Listar Juan David------------------------------------->
 
-        <div class="container-fluid" style="padding-top: 0.5%; padding-left: 10%; padding-right: 10% ">
-            <h1>Personas</h1>
+        <div class="container-fluid" style="padding-top: 0.5%; padding-left: 10%; padding-right: 10%; padding-bottom: 5%;">
+            <h1>Usuarios</h1>
             <a class="btn btn-success " href="Controlador?accion=add_admin">Agregar Nuevo</a>
             <br>
             <br>

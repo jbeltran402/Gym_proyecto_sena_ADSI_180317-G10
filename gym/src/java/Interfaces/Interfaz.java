@@ -10,6 +10,7 @@ public interface Interfaz {
     //__________________Operaciones Super Administrador___________________//
     
     public List listar();
+    public List buscar(int doc);
     public Constructor_Usuarios list(int doc);
     public boolean add(Constructor_Usuarios per);
     public boolean edit(Constructor_Usuarios per);
@@ -26,4 +27,9 @@ public interface Interfaz {
     //___________________ Operaciones Usuario ________________________//
     
     public boolean edit_usu(Constructor_Usuarios per);
+    
+    //___________________ Operaciones sedes ________________________//
+
+    public List sedes();
+
 }

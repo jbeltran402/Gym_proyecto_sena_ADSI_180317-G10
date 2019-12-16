@@ -103,12 +103,12 @@
                             <li class="active"><a href="super_admin.jsp">Home</a></li>
                             <li><a href="Controlador?accion=listar" target="ext">Usuarios</a></li>
 
-                            <li><a href="Controlador?accion=sedes">Sedes</a></li>
+                            <li><a href="">Planes</a></li>
 
                             <li class="dropdown">
                                 <a href="#" class="dropdown-menu-left" data-toggle="dropdown">Opciones<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="Controlador?accion=actualizar_SuperAdmin">Mi Perfil</a></li>
+                                    <li><a href="#">Modificar Info</a></li>
                                     <li><a href="#">.........</a></li>
                                     <li class="divider"></li>
                                     <li><a href="vistas/Login.jsp?cerrar=true">Cerrar sesion</a></li>
@@ -154,7 +154,8 @@
                 </thead>
                 <%
                     Operaciones dao = new Operaciones();
-                    List<Constructor_Usuarios> list = dao.listar();
+                    int doc = Integer.parseInt((String) request.getAttribute("idper"));
+                    List<Constructor_Usuarios> list = dao.buscar(doc);
                     Iterator<Constructor_Usuarios> iter = list.iterator();
                     Constructor_Usuarios per = null;
                     while (iter.hasNext()) {

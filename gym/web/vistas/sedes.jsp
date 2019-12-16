@@ -1,4 +1,5 @@
 <%@page import="Modelo.Constructor_Usuarios"%>
+<%@page import="Modelo.Constructor_Sedes"%>
 <%@page import="ModeloDAO.Operaciones"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.List"%>
@@ -123,7 +124,7 @@
         <!------------------------Listar Juan David------------------------------------->
 
         <div class="container-fluid" style="padding-top: 0%; padding-left: 10%; padding-right: 10%; padding-bottom: 5%;">
-            <h1><center>Usuarios </center></h1>
+            <center><h1>Usuarios </h1></center>
 
             <form method="post" action="Controlador">
                 <div class="form-row">
@@ -142,56 +143,36 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Documento</th>
-                        <th>Tipo Documento</th>
-                        <th>Rol</th>
-                        <th>Nombres</th>
-                        <th>Apellidos</th>
-                        <th>Telefono</th>
-                        <th>Correo</th>
-                        <th>ACCIONES</th>
+                        <th>Nombre</th>
+                        <th>Dirección</th>
+                        <th>Barrio</th>
+                        <th>Localidad</th>
+                        <!--<th>ACCIONES</th>-->
                     </tr>
                 </thead>
                 <%
                     Operaciones dao = new Operaciones();
-                    List<Constructor_Usuarios> list = dao.listar();
-                    Iterator<Constructor_Usuarios> iter = list.iterator();
-                    Constructor_Usuarios per = null;
+                    List<Constructor_Sedes> list = dao.sedes();
+                    Iterator<Constructor_Sedes> iter = list.iterator();
+                    Constructor_Sedes sedes = null;
                     while (iter.hasNext()) {
-                        per = iter.next();
-                        String roles = "";
-                        if (per.getRol() == 1) {
-                            roles = "Usuario";
-                        } else if (per.getRol() == 2) {
-                            roles = "Administrador";
-                        } else if (per.getRol() == 3) {
-                            roles = "Super administrador";
-                        }
+                        sedes = iter.next();                                           
                 %>
                 <tbody>
                     <tr>
-                        <td><%= per.getDoc()%></td>
-                        <td><%= per.getTipo_doc()%></td>
-                        <td><%= roles%></td>
-                        <td><%= per.getNomb_1()%> <%=per.getNomb_2()%></td>
-                        <td><%= per.getApel_1()%> <%= per.getApel_2()%></td>
-                        <td><%= per.getTel()%></td>
-                        <td><%= per.getCorreo()%></td>                        
-
-                        <td>
-                            <a class="btn btn-warning" href="Controlador?accion=editar&id=<%= per.getDoc()%>">Editar</a>                           
-
-                            <a class="btn btn-danger" href="Controlador?accion=eliminar&id=<%= per.getDoc()%>">Eliminar</a>
-                        </td>
+                        <td><%= sedes.getNombre()%></td>
+                        <td><%= sedes.getDireccion()%></td>
+                        <td><%= sedes.getBarrio()%></td>
+                        <td><%= sedes.getLocalidad()%></td>                         
                     </tr>
                     <%}%>
                 </tbody>
             </table>
 
         </div>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     </body>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>    
 </html>

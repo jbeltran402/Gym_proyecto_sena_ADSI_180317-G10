@@ -5,7 +5,7 @@
 
     if (sesion.getAttribute("nivel") == null) {
 
-        response.sendRedirect("Login.jsp");
+        response.sendRedirect("vistas/Login.jsp");
     } else {
         String nivel = sesion.getAttribute("nivel").toString();
         if (!nivel.equals("3")) {
@@ -74,21 +74,22 @@
         <!------------------------Agregar Juan David------------------------------------->        
         <div class="container">
             <div class="col-lg-6">
+                <br>
                 <h1>Agregar Usuario</h1>
-
+                
                 <form method="post" action="Controlador">
-
+                    
                     Documento<br>
-                    <input class="form-control" type="text" name="txtDocumento"><br>
+                    <input class="form-control" type="number" name="txtDocumento" required><br>
                     Tipo de documento<br>
-                    <select name="txtTipo_doc">
+                    <select class="form-control" id="exampleFormControlSelect1" name="txtTipo_doc">
                         <option value="C.C">Cedula</option>
                         <option value="T.I">Tarjeta de identidad</option>
                         <option value="P.A">Pasaporte</option>
                         <option value="C.E">Cedula de extranjeria</option>
                     </select><br>
                     Rol<br>
-                    <select name="rol">
+                    <select class="form-control" id="exampleFormControlSelect1" name="txtRol">
                         <option value="1">Usuario</option>
                         <option value="2">Administrador</option>
                     </select><br>
@@ -101,12 +102,11 @@
                     Segundo apellido<br>
                     <input class="form-control" class="colrr" type="text" name="txtApe2"><br>
                     Telefono<br>
-                    <input class="form-control" class="colrr" type="text" name="txtTel"><br>
+                    <input class="form-control" class="colrr" type="number" name="txtTel"><br>
                     Correo electronico<br>
                     <input class="form-control" class="colrr" type="text" name="txtCorreo" required><br>
 
-                    <input class="btn btn-success" type="submit" name="accion" value="Agregar"><br>
-
+                    <input class="btn btn-success" type="submit" name="accion" value="Agregar">
                     <a class="btn btn-danger" href="Controlador?accion=listar">Regresar</a>
                 </form>
             </div>

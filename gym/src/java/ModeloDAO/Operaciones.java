@@ -3,6 +3,7 @@ package ModeloDAO;
 import Config.Conexion;
 import Config.Encriptado;
 import Interfaces.Interfaz;
+import Modelo.Constructor_Sedes;
 import Modelo.Constructor_Usuarios;
 import java.sql.*;
 import java.util.ArrayList;
@@ -23,11 +24,40 @@ public class Operaciones implements Interfaz {
     }
 
 //_____________________Operaciones de Super Administrador________________________________//    
+    
+    @Override
+    public List buscar(int doc) {
+        
+        ArrayList<Constructor_Usuarios> list = new ArrayList<>();
+        String sql = "SELECT * FROM usuario WHERE estado = '1' and Roles_id_roles != 3 and doc_usuario = " + doc +" ORDER BY Roles_id_roles";
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Constructor_Usuarios per = new Constructor_Usuarios();
+                per.setDoc(rs.getInt("doc_usuario"));
+                per.setRol(rs.getInt("Roles_id_roles"));
+                per.setTipo_doc(rs.getString("tipo_documeto"));
+                per.setNomb_1(rs.getString("nombre_1"));
+                per.setNomb_2(rs.getString("nombre_2"));
+                per.setApel_1(rs.getString("apellido_1"));
+                per.setApel_2(rs.getString("apellido_2"));
+                per.setTel(rs.getInt("tel_cliente"));
+                per.setCorreo(rs.getString("correo"));
+                per.setEstado(rs.getInt("estado"));
+                list.add(per);
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }    
+    
     @Override
     public List listar() {
 
         ArrayList<Constructor_Usuarios> list = new ArrayList<>();
-        String sql = "SELECT * FROM usuario WHERE estado = '1' ORDER BY Roles_id_roles";
+        String sql = "SELECT * FROM usuario WHERE estado = '1' and Roles_id_roles = 1 or Roles_id_roles = 2 ORDER BY Roles_id_roles";
         try {
             conn = cn.conectar();
             ps = conn.prepareStatement(sql);
@@ -210,17 +240,30 @@ public class Operaciones implements Interfaz {
     @Override
     public boolean edit_admin(Constructor_Usuarios per) {
 
-        contrasena = md5.getEncriptado(per.getContra());
+        String sql = "";
+        
+        if (per.getCon().equals("si")) {
 
-        String sql = "UPDATE usuario SET doc_usuario = " + per.getCambio_doc()
-                + ", Roles_id_roles = 1 , tipo_documeto = '"
-                + per.getTipo_doc() + "', nombre_1 = '" + per.getNomb_1()
-                + "', nombre_2 = '" + per.getNomb_2() + "', apellido_1 = '"
-                + per.getApel_1() + "', apellido_2 = '" + per.getApel_2()
-                + "', tel_cliente = " + per.getTel() + ", correo = '" + per.getCorreo()
-                + "', contrasena = '" + contrasena + "', estado ='" + 1
-                + "' WHERE doc_usuario=" + per.getDoc();
+            contrasena = md5.getEncriptado(String.valueOf(per.getCambio_doc()));
 
+            sql = "UPDATE usuario SET doc_usuario = " + per.getCambio_doc() + ", tipo_documeto = '"
+                    + per.getTipo_doc() + "', nombre_1 = '" + per.getNomb_1()
+                    + "', nombre_2 = '" + per.getNomb_2() + "', apellido_1 = '"
+                    + per.getApel_1() + "', apellido_2 = '" + per.getApel_2()
+                    + "', tel_cliente = " + per.getTel() + ", correo = '" + per.getCorreo()
+                    + "', contrasena = '" + contrasena + "', estado ='" + 1
+                    + "' WHERE doc_usuario=" + per.getDoc();
+
+        } else if (per.getCon().equals("no")) {
+
+            sql = "UPDATE usuario SET doc_usuario = " + per.getCambio_doc() + per.getRol() + " , tipo_documeto = '"
+                    + per.getTipo_doc() + "', nombre_1 = '" + per.getNomb_1()
+                    + "' , nombre_2 = '" + per.getNomb_2() + "', apellido_1 = '"
+                    + per.getApel_1() + "', apellido_2 = '" + per.getApel_2()
+                    + "' , tel_cliente = " + per.getTel() + ", correo = '" + per.getCorreo()
+                    + "' , estado = '1' WHERE doc_usuario=" + per.getDoc();
+
+        }
         try {
             conn = cn.conectar();
             ps = conn.prepareStatement(sql);
@@ -288,5 +331,30 @@ public class Operaciones implements Interfaz {
         } catch (SQLException e) {
         }
         return false;
+    }
+//__________________________Operaciones Sedes___________________________________//
+    @Override
+    public List sedes() {
+        
+        ArrayList<Constructor_Sedes> list = new ArrayList<>();
+        String sql = "select nombre , direccion , nom_barrio , nom_localidad  from sedes , barrio , localidad  where barrio_id_barrio = id_barrio and localidad_id_localidad = id_localidad;";
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                
+                Constructor_Sedes sedes = new Constructor_Sedes();
+                
+                sedes.setNombre(rs.getString("nombre"));
+                sedes.setDireccion(rs.getString("direccion"));
+                sedes.setBarrio(rs.getString("nom_barrio"));
+                sedes.setLocalidad(rs.getString("nom_localidad"));
+                list.add(sedes);
+                
+            }
+        } catch (Exception e) {
+        }
+        return list;
     }
 }

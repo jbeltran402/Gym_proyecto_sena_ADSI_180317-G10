@@ -26,6 +26,9 @@ public class Controlador extends HttpServlet {
     String Login = "vistas/Login.jsp";
     String Recuperar = "vistas/Recuperar_contrasena.jsp";
     String Usuario = "usuario.jsp";
+    String Buscar = "vistas/buscar.jsp";
+    String Info_admin = "vistas/actualizar_datos.jsp";
+    String sedes = "vistas/sedes.jsp";
 
     //Unificar Constructores..................  
     Constructor_Usuarios p = new Constructor_Usuarios();
@@ -48,6 +51,7 @@ public class Controlador extends HttpServlet {
         String acceso = "";
         String action = request.getParameter("accion");
 
+        
 //___________________Operaciones Super Administrador____________________________//
 
         if (action.equalsIgnoreCase("listar")) {
@@ -65,8 +69,18 @@ public class Controlador extends HttpServlet {
             p.setDoc(id);
             dao.eliminar(id);
             acceso = listar;
+                        
+        } else if (action.equalsIgnoreCase("actualizar_SuperAdmin")) {
+            acceso = Info_admin; 
+        
+//___________________Operaciones Sedes___________________________________//                 
+        
+        }else if (action.equalsIgnoreCase("sedes")) { 
             
-        } 
+            acceso = sedes;
+        
+        }
+        
 //___________________Operaciones Administrador___________________________________//     
         
         else if (action.equalsIgnoreCase("listar_admin")) {
@@ -100,7 +114,15 @@ public class Controlador extends HttpServlet {
 
 //________________________Operaciones Super Administrador_________________________// 
 
-            if (action.equalsIgnoreCase("Agregar")) {
+            if (action.equalsIgnoreCase("Buscar")) {
+
+                int Doc = Integer.parseInt(request.getParameter("buscar"));
+                request.setAttribute("idper", request.getParameter("buscar"));
+                p.setDoc(Doc);
+                dao.buscar(Doc);
+                acceso = Buscar;  
+
+            }else if (action.equalsIgnoreCase("Agregar")) {
 
                 int Doc = Integer.parseInt(request.getParameter("txtDocumento"));
                 int Rol = Integer.parseInt(request.getParameter("txtRol"));
@@ -216,7 +238,14 @@ public class Controlador extends HttpServlet {
                 String Apel_2 = request.getParameter("txtApe2");
                 int Tel = Integer.parseInt(request.getParameter("txtTel"));
                 String Correo = request.getParameter("txtCorreo");
-                String Contra = request.getParameter("txtContra");
+                
+                String restablecer="";
+                
+                    if (request.getParameter("contra") != null) {
+                        restablecer= "si";                        
+                    }else{
+                        restablecer= "no";
+                    }
 
                 int id = Integer.parseInt(request.getParameter("txtId"));
 
@@ -228,7 +257,9 @@ public class Controlador extends HttpServlet {
                 p.setApel_2(Apel_2);
                 p.setTel(Tel);
                 p.setCorreo(Correo);
-                p.setContra(Contra);
+                
+                p.setCon(restablecer);
+                
                 p.setDoc(id);
 
                 dao.edit_admin(p);
@@ -236,9 +267,9 @@ public class Controlador extends HttpServlet {
                 
             }
             
-//.............................. Usuario ....................................//            
+//.............................. Actualizar Datos ....................................//            
             
-            else if (action.equalsIgnoreCase("Actualizar Datos")) {
+             else if (action.equalsIgnoreCase("Actualizar Datos")) {
 
                 int Doc = Integer.parseInt(request.getParameter("Id"));
                 String Tipo_Doc = request.getParameter("txtTipo_doc");
@@ -272,7 +303,14 @@ public class Controlador extends HttpServlet {
 
                 dao.edit_usu(p);
                 
-                acceso = Usuario;
+                if (request.getParameter("tipo").equals("1")) {
+                    acceso = Info_admin;  
+                }else if (request.getParameter("tipo").equals("2")) {
+                   //--pendiente acceso = Info_admin;
+                }else{
+                    acceso = Usuario;
+                }
+                
             }
             
             RequestDispatcher vista = request.getRequestDispatcher(acceso);
