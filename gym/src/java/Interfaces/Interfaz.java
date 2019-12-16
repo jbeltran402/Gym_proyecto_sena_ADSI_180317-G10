@@ -23,5 +23,7 @@ public interface Interfaz {
     public boolean edit_admin(Constructor_Usuarios per);
     public boolean eliminar_admin(int doc); 
     
+    //___________________ Operaciones Usuario ________________________//
     
+    public boolean edit_usu(Constructor_Usuarios per);
 }

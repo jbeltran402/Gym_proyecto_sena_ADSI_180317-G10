@@ -231,4 +231,31 @@ public class Operaciones implements Interfaz {
         }
         return false;
     }
+    
+//__________________________Operaciones Administrador___________________________________//
+    
+    @Override
+    public boolean edit_usu(Constructor_Usuarios per) {
+        contrasena = md5.getEncriptado(per.getContra());
+
+        String sql = "UPDATE usuario SET doc_usuario = " + per.getCambio_doc()
+                + ", Roles_id_roles = " + per.getRol() + ", tipo_documeto = '"
+                + per.getTipo_doc() + "', nombre_1 = '" + per.getNomb_1()
+                + "', nombre_2 = '" + per.getNomb_2() + "', apellido_1 = '"
+                + per.getApel_1() + "', apellido_2 = '" + per.getApel_2()
+                + "', tel_cliente = " + per.getTel() + ", correo = '" + per.getCorreo()
+                + "', contrasena = '" + contrasena + "', estado ='" + 1
+                + "' WHERE doc_usuario=" + per.getDoc();
+
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+
+            contrasena = "";
+
+        } catch (Exception e) {
+        }
+        return false;        
+    }
 }

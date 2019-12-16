@@ -25,6 +25,7 @@ public class Controlador extends HttpServlet {
     String edit_admin = "vistas/edit_admin.jsp";
     String Login = "vistas/Login.jsp";
     String Recuperar = "vistas/Recuperar_contrasena.jsp";
+    String Usuario = "usuario.jsp";
 
     //Unificar Constructores..................  
     Constructor_Usuarios p = new Constructor_Usuarios();
@@ -97,7 +98,8 @@ public class Controlador extends HttpServlet {
             String acceso = "";
             String action = request.getParameter("accion");
 
-//________________________Operaciones Super Administrador_________________________//        
+//________________________Operaciones Super Administrador_________________________// 
+
             if (action.equalsIgnoreCase("Agregar")) {
 
                 int Doc = Integer.parseInt(request.getParameter("txtDocumento"));
@@ -223,6 +225,40 @@ public class Controlador extends HttpServlet {
                 dao.edit_admin(p);
                 acceso = listar_admin;
                 
+            }
+            
+//.............................. Usuario ....................................//            
+            
+            else if (action.equalsIgnoreCase("Actualizar Datos")) {
+
+                int Doc = Integer.parseInt(request.getParameter("txtDocumento"));
+                int Docu = Integer.parseInt(request.getParameter("Id"));
+                String Tipo_Doc = request.getParameter("txtTipo_doc");
+                String Nomb_1 = request.getParameter("txtNom1");
+                String Nomb_2 = request.getParameter("txtNom2");
+                String Apel_1 = request.getParameter("txtApellido");
+                String Apel_2 = request.getParameter("txtApe2");
+                int Tel = Integer.parseInt(request.getParameter("txtTel"));
+                String Correo = request.getParameter("txtCorreo");             
+                String Contra = request.getParameter("txtContra");
+
+                
+
+                p.setCambio_doc(Doc);
+                p.setTipo_doc(Tipo_Doc);
+                p.setNomb_1(Nomb_1);
+                p.setNomb_2(Nomb_2);
+                p.setApel_1(Apel_1);
+                p.setApel_2(Apel_2);
+                p.setTel(Tel);
+                p.setCorreo(Correo);
+                p.setContra(Contra);
+
+                p.setDoc(Docu);
+
+                dao.edit_usu(p);
+                
+                acceso = Usuario;
             }
             
             RequestDispatcher vista = request.getRequestDispatcher(acceso);
