@@ -430,7 +430,7 @@ public class Controlador extends HttpServlet {
                         break;
                     default:
                         break;
-                }
+                } 
                 String formapago= request.getParameter("formapago");
                 int mespago = Integer.parseInt(request.getParameter("mespago"));   
 

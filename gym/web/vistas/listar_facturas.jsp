@@ -155,7 +155,7 @@
                         <th>Proximo pago</th>
                         <th>Mes pago</th>
                         <th>Total</th>
-                        <th>Operaciones</th>
+                        <th><center>Operaciones</center></th>
                     </tr>
                 </thead>
                 <%
@@ -181,13 +181,11 @@
                         <td><%= fac.getTotal()%></td>                       
 
                         <td class="col-md-2">
+                        <center>
                             <a class="btn btn-warning" href="Controlador?accion=editar_factura&id=<%= fac.getId()%>"><img src="imagenes/edit.png" width="80%" height="80%"></a>                           
-
-                            <a class="btn btn-danger" href="Controlador?accion=eliminar_factura&id=<%= fac.getId()%>"><img src="imagenes/drop.png" width="80%" height="80%"></a>
-                            
-                            <a class="btn btn-success" href="Controlador?accion=imprimir_Super_admin&id=<%= fac.getId()%>"><img src="imagenes/Print.png" width="80%" height="80%"></a>
-                            
-                        </td>
+                            <a href="pdf?id=<%= fac.getId()%>" class="btn btn-info" target="_blank"> <img src='imagenes/Print.png' width='80%' height='80%'> </a>
+                        </center>        
+                    </td>
                     </tr>
                     <%}%>
                 </tbody>

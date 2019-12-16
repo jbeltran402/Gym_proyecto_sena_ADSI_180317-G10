@@ -1,17 +1,16 @@
 package Controlador;
 
+import Modelo.Constructor_factura;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.LineSeparator;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Connection;
@@ -28,106 +27,91 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "pdf", urlPatterns = {"/pdf"})
 public class pdf extends HttpServlet {
 
+    Constructor_factura fac = new Constructor_factura();
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-      response.setContentType("application/pdf");
-        OutputStream out = response.getOutputStream();
-        try {
-            
-            try {
-                
-                Class.forName("com.mysql.jdbc.Driver");
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto", "root", "");
-                Statement st = con.createStatement();
-                ResultSet rs = st.executeQuery("select * from factura;");
-                
-                if (con!=null) {
-                    try {
-                        
-                        Document documento = new Document();
-                        PdfWriter.getInstance(documento, out);
-                        documento.open();
 
-                        Paragraph par1 = new Paragraph();
-                        Font fonttitulo = new Font(Font.FontFamily.HELVETICA,16,Font.BOLD,BaseColor.BLACK);
-                        par1.add(new Phrase("Factura \n",fonttitulo));
-                        par1.setAlignment(Element.ALIGN_LEFT);
-                        par1.add(new Phrase(Chunk.NEWLINE));
-                        documento.add(par1);
-                        
-                      /*  PdfPTable tabla = new PdfPTable(9);
-                        PdfPCell celda1= new PdfPCell(new Paragraph("id", FontFactory.getFont("Arial", 10, Font.BOLD, BaseColor.RED))); 
-                        PdfPCell celda2= new PdfPCell(new Paragraph("docu usu", FontFactory.getFont("Arial", 10, Font.BOLD, BaseColor.RED))); 
-                        PdfPCell celda3= new PdfPCell(new Paragraph("sede", FontFactory.getFont("Arial", 10, Font.BOLD, BaseColor.RED))); 
-                        PdfPCell celda4= new PdfPCell(new Paragraph("doc vendedor", FontFactory.getFont("Arial", 10, Font.BOLD, BaseColor.RED))); 
-                        PdfPCell celda5= new PdfPCell(new Paragraph("compra id", FontFactory.getFont("Arial", 10, Font.BOLD, BaseColor.RED))); 
-                        PdfPCell celda6= new PdfPCell(new Paragraph("fecha fact", FontFactory.getFont("Arial", 10, Font.BOLD, BaseColor.RED))); 
-                        PdfPCell celda7= new PdfPCell(new Paragraph("hora fac", FontFactory.getFont("Arial", 10, Font.BOLD, BaseColor.RED))); 
-                        PdfPCell celda8= new PdfPCell(new Paragraph("forma pago", FontFactory.getFont("Arial", 10, Font.BOLD, BaseColor.RED))); 
-                        PdfPCell celda9= new PdfPCell(new Paragraph("prox pago", FontFactory.getFont("Arial", 10, Font.BOLD, BaseColor.RED))); 
-                        PdfPCell celda10= new PdfPCell(new Paragraph("mes pago", FontFactory.getFont("Arial", 10, Font.BOLD, BaseColor.RED))); 
-                        PdfPCell celda11= new PdfPCell(new Paragraph("total", FontFactory.getFont("Arial", 10, Font.BOLD, BaseColor.RED))); 
-                        tabla.addCell(celda1);
-                        tabla.addCell(celda2);
-                        tabla.addCell(celda3); 
-                        tabla.addCell(celda4);
-                        tabla.addCell(celda5); 
-                        tabla.addCell(celda6); 
-                        tabla.addCell(celda7); 
-                        tabla.addCell(celda8); 
-                        tabla.addCell(celda9); 
-                        tabla.addCell(celda10); 
-                        tabla.addCell(celda11); 
-                        while (rs.next()) {                            
-                            tabla.addCell(rs.getString(1)); 
-                            tabla.addCell(rs.getString(2)); 
-                            tabla.addCell(rs.getString(3)); 
-                            tabla.addCell(rs.getString(4)); 
-                            tabla.addCell(rs.getString(5)); 
-                            tabla.addCell(rs.getString(6)); 
-                            tabla.addCell(rs.getString(7)); 
-                            tabla.addCell(rs.getString(8)); 
-                            tabla.addCell(rs.getString(9)); 
-                            tabla.addCell(rs.getString(10)); 
-                            tabla.addCell(rs.getString(11)); 
-                        }
-                        documento.add(tabla);*/
-
-                        documento.close();
-                        
-                    } catch (DocumentException e) { e.getMessage(); } 
-                }
-                
-            } catch (ClassNotFoundException | SQLException e) { e.getMessage(); }
-            
-            
-        } finally { out.close(); }
-    }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-    }
+    
+        response.setContentType("application/pdf");
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+        int id = Integer.parseInt(request.getParameter("id"));
+        
+        try (OutputStream out = response.getOutputStream()) {
+
+                try {
+                    
+                    String sql = "select f.id_factura, u.doc_usuario ,u.nombre_1, s.id_sedes ,s.nombre, uu.doc_usuario ,uu.nombre_1, c.id_paquetes_de_servicios ,c.nom_combos, f.fecha_factura, f.hora_factura, f.forma_pago,f.proxima_fecha_pago, f.meses_pagos, f.total_pago from factura f inner join usuario u on f.usuario_doc_usuario=u.doc_usuario inner join sedes s on f.sedes_id_sedes=s.id_sedes inner join usuario uu on f.usuario_documento_vendedor=uu.doc_usuario inner join paquetes p on f.paquetes_id_paquetes=p.id_paquetes inner join combos c on c.id_paquetes_de_servicios=p.combos_id_paquetes_de_servicios where id_factura="+ id;
+                    Connection con = null;
+                    Statement st = null;
+                    ResultSet rs = null;
+                    Class.forName("com.mysql.jdbc.Driver");
+                    con = (Connection)DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto", "root", "");
+                    st = (Statement) con.createStatement();
+                    rs = st.executeQuery(sql);
+                    
+                    if (con!=null) {
+                        
+                        try {
+                            
+                            Document documento = new Document();
+                            PdfWriter.getInstance(documento, out);
+
+                            documento.open();
+                            LineSeparator separador = new LineSeparator();
+
+                            Paragraph par1 = new Paragraph();
+                            Font fonttitulo = new Font(Font.FontFamily.HELVETICA,16,Font.BOLDITALIC,BaseColor.BLACK);
+                            par1.add(new Phrase("FACTURA \n",fonttitulo));
+                            par1.setAlignment(Element.ALIGN_LEFT);
+                            par1.add(new Phrase(Chunk.NEWLINE));
+                            documento.add(par1);
+
+                            documento.add(separador);
+                            Paragraph salto = new Paragraph();
+                            Font fontsalto= new Font(Font.FontFamily.HELVETICA,16,Font.BOLD,BaseColor.BLUE);
+                            salto.add(new Phrase("\n",fontsalto));              
+                            documento.add(salto);
+
+                                while (rs.next()) {
+                                    documento.add(new Paragraph("Factura Nº: "+rs.getString(1)+"\n"));
+                                    documento.add(new Paragraph("Documento Del Usuario: "+rs.getString(2)+"\n"));
+                                    documento.add(new Paragraph("Nombre Del Usuario: "+rs.getString(3)+"\n"));
+                                    documento.add(new Paragraph("Sede Nº: "+rs.getString(4)+"\n"));
+                                    documento.add(new Paragraph("Nombre de la Sede: "+rs.getString(5)+"\n"));
+                                    documento.add(new Paragraph("Documento Del Vendedor: "+rs.getString(6)+"\n"));
+                                    documento.add(new Paragraph("Nombre Del Vendedor: "+rs.getString(7)+"\n"));
+                                    documento.add(new Paragraph("Compra Nº: "+rs.getString(8)+"\n"));
+                                    documento.add(new Paragraph("Servicio: "+rs.getString(9)+"\n"));
+                                    documento.add(new Paragraph("Fecha De Facturacion: "+rs.getString(10)+"\n"));
+                                    documento.add(new Paragraph("Hora De Facturacion: "+rs.getString(11)+"\n"));
+                                    documento.add(new Paragraph("Forma De Pago: "+rs.getString(12)+"\n"));
+                                    documento.add(new Paragraph("Proxima Fecha De Pago: "+rs.getString(13)+"\n"));
+                                    documento.add(new Paragraph("Meses Pagos: "+rs.getString(14)+"\n"));
+                                    documento.add(new Paragraph("Total: "+rs.getString(15)+"\n"));
+                                    }
+
+                            documento.close();
+
+                        } catch (DocumentException ex) {
+                            ex.getMessage();
+                        }
+                    }
+                    
+                } catch (ClassNotFoundException | SQLException e) {
+                    e.getMessage();
+                }                          
+            
+        }
+        
+    }   
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -143,4 +127,5 @@ public class pdf extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 }
