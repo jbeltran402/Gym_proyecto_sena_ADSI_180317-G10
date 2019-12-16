@@ -4,6 +4,7 @@ import Config.Conexion;
 import Config.Encriptado;
 import Interfaces.Interfaz;
 import Modelo.Constructor_Sedes;
+import Modelo.Constructor_Servicios;
 import Modelo.Constructor_Usuarios;
 import Modelo.Constructor_factura;
 import java.sql.*;
@@ -23,28 +24,25 @@ public class Operaciones implements Interfaz {
     ResultSet rs;
     Constructor_Usuarios p = new Constructor_Usuarios();
     Constructor_Sedes sedes = new Constructor_Sedes();
-    
-    //_______________________________FECHAS__________________________________________//
-        java.util.Date date = new java.util.Date();
-        DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
-        SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
-        
-            //_______________________VARIABLES___________________________________________//
-        
-            String hora = hourFormat.format(date);
-            String fecha=formato.format(date);
-            
-           //_______________________VARIABLES PROXIMA FECHA_____________________________// 
-            
-            Calendar c1 = Calendar.getInstance();
-            //SUMAR MES
-            //c1.add(Calendar.MONTH, 6);            
-           
-           //_________________________________________________________________ 
-            
-            //codigo para llamar fecha modifiada
-            //String fecha1 = formato.format(c1.getTime());
+    Constructor_Servicios servicio = new Constructor_Servicios();
 
+    //_______________________________FECHAS__________________________________________//
+    java.util.Date date = new java.util.Date();
+    DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+    SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
+
+    //_______________________VARIABLES___________________________________________//
+    String hora = hourFormat.format(date);
+    String fecha = formato.format(date);
+
+    //_______________________VARIABLES PROXIMA FECHA_____________________________// 
+    Calendar c1 = Calendar.getInstance();
+    //SUMAR MES
+    //c1.add(Calendar.MONTH, 6);            
+
+    //_________________________________________________________________ 
+    //codigo para llamar fecha modifiada
+    //String fecha1 = formato.format(c1.getTime());
     public void operaciones() {
 
     }
@@ -384,15 +382,14 @@ public class Operaciones implements Interfaz {
         }
         return list;
     }
-    
 
     @Override
     public Constructor_Sedes list_sedes(int id) {
-        
+
         String sql = "select id_sedes , nombre , direccion , nom_barrio , "
                 + "nom_localidad  from sedes , barrio , localidad  "
                 + "where barrio_id_barrio = id_barrio and "
-                + "localidad_id_localidad = id_localidad and id_sedes = "+ id +";";
+                + "localidad_id_localidad = id_localidad and id_sedes = " + id + ";";
         try {
             conn = cn.conectar();
             ps = conn.prepareStatement(sql);
@@ -405,31 +402,31 @@ public class Operaciones implements Interfaz {
                 sedes.setLocalidad(rs.getString("nom_localidad"));
             }
         } catch (SQLException e) {
-            
+
         }
         return sedes;
-        
+
     }
-    
+
     @Override
     public boolean actualizar_sede(Constructor_Sedes sed) {
-        
-        String sql = "UPDATE sedes SET barrio_id_barrio = "+ sed.getCod_barrio() +" , nombre = '"+sed.getNombre()+"' , direccion = '"+ sed.getDireccion() +"' WHERE id_sedes = "+ sed.getId();
-                
+
+        String sql = "UPDATE sedes SET barrio_id_barrio = " + sed.getCod_barrio() + " , nombre = '" + sed.getNombre() + "' , direccion = '" + sed.getDireccion() + "' WHERE id_sedes = " + sed.getId();
+
         try {
             conn = cn.conectar();
             ps = conn.prepareStatement(sql);
             ps.executeUpdate();
-            
+
         } catch (SQLException e) {
-            
+
         }
         return false;
     }
-    
+
     @Override
     public boolean add_sede(Constructor_Sedes sed) {
-        
+
         String sql = "INSERT INTO sedes VALUES ( default , " + sed.getCod_barrio() + " , '"
                 + sed.getNombre() + "' , '" + sed.getDireccion() + "' , estado = '1' )";
 
@@ -443,7 +440,7 @@ public class Operaciones implements Interfaz {
         }
         return false;
     }
-    
+
     @Override
     public boolean eliminar_sede(int id) {
 
@@ -459,12 +456,10 @@ public class Operaciones implements Interfaz {
         return false;
     }
 
-    
-    
 //__________________________Operaciones factura___________________________________//
     @Override
     public List listar_factura() {
-        
+
         ArrayList<Constructor_factura> list = new ArrayList<>();
         String sql = "select f.id_factura, u.nombre_1, s.nombre, uu.nombre_1, "
                 + "c.nom_combos, f.fecha_factura, f.hora_factura, f.forma_pago, "
@@ -495,47 +490,292 @@ public class Operaciones implements Interfaz {
                 list.add(fac);
             }
         } catch (SQLException e) {
-        } 
+        }
         return list;
     }
 
     @Override
     public boolean add_factura(Constructor_factura fac) {
-        
-        String sql="";
+
+        String sql = "";
         c1.add(Calendar.MONTH, fac.getMespago());
         String fecha_proximo_pago = formato.format(c1.getTime());
-        
-        int total_compra= fac.getMespago()*fac.getTotal();
-        
+
+        int total_compra = fac.getMespago() * fac.getTotal();
+
         int compras = fac.getCodigo_compra();
-        
-        
-        if (compras == 1 || compras == 2 || compras == 3 ) {
-            
-            sql ="insert into factura values (default,"+ fac.getDoc_usuario() 
-                    +","+ fac.getSede() +", "+ fac.getDoc_vendedor() +", "+ compras +", '"
-                    + fecha +"', '"+ hora +"', '"+ fac.getFormapago() +"' , '"+ 
-                    fecha_proximo_pago +"' , "+fac.getMespago()+", "+ total_compra +")";
-            
-        }else if ( compras == 10 || compras == 11 || compras == 12 || compras == 13){
-        
-            sql ="insert into factura values (default,"+ fac.getDoc_usuario() 
-                    +","+ fac.getSede() +", "+ fac.getDoc_vendedor() +", 4 , '"
-                    + fecha +"', '"+ hora +"', '"+ fac.getFormapago() +"' , '"+ 
-                    fecha_proximo_pago +"' , "+fac.getMespago()+", "+ total_compra +")";
-        
+
+        if (compras == 1 || compras == 2 || compras == 3) {
+
+            sql = "insert into factura values (default," + fac.getDoc_usuario()
+                    + "," + fac.getSede() + ", " + fac.getDoc_vendedor() + ", " + compras + ", '"
+                    + fecha + "', '" + hora + "', '" + fac.getFormapago() + "' , '"
+                    + fecha_proximo_pago + "' , " + fac.getMespago() + ", " + total_compra + ")";
+
+        } else if (compras == 10 || compras == 11 || compras == 12 || compras == 13) {
+
+            sql = "insert into factura values (default," + fac.getDoc_usuario()
+                    + "," + fac.getSede() + ", " + fac.getDoc_vendedor() + ", 4 , '"
+                    + fecha + "', '" + hora + "', '" + fac.getFormapago() + "' , '"
+                    + fecha_proximo_pago + "' , " + fac.getMespago() + ", " + total_compra + ")";
+
         }
-     
-         try {
+
+        try {
             conn = cn.conectar();
-            ps = conn.prepareStatement(sql);           
-            ps.executeUpdate(); 
-            
-         } catch (SQLException e) { 
-             
+            ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+
         }
-         return false;
+        return false;
     }
 
+//__________________________Operaciones servicios___________________________________//
+    /*--------------------SQL-------------------*/
+    //select * from combos;
+    //select * from servicios;
+    @Override
+    public List listar_servicios() {
+
+        ArrayList<Constructor_Servicios> list = new ArrayList<>();
+        String sql = "select id_paquetes , combos_id_paquetes_de_servicios , nom_combos , servicios_id_servicios , combos.precio as precios_c  , nom_servicios , servicios.precio as precios_s from paquetes , servicios , combos  where servicios_id_servicios = id_servicios  and  combos_id_paquetes_de_servicios = id_paquetes_de_servicios  group by id_paquetes";
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+
+                Constructor_Servicios ser = new Constructor_Servicios();
+
+                ser.setId(rs.getInt("id_paquetes"));
+                ser.setNombre_combo(rs.getString("nom_combos"));
+
+                if (rs.getInt("precios_c") != 0) {
+
+                    ser.setPrecio_combinado(rs.getInt("precios_c"));
+
+                } else {
+
+                    ser.setPrecio_combinado(rs.getInt("precios_s"));
+
+                }
+
+                ser.setServicios(rs.getString("nom_servicios"));
+                list.add(ser);
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
+    @Override
+    public List select_servicios() {
+
+        ArrayList<Constructor_Servicios> listar = new ArrayList<>();
+
+        String sql = "select * from servicios where estado = 1";
+
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+
+                Constructor_Servicios ser = new Constructor_Servicios();
+
+                ser.setId_servicio(rs.getInt("id_servicios"));
+                ser.setServicios(rs.getString("nom_servicios"));
+                ser.setPrecio_servicio(rs.getInt("precio"));
+                ser.setDescripcion(rs.getString("caracteristicas"));
+                listar.add(ser);
+            }
+        } catch (Exception e) {
+        }
+        return listar;
+    }
+
+    @Override
+    public List select_combos() {
+
+        ArrayList<Constructor_Servicios> list = new ArrayList<>();
+
+        String sql = "select * from combos where estado = 1";
+
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+
+                Constructor_Servicios ser = new Constructor_Servicios();
+
+                ser.setId_combo(rs.getInt("id_paquetes_de_servicios"));
+                ser.setNombre_combo(rs.getString("nom_combos"));
+                ser.setPrecio_combo(rs.getInt("precio"));
+                
+                list.add(ser);
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
+    @Override
+    public boolean add_servicio(Constructor_Servicios ser) {
+        
+        String sql = "INSERT INTO servicios VALUES ( default , '"+ ser.getServicios() +"' , "+ ser.getPrecio_servicio()+" , '"+ ser.getDescripcion() +"' , 1)";
+        
+        try {
+            
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+            
+        } catch (Exception e) {
+        }
+        
+        return false;
+    }
+    
+    @Override
+    
+    public Constructor_Servicios list_servicios(int id_servicio) {
+
+        String sql = "select * from servicios where id_servicios = "+ id_servicio;
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                servicio.setServicios(rs.getString("nom_servicios"));
+                servicio.setPrecio_servicio(rs.getInt("precio"));
+                servicio.setDescripcion(rs.getString("caracteristicas")); 
+            }
+
+        } catch (Exception e) {
+        }
+        return servicio;
+    }
+    
+    @Override
+    
+    public Constructor_Servicios list_promocion(int id_promo) {
+
+        String sql = "select * from combos where id_paquetes_de_servicios = "+ id_promo;
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                servicio.setNombre_combo(rs.getString("nom_combos"));
+                servicio.setPrecio_combo(rs.getInt("precio"));
+            }
+
+        } catch (Exception e) {
+        }
+        return servicio;
+    }
+    
+
+    @Override
+    public boolean edit_servicio(Constructor_Servicios ser) {
+        
+       String sql = "UPDATE servicios SET nom_servicios = '" + ser.getServicios() + "' , precio = " + ser.getPrecio_servicio() + " , caracteristicas = '" + ser.getDescripcion() + "' WHERE id_servicios = " + ser.getId_servicio();
+
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+
+        }
+        return false;
+    }
+    
+    @Override
+    public boolean edit_promocion(Constructor_Servicios ser) {
+        
+        String sql = "UPDATE combos SET nom_combos = '" + ser.getNombre_combo()+ "' , precio = " + ser.getPrecio_combo()+ " WHERE id_paquetes_de_servicios = " + ser.getId_combo();
+
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+
+        }
+        return false;
+    }
+
+    @Override
+    public boolean eliminar_servicio(int id) {
+        
+        String sql = "UPDATE servicios SET estado = 0 WHERE id_servicios = " + id;
+
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+
+        }
+        return false;
+    }
+    
+    @Override
+    public boolean eliminar_combo(int id) {
+        
+        String sql = "UPDATE combos SET estado = 0 WHERE id_paquetes_de_servicios = " + id;
+
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+
+        }
+        return false;    
+    }    
+
+    @Override
+    public boolean add_combo(Constructor_Servicios ser) {
+        
+        String sql = "INSERT INTO combos VALUES ( default , '"+ ser.getNombre_combo() +"' , "+ ser.getPrecio_combo()+" , 1)";
+        
+        try {
+            
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+            
+        } catch (Exception e) {
+        }
+        
+        return false;
+    } 
+
+    @Override
+    public boolean add_paquete(Constructor_Servicios ser) {
+        
+        String sql = "INSERT INTO paquetes VALUES ( default , "+ ser.getId_servicio() +" , "+ ser.getId_combo()+" , 1)";
+        
+        try {
+            
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+            
+        } catch (Exception e) {
+        }
+        
+        return false;
+    }
 }

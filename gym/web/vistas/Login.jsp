@@ -101,7 +101,7 @@
                                                 <i class="now-ui-icons users_circle-08"></i>
                                             </span>
                                         </div>
-                                        <input type="text" class="form-control" placeholder="Documento" name="txtusuario" required/>
+                                        <input type="number" class="form-control" placeholder="Documento" name="txtusuario" required/>
                                     </div>
                                     <div class="input-group no-border input-lg">
                                         <div class="input-group-prepend">

@@ -1,5 +1,4 @@
 <%@page import="Modelo.Constructor_Servicios"%>
-<%@page import="Modelo.Constructor_Usuarios"%>
 <%@page import="ModeloDAO.Operaciones"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.List"%>
@@ -23,7 +22,7 @@
 <html lang="es">
     <head>
 
-        <title>Listar</title>
+        <title>Listar Servicios</title>
         <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
 
         <!--<link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>-->
@@ -103,7 +102,7 @@
                         <ul class="nav navbar-nav">
                             <li class="active"><a href="super_admin.jsp">Home</a></li>                            
                             <li><a href="Controlador?accion=listar" target="ext">Usuarios</a></li>
-                            <li><a href="Controlador?accion=listar_plan" target="ext">Planes</a></li>
+                            <li><a href="Controlador?accion=servicios" target="ext">Planes</a></li>
                             <li><a href="Controlador?accion=listar_factura" target="ext">Factura</a></li>
                             <li><a href="Controlador?accion=sedes">Sedes</a></li>
                             <li class="dropdown">
@@ -124,18 +123,12 @@
         <!------------------------Listar Juan David------------------------------------->
 
         <div class="container-fluid" style="padding-top: 0%; padding-left: 10%; padding-right: 10%; padding-bottom: 5%;">
-            <center><h1>Paquetes</h1></center>
+            <center><h1>Servicios</h1></center>
 
             <form method="post" action="Controlador">
                 <div class="form-row">
                     <div class="form-group col-md-9">
-                        <a class="btn btn-success " href="Controlador?accion=add_servicio">Agregar Nuevo</a>
-                    </div>
-                    <div class="form-group col-md-2">
-                        <input type="number" placeholder="Buscar Documento" name="buscar" class="form-control" required="">
-                    </div>
-                    <div class="form-group col-md-1">
-                    <input class="btn btn-warning" type="submit" value="Buscar" name="accion">
+                        <a class="btn btn-success " href="Controlador?accion=agregar_servicio" title="Agregar Promoción"><img src="imagenes/add.png" width='65%' height='65%'></a>
                     </div>
                 </div>
             </form>
@@ -144,35 +137,35 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>COMBOS</th>
-                        <th>NOMBRE_SERVICIOS</th>
+                        <th>NOMBRE</th>
                         <th>PRECIO</th>
-                        <th>ACCIONES</th>
-                    </tr>
+                        <th>DESCRIPCIÓN</th>
+                        <th class="col-lg-2"><center>ACCIONES</center></th>
+                </tr>
                 </thead>
                 <%
                     Operaciones dao = new Operaciones();
-                    List<Constructor_Servicios> list = dao.listar_servicios();
-                    Iterator<Constructor_Servicios> iter = list.iterator();
-                    Constructor_Servicios ser = null;
-                    while (iter.hasNext()) {
-                        ser = iter.next();
-                        
+                    List<Constructor_Servicios> listar = dao.select_servicios();
+                    Iterator<Constructor_Servicios> iter_2 = listar.iterator();
+                    Constructor_Servicios ser_2 = null;
+                    while (iter_2.hasNext()) {
+                        ser_2 = iter_2.next();
+
                 %>
                 <tbody>
                     <tr>
-                        <td><%= ser.getId() %></td>
-                        <td><%= ser.getNombre_combo() %></td>
-                        <td><%= ser.getServicios() %></td>
-                        <td><%= ser.getPrecio_combinado() %></td>                        
-
+                        <td><%= ser_2.getId_servicio()%></td>
+                        <td><%= ser_2.getServicios()%></td>
+                        <td><%= ser_2.getPrecio_servicio()%></td>
+                        <td><%= ser_2.getDescripcion()%></td>
                         <td>
-                            <a class="btn btn-warning" href="Controlador?accion=editar&id=<%= ser.getId() %>">Editar</a>                           
-
-                            <a class="btn btn-danger" href="Controlador?accion=eliminar&id=<%= ser.getId() %>">Eliminar</a>
-                        </td>
-                    </tr>
-                    <%}%>
+                <center>
+                    <a class="btn btn-warning" href="Controlador?accion=editar_servicio&id=<%= ser_2.getId_servicio()%>"> <img src="imagenes/edit.png" width="80%" height="80%"> </a>                           
+                    <a href="Controlador?accion=eliminar_servicio&id=<%= ser_2.getId_servicio()%>" class="btn btn-danger" > <img src='imagenes/drop.png' width='80%' height='80%'> </a>                       
+                </center>        
+                </td>
+                </tr>
+                <%}%>
                 </tbody>
             </table>
 

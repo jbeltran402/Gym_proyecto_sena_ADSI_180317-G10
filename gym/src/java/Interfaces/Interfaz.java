@@ -2,6 +2,7 @@
 package Interfaces;
 
 import Modelo.Constructor_Sedes;
+import Modelo.Constructor_Servicios;
 import Modelo.Constructor_Usuarios;
 import Modelo.Constructor_factura;
 import java.util.List;
@@ -43,5 +44,21 @@ public interface Interfaz {
 
     public List listar_factura();
     public boolean add_factura(Constructor_factura fac);
+    
+    //___________________ Operaciones servicios ________________________// 
+    
+    public List listar_servicios();
+    public List select_servicios();
+    public List select_combos();
+    public Constructor_Servicios list_servicios(int id_servicio);
+    public Constructor_Servicios list_promocion(int id_combo);
+    public boolean add_servicio(Constructor_Servicios ser);
+    public boolean add_combo(Constructor_Servicios ser);
+    public boolean edit_servicio(Constructor_Servicios ser);
+    public boolean edit_promocion(Constructor_Servicios ser);
+    public boolean eliminar_combo(int id);
+    public boolean eliminar_servicio(int id);
+    
+    public boolean add_paquete(Constructor_Servicios ser);
     
 }

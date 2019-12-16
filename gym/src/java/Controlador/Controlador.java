@@ -2,6 +2,7 @@ package Controlador;
 
 import Modelo.Constructor_Login;
 import Modelo.Constructor_Sedes;
+import Modelo.Constructor_Servicios;
 import Modelo.Constructor_Usuarios;
 import Modelo.Constructor_factura;
 import Modelo.Constructor_recuperar;
@@ -36,8 +37,13 @@ public class Controlador extends HttpServlet {
     String Agregar_Factura = "vistas/add_factura.jsp";
     
     String servicios = "vistas/servicios.jsp";
+    String add_servicio = "vistas/add_servicio.jsp";
     String agregar_servicio = "vistas/agregar_servicio.jsp";
-    String Editar_servicio = "vistas/agregar_servicio.jsp";
+    String Editar_servicio = "vistas/editar_servicio.jsp";
+    String add_promocion = "vistas/add_promocion.jsp";
+    String edit_promocion = "vistas/edit_promocion.jsp";  
+    String Listar_promociones = "vistas/listar_promociones.jsp";
+    String Listar_servicios = "vistas/listar_servicios.jsp";
     
     //Unificar Constructores..................  
     Constructor_Usuarios p = new Constructor_Usuarios();
@@ -48,6 +54,7 @@ public class Controlador extends HttpServlet {
     Operaciones_recuperar dao_rec = new Operaciones_recuperar();
     Constructor_factura fac = new Constructor_factura();
     Constructor_Sedes sed = new Constructor_Sedes();
+    Constructor_Servicios ser = new Constructor_Servicios();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -62,26 +69,55 @@ public class Controlador extends HttpServlet {
         String acceso = "";
         String action = request.getParameter("accion");
 
-        //___________________Operaciones planes__________________________________________//
+        //___________________Operaciones planes y servicios__________________________________________//
         
         if (action.equalsIgnoreCase("servicios")) {
 
             acceso = servicios;
             
-        } else if (action.equalsIgnoreCase("1")) {
+        } else if (action.equalsIgnoreCase("listar_promociones")) {
+            
+            acceso = Listar_promociones;
+            
+        } else if (action.equalsIgnoreCase("listar_servicios")) {
+            
+            acceso = Listar_servicios;
+        
+        } else if (action.equalsIgnoreCase("add_servicio")) {
+            
+            acceso = add_servicio;        
+            
+        } else if (action.equalsIgnoreCase("editar_promocion")) {
+            
+            request.setAttribute("id_promociones", request.getParameter("id"));
+            acceso = edit_promocion;             
+            
+        } else if (action.equalsIgnoreCase("agregar_promocion")) {
 
-           acceso = add_sede;  
-           
-        } else if (action.equalsIgnoreCase("1")) {
-            request.setAttribute("idsede", request.getParameter("id"));
-            acceso = edit_sede; 
+           acceso = add_promocion;  
                 
-        } else if (action.equalsIgnoreCase("1")) {
+        } else if (action.equalsIgnoreCase("editar_servicio")) {
+            
+            request.setAttribute("idservicios", request.getParameter("id"));
+            acceso = Editar_servicio;    
+                            
+        } else if (action.equalsIgnoreCase("agregar_servicio")) {
+
+            acceso = agregar_servicio; 
+        } else if (action.equalsIgnoreCase("eliminar_servicio")) {
 
             int id = Integer.parseInt(request.getParameter("id"));
-            sed.setId(id);
-            dao.eliminar_sede(id);
-            acceso = sedes;  
+            ser.setId_servicio(id);
+            dao.eliminar_servicio(id);
+            acceso = Listar_servicios;
+            
+        } else if (action.equalsIgnoreCase("eliminar_promocion")) {
+
+            int id = Integer.parseInt(request.getParameter("id"));
+            
+            ser.setId_servicio(id);
+            dao.eliminar_combo(id);
+            acceso = Listar_promociones;    
         
         //___________________Operaciones Super Administrador____________________________//
         } else if (action.equalsIgnoreCase("listar")) {
@@ -150,7 +186,10 @@ public class Controlador extends HttpServlet {
             p.setDoc(id);
             dao.eliminar_admin(id);
             acceso = listar_admin;
-        }
+
+        } 
+        //___________________Operaciones Administrador___________________________//
+        
         RequestDispatcher vista = request.getRequestDispatcher(acceso);
         vista.forward(request, response);
 
@@ -443,8 +482,76 @@ public class Controlador extends HttpServlet {
                 fac.setTotal(total);
 
                 dao.add_factura(fac);
-                acceso = listar_factura;
+                acceso = listar_factura; 
+    
+    //----------------- OPERACIONES SERVICIOS ---------------------------------------//               
+                 
+                }else if (action.equalsIgnoreCase("Agregar Servicio")) {
+
+                String servicio = request.getParameter("txtnombre"); 
+                int precio_servicio = Integer.parseInt(request.getParameter("txtprecio")); 
+                String descripcion_servicio = request.getParameter("txtdescripcion");
                 
+                    ser.setServicios(servicio);
+                    ser.setPrecio_servicio(precio_servicio);
+                    ser.setDescripcion(descripcion_servicio);
+                    
+                    dao.add_servicio(ser);
+                    acceso = Listar_servicios;
+                
+                }else if (action.equalsIgnoreCase("Agregar Campo")) {
+
+                String promocion = request.getParameter("txtnombre"); 
+                int precio_promocion = Integer.parseInt(request.getParameter("txtprecio")); 
+                
+                    ser.setNombre_combo(promocion);
+                    ser.setPrecio_combo(precio_promocion);
+                    
+                    dao.add_combo(ser);
+                    acceso = Listar_promociones;
+                    
+                 
+                }else if (action.equalsIgnoreCase("Editar Servicio")) {
+                
+                int id = Integer.parseInt(request.getParameter("id"));     
+                String servicio = request.getParameter("txtnombre"); 
+                int precio_servicio = Integer.parseInt(request.getParameter("txtprecio")); 
+                String descripcion_servicio = request.getParameter("txtdescripcion");
+                
+                    ser.setId_servicio(id);
+                    ser.setServicios(servicio);
+                    ser.setPrecio_servicio(precio_servicio);
+                    ser.setDescripcion(descripcion_servicio);
+                    
+                    dao.edit_servicio(ser);
+                    acceso = Listar_servicios;  
+                    
+                }else if (action.equalsIgnoreCase("Editar Promocion")) {
+                
+                int id = Integer.parseInt(request.getParameter("id"));     
+                String combo = request.getParameter("txtnombre"); 
+                int precio_combo = Integer.parseInt(request.getParameter("txtprecio")); 
+                
+                    ser.setId_combo(id);
+                    ser.setNombre_combo(combo);
+                    ser.setPrecio_combo(precio_combo);
+                    
+                    dao.edit_promocion(ser);
+                    acceso = Listar_promociones; 
+  
+                }else if (action.equalsIgnoreCase("Agregar Paquete")) {
+
+                int id_combo = Integer.parseInt(request.getParameter("txtPromociones"));
+                int id_servicio = Integer.parseInt(request.getParameter("txtServicio")); 
+                
+                    ser.setId_combo(id_combo);
+                    ser.setId_servicio(id_servicio);
+                    
+                    dao.add_paquete(ser);
+                    acceso = servicios;
+                                
+                            
+                    
         }
         
         RequestDispatcher vista = request.getRequestDispatcher(acceso);

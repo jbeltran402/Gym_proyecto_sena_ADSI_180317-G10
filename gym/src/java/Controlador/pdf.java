@@ -1,5 +1,9 @@
 package Controlador;
 
+import Config.Conexion;
+import Config.Encriptado;
+import Modelo.Constructor_Sedes;
+import Modelo.Constructor_Usuarios;
 import Modelo.Constructor_factura;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -15,6 +19,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -27,7 +32,12 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "pdf", urlPatterns = {"/pdf"})
 public class pdf extends HttpServlet {
 
-    Constructor_factura fac = new Constructor_factura();
+
+    Conexion cn = new Conexion();
+    Connection conn;
+    PreparedStatement ps;
+    ResultSet rs;
+
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -49,15 +59,11 @@ public class pdf extends HttpServlet {
                 try {
                     
                     String sql = "select f.id_factura, u.doc_usuario ,u.nombre_1, s.id_sedes ,s.nombre, uu.doc_usuario ,uu.nombre_1, c.id_paquetes_de_servicios ,c.nom_combos, f.fecha_factura, f.hora_factura, f.forma_pago,f.proxima_fecha_pago, f.meses_pagos, f.total_pago from factura f inner join usuario u on f.usuario_doc_usuario=u.doc_usuario inner join sedes s on f.sedes_id_sedes=s.id_sedes inner join usuario uu on f.usuario_documento_vendedor=uu.doc_usuario inner join paquetes p on f.paquetes_id_paquetes=p.id_paquetes inner join combos c on c.id_paquetes_de_servicios=p.combos_id_paquetes_de_servicios where id_factura="+ id;
-                    Connection con = null;
-                    Statement st = null;
-                    ResultSet rs = null;
-                    Class.forName("com.mysql.jdbc.Driver");
-                    con = (Connection)DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto", "root", "");
-                    st = (Statement) con.createStatement();
-                    rs = st.executeQuery(sql);
+                    conn = cn.conectar();
+                    ps = conn.prepareStatement(sql);
+                    rs = ps.executeQuery();
                     
-                    if (con!=null) {
+                    if (conn != null) {
                         
                         try {
                             
@@ -105,7 +111,7 @@ public class pdf extends HttpServlet {
                         }
                     }
                     
-                } catch (ClassNotFoundException | SQLException e) {
+                } catch (SQLException e) {
                     e.getMessage();
                 }                          
             
@@ -118,11 +124,6 @@ public class pdf extends HttpServlet {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
