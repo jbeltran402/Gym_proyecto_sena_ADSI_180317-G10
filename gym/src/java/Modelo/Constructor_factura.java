@@ -17,11 +17,17 @@ public class Constructor_factura {
     String proxpago;
     int mespago;
     int total;
+    
+    int combo = 0;
+    int precio_compra = 0;
+    int servicio = 0;
+    int toprecio_servicio = 0;
+    
 
     public Constructor_factura() {
     }
 
-    public Constructor_factura(int id, String nom_usuario, int sede, String nom_sede, int doc_vendedor, int doc_usuario, String nom_vendedor, String compra, String fechafactura, String horafactura, String formapago, String proxpago, int mespago, int total, int codigo_compra) {
+    public Constructor_factura(int id, String nom_usuario, int sede, String nom_sede, int doc_vendedor, int doc_usuario, String nom_vendedor, String compra, int codigo_compra, String fechafactura, String horafactura, String formapago, String proxpago, int mespago, int total, int combo, int precio_compra, int servicio, int toprecio_servicio) {
         this.id = id;
         this.nom_usuario = nom_usuario;
         this.sede = sede;
@@ -30,15 +36,51 @@ public class Constructor_factura {
         this.doc_usuario = doc_usuario;
         this.nom_vendedor = nom_vendedor;
         this.compra = compra;
+        this.codigo_compra = codigo_compra;
         this.fechafactura = fechafactura;
         this.horafactura = horafactura;
         this.formapago = formapago;
         this.proxpago = proxpago;
         this.mespago = mespago;
         this.total = total;
-        this.codigo_compra=codigo_compra;
+        this.combo = combo;
+        this.precio_compra = precio_compra;
+        this.servicio = servicio;
+        this.toprecio_servicio = toprecio_servicio;
     }
 
+    public int getCombo() {
+        return combo;
+    }
+
+    public void setCombo(int combo) {
+        this.combo = combo;
+    }
+
+    public int getPrecio_compra() {
+        return precio_compra;
+    }
+
+    public void setPrecio_compra(int precio_compra) {
+        this.precio_compra = precio_compra;
+    }
+
+    public int getServicio() {
+        return servicio;
+    }
+
+    public void setServicio(int servicio) {
+        this.servicio = servicio;
+    }
+
+    public int getToprecio_servicio() {
+        return toprecio_servicio;
+    }
+
+    public void setToprecio_servicio(int toprecio_servicio) {
+        this.toprecio_servicio = toprecio_servicio;
+    }
+    
     public int getCodigo_compra() {
         return codigo_compra;
     }

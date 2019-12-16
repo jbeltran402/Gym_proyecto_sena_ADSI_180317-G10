@@ -501,18 +501,23 @@ public class Operaciones implements Interfaz {
         c1.add(Calendar.MONTH, fac.getMespago());
         String fecha_proximo_pago = formato.format(c1.getTime());
 
-        int total_compra = fac.getMespago() * fac.getTotal();
+        if (fac.getCombo() != 0) {
 
-        int compras = fac.getCodigo_compra();
-
-        if (compras == 1 || compras == 2 || compras == 3) {
+            int pago = fac.getPrecio_compra();
+        
+            int total_compra = fac.getMespago() * pago;
+            
 
             sql = "insert into factura values (default," + fac.getDoc_usuario()
-                    + "," + fac.getSede() + ", " + fac.getDoc_vendedor() + ", " + compras + ", '"
+                    + "," + fac.getSede() + ", " + fac.getDoc_vendedor() + ", " + fac.getCombo() + ", '"
                     + fecha + "', '" + hora + "', '" + fac.getFormapago() + "' , '"
                     + fecha_proximo_pago + "' , " + fac.getMespago() + ", " + total_compra + ")";
 
-        } else if (compras == 10 || compras == 11 || compras == 12 || compras == 13) {
+        } else if (fac.getServicio() != 0) {
+            
+            int pago = fac.getToprecio_servicio();
+        
+            int total_compra = fac.getMespago() * pago;
 
             sql = "insert into factura values (default," + fac.getDoc_usuario()
                     + "," + fac.getSede() + ", " + fac.getDoc_vendedor() + ", 4 , '"

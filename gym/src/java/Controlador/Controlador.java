@@ -443,43 +443,26 @@ public class Controlador extends HttpServlet {
                 int sede = Integer.parseInt(request.getParameter("idsede")); 
                 int vendedor =Integer.parseInt(request.getParameter("docuvend"));
                 
-                int compra = Integer.parseInt(request.getParameter("idcompra")); 
+                int combo = Integer.parseInt(request.getParameter("txtPromociones")); 
+                int precio_compra = Integer.parseInt(request.getParameter("txtPrecio_combo"));
+                int servicio = Integer.parseInt(request.getParameter("txtServicio"));
+                int precio_servicio = Integer.parseInt(request.getParameter("txtPrecio_combo"));
                 
-                switch (compra) { 
-                    case 1:
-                        total = 120000;
-                        break;
-                    case 2:
-                        total = 100000;
-                        break;
-                    case 3:
-                        total = 70000;
-                        break;
-                    case 10:
-                        total = 30000;
-                        break;
-                    case 11:
-                        total = 50000;
-                        break;
-                    case 12:
-                        total = 40000;
-                        break;
-                    case 13:
-                        total = 60000;
-                        break;
-                    default:
-                        break;
-                } 
                 String formapago= request.getParameter("formapago");
                 int mespago = Integer.parseInt(request.getParameter("mespago"));   
 
                 fac.setDoc_usuario(usuario);
                 fac.setSede(sede);
                 fac.setDoc_vendedor(vendedor);
-                fac.setCodigo_compra(compra);
+
+                fac.setCombo(combo);
+                fac.setPrecio_compra(precio_compra);
+                fac.setServicio(servicio);
+                fac.setToprecio_servicio(precio_servicio);
+                
                 fac.setFormapago(formapago);
                 fac.setMespago(mespago);
-                fac.setTotal(total);
+                //fac.setTotal(total);
 
                 dao.add_factura(fac);
                 acceso = listar_factura; 

@@ -100,7 +100,7 @@
                             %>
                                     
                                     <option value="<%= ser.getId_combo() %>"> <%= ser.getNombre_combo() %></option>
-                            
+                                    <input type="hidden" value="<%= ser.getPrecio_combo()%>" name="txtPrecio_combo">
                             <%}}%>
                         </select>
 
@@ -125,6 +125,7 @@
                             %>
                                     
                             <option value="<%= ser_2.getId_servicio()%>" title="<%= ser_2.getDescripcion()%>"> <%= ser_2.getServicios()%> </option>
+                            <input type="hidden" value="<%= ser_2.getPrecio_servicio()%>" name="txtPrecio_combo">
                             
                             <%}%>
                         </select>

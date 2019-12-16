@@ -1,3 +1,7 @@
+<%@page import="java.util.Iterator"%>
+<%@page import="Modelo.Constructor_Servicios"%>
+<%@page import="java.util.List"%>
+<%@page import="ModeloDAO.Operaciones"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
@@ -89,16 +93,40 @@
                     </select><br>
                     Documento Del vendedor<br>
                     <input type="number" class="form-control" id="exampleFormControlSelect1" value="<%= sesion.getAttribute("nombre")%>" name="docuvend" readonly=""><br>                        
-                    Compra<br>
-                    <select class="form-control" id="exampleFormControlSelect1" name="idcompra">
-                        <option value="1">Gold</option>
-                        <option value="2">Silver</option>
-                        <option value="3">Bronze</option>        
-                            <option value="10">valoracion medica</option>
-                            <option value="11">Instructor Personal</option>
-                            <option value="12">Gym</option>                  
-                            <option value="13">Nutricionista</option>
-                    </select><br>                
+                    Compra combo<br>
+                    <select class="form-control" name="txtPromociones">
+                            <option value="0" selected="">sin combo</option>
+                            <%
+                                Operaciones dao = new Operaciones();
+                                List<Constructor_Servicios> list = dao.select_combos();
+                                Iterator<Constructor_Servicios> iter = list.iterator();
+                                Constructor_Servicios ser = null;
+                                while (iter.hasNext()) {
+                                    ser = iter.next();
+                                    if(ser.getPrecio_combo()!= 0){
+                            %>
+                                    
+                                    <option value="<%= ser.getId_combo() %>"> <%= ser.getNombre_combo() %></option>
+                            
+                            <%}}%>
+                    </select><br>
+                    Compra servicio<br>
+                    <select class="form-control" name="txtServicio">
+                            
+                        <option value="0" selected="">servicio independiente</option>
+                            <%
+                                List<Constructor_Servicios> listar = dao.select_servicios();
+                                Iterator<Constructor_Servicios> iter_2 = listar.iterator();
+                                Constructor_Servicios ser_2 = null;
+                                
+                                while (iter_2.hasNext()) {
+                                    ser_2 = iter_2.next();
+                            %>
+                                    
+                            <option value="<%= ser_2.getId_servicio()%>" title="<%= ser_2.getDescripcion()%>"> <%= ser_2.getServicios()%> </option>
+                            
+                            <%}%>
+                    </select><br>
                     Forma De Pago<br>
                     <select class="form-control" id="exampleFormControlSelect1" name="formapago">
                         <option value="tarjeta">tarjeta</option>
