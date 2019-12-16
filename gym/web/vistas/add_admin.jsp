@@ -101,7 +101,7 @@ if (sesion.getAttribute("nivel")== null) {
 
                     <input class="btn btn-success" type="submit" name="accion" value="Agregar Usuario">
                     
-                    <a class="btn btn-danger" href="controlador?accion=listar">Regresar</a>
+                    <a class="btn btn-danger" href="Controlador?accion=listar">Regresar</a>
                 </form>
             </div>
         </div>

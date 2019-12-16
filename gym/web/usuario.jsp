@@ -16,6 +16,10 @@ if (sesion.getAttribute("nivel")==null) {
 }
 %>
 
+<!--..................................... Revisar cerrar sesion .................................................-->
+<!--..................................... Actualizar apartado estetico .................................................-->
+<!--..................................... 27/11/2019 .................................................-->
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -61,7 +65,7 @@ if (sesion.getAttribute("nivel")==null) {
                 <h1> Editar Usuario </h1>
                 <form method="post" action="Controlador">
                     Documento<br>
-                    <input class="form-control" type="text" name="txtDocumento" value="<%= p.getDoc()%>" required=""><br>
+                    <input class="form-control" type="text" value="<%= p.getDoc()%>" disabled="true"><br>
                     Tipo de documento<br>
                     <select class="form-control" id="exampleFormControlSelect1" name="txtTipo_doc" required="">
                         <option value="C.C">Cedula</option>
@@ -82,7 +86,7 @@ if (sesion.getAttribute("nivel")==null) {
                     Correo electronico<br>
                     <input class="form-control" type="text" name="txtCorreo" value="<%= p.getCorreo()%>" required=""><br>
                     Contraseña Nueva<br>
-                    <input class="form-control" type="text" name="txtContra" required=""><br>
+                    <input class="form-control" type="text" name="txtContra"><br>
  
                     <input type="hidden" name="Id" value="<%= p.getDoc()%>">
 

@@ -240,8 +240,7 @@ public class Controlador extends HttpServlet {
             
             else if (action.equalsIgnoreCase("Actualizar Datos")) {
 
-                int Doc = Integer.parseInt(request.getParameter("txtDocumento"));
-                int Docu = Integer.parseInt(request.getParameter("Id"));
+                int Doc = Integer.parseInt(request.getParameter("Id"));
                 String Tipo_Doc = request.getParameter("txtTipo_doc");
                 String Nomb_1 = request.getParameter("txtNom1");
                 String Nomb_2 = request.getParameter("txtNom2");
@@ -250,10 +249,16 @@ public class Controlador extends HttpServlet {
                 int Tel = Integer.parseInt(request.getParameter("txtTel"));
                 String Correo = request.getParameter("txtCorreo");             
                 String Contra = request.getParameter("txtContra");
-
                 
-
-                p.setCambio_doc(Doc);
+                    String con;
+                
+                    if (!"".equals(Contra)) {
+                        con = "si";
+                    }else{
+                        con = "no";
+                    }
+                
+                p.setCon(con);
                 p.setTipo_doc(Tipo_Doc);
                 p.setNomb_1(Nomb_1);
                 p.setNomb_2(Nomb_2);
@@ -263,7 +268,7 @@ public class Controlador extends HttpServlet {
                 p.setCorreo(Correo);
                 p.setContra(Contra);
 
-                p.setDoc(Docu);
+                p.setDoc(Doc);
 
                 dao.edit_usu(p);
                 

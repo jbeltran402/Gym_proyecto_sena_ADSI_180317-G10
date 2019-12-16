@@ -20,7 +20,7 @@ public class Constructor_Usuarios {
 
     }
 
-    public Constructor_Usuarios(int doc, int cambio_doc, int rol, String tipo_doc, String nomb_1, String nomb_2, String apel_1, String apel_2, int tel, String correo, String contra, int estado, String restablecer) {
+    public Constructor_Usuarios(int doc, int cambio_doc, int rol, String tipo_doc, String nomb_1, String nomb_2, String apel_1, String apel_2, int tel, String correo, String contra, int estado, String con) {
         this.doc = doc;
         this.cambio_doc = cambio_doc;
         this.rol = rol;
@@ -33,7 +33,7 @@ public class Constructor_Usuarios {
         this.correo = correo;
         this.contra = contra;
         this.estado = estado;
-        this.con = restablecer;
+        this.con = con;
     }
 
     public String getCon() {
