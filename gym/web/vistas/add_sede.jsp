@@ -5,7 +5,8 @@
 
     if (sesion.getAttribute("nivel") == null) {
 
-        response.sendRedirect("vistas/Login.jsp");
+        response.sendRedirect("Login.jsp");
+        
     } else {
         String nivel = sesion.getAttribute("nivel").toString();
         if (!nivel.equals("3")) {
@@ -75,26 +76,27 @@
         <div class="container">
             <div class="col-lg-6">
                 <br>
-                <h1>Agregar Usuario</h1>
+                <h1>Agregar sede</h1>
                 
                 <form method="post" action="Controlador">
                     
                     Nombre de la sede<br>
-                    <input class="form-control" type="number" name="nombre" required><br>
+                    <input class="form-control" type="text" name="nombre" required><br>
                     Dirección de la sede<br>
-                    <input class="form-control" type="number" name="Direccion" required><br>
-                    Tipo de documento<br>
+                    <input class="form-control" type="text" name="Direccion" required><br>
+                    Barrio<br>
                     <select class="form-control" id="exampleFormControlSelect1" name="barrio">
-                        <option value="1">Bosa piamonte</option>
-                        <option value="2">Carvajal</option>
-                        <option value="3">Los Olivos</option>
-                    </select>
-                    <input class="btn btn-success" type="submit" name="accion" value="Agregar">
-                    <a class="btn btn-danger" href="Controlador?accion=listar">Regresar</a>
+                        <option value="20">Bosa piamonte</option>
+                        <option value="30">Carvajal</option>
+                        <option value="40">Los Olivos</option>
+                    </select><br>
+                    
+                    <input class="btn btn-success" type="submit" name="accion" value="Agregar Sede">
+                    <a class="btn btn-danger" href="Controlador?accion=sedes">Regresar</a>
                 </form>
             </div>
         </div>
-        <img src="img/logo.png" width="400" height="300" style="position: relative; left: 1240px; top: -650px;">
+        <img src="img/logo.png" width="400" height="300" style="position: relative; left: 60%; bottom: 300px;">
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

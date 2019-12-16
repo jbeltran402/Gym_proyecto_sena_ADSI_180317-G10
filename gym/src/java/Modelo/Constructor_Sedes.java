@@ -6,14 +6,18 @@ public class Constructor_Sedes {
     String nombre="";
     String direccion="";
     String barrio="";
-    String localidad="";    
+    String localidad="";
+    int cod_barrio = 0;
+    int cod_localidad = 0;    
     int id= 0;
     
     public Constructor_Sedes() {
     
     }
-    public Constructor_Sedes(String nombre , String direccion , String barrio , String localidad , int id) {
+    public Constructor_Sedes(int cod_barrio , int cod_localidad , String nombre , String direccion , String barrio , String localidad , int id) {
     
+        this.cod_barrio = cod_barrio;
+        this.cod_localidad = cod_localidad;
         this.id = id;
         this.nombre = nombre;
         this.direccion = direccion;
@@ -22,6 +26,22 @@ public class Constructor_Sedes {
         
     }
 
+    public int getCod_barrio() {
+        return cod_barrio;
+    }
+
+    public void setCod_barrio(int cod_barrio) {
+        this.cod_barrio = cod_barrio;
+    }
+
+    public int getCod_localidad() {
+        return cod_localidad;
+    }
+
+    public void setCod_localidad(int cod_localidad) {
+        this.cod_localidad = cod_localidad;
+    }
+    
     public int getId() {
         return id;
     }

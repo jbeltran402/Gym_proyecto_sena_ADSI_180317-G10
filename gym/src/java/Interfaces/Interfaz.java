@@ -1,6 +1,7 @@
 
 package Interfaces;
 
+import Modelo.Constructor_Sedes;
 import Modelo.Constructor_Usuarios;
 import Modelo.Constructor_factura;
 import java.util.List;
@@ -32,6 +33,7 @@ public interface Interfaz {
     //___________________ Operaciones sedes ________________________//
 
     public List sedes();
+    public boolean add_sede(Constructor_Sedes sed);
     
     //___________________ Operaciones factura ________________________//    
 

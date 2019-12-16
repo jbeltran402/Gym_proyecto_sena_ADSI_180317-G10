@@ -70,6 +70,7 @@ localidad_id_localidad = id_localidad;
 
 
 			⚠️ARREGLOS FUTUROS⚠️
+
 al momento de añadir una nueva factura se actualizene los datos automaticamente como direccion y nombre de la sede. 
 
 al momento de añadir una nueva factura se actualizene los datos automaticamente como los combos.

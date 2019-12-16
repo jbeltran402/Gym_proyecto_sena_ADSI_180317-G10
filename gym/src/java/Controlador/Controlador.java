@@ -1,6 +1,7 @@
 package Controlador;
 
 import Modelo.Constructor_Login;
+import Modelo.Constructor_Sedes;
 import Modelo.Constructor_Usuarios;
 import Modelo.Constructor_factura;
 import Modelo.Constructor_recuperar;
@@ -29,6 +30,7 @@ public class Controlador extends HttpServlet {
     String Buscar = "vistas/buscar.jsp";
     String Info_admin = "vistas/actualizar_datos.jsp";
     String sedes = "vistas/sedes.jsp";
+    String add_sede = "vistas/add_sede.jsp";
     String listar_factura = "vistas/listar_facturas.jsp";
     String Agregar_Factura = "vistas/add_factura.jsp";
     
@@ -40,6 +42,7 @@ public class Controlador extends HttpServlet {
     Constructor_recuperar rec = new Constructor_recuperar();
     Operaciones_recuperar dao_rec = new Operaciones_recuperar();
     Constructor_factura fac = new Constructor_factura();
+    Constructor_Sedes sed = new Constructor_Sedes();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -74,10 +77,15 @@ public class Controlador extends HttpServlet {
         } else if (action.equalsIgnoreCase("actualizar_SuperAdmin")) {
             acceso = Info_admin;
 
-        //___________________Operaciones Sedes___________________________________//                 
+        //___________________Operaciones Sedes___________________________________//  
+        
         } else if (action.equalsIgnoreCase("sedes")) {
 
             acceso = sedes;
+            
+        } else if (action.equalsIgnoreCase("add_sede")) {
+
+           acceso = add_sede;    
         //___________________Operaciones factura_________________________________//    
 
         } else if (action.equalsIgnoreCase("add_factura")) {
@@ -269,7 +277,10 @@ public class Controlador extends HttpServlet {
             dao.edit_admin(p);
             acceso = listar_admin;
 
-        } //.............................. Actualizar Datos ....................................//            
+        } 
+        
+//.............................. Actualizar Datos ....................................//     
+        
         else if (action.equalsIgnoreCase("Actualizar Datos")) {
 
             int Doc = Integer.parseInt(request.getParameter("Id"));
@@ -310,10 +321,27 @@ public class Controlador extends HttpServlet {
                 //--pendiente acceso = Info_admin;
             } else {
                 acceso = Usuario;
-            }    
-            //----------------- Agregar factura---------------------------------------//
+            }
             
-        }else if (action.equalsIgnoreCase("Actualizar Datos")) {
+//________________________Agregar sedes________________________________________//            
+            
+            } else if (action.equalsIgnoreCase("Agregar Sede")) {
+
+            String nombre = request.getParameter("nombre");
+            String direccion = request.getParameter("Direccion");
+            int barrio  = Integer.parseInt(request.getParameter("barrio"));
+
+            sed.setNombre(nombre);
+            sed.setDireccion(direccion);
+            sed.setCod_barrio(barrio);
+
+            dao.add_sede(sed);
+
+            acceso = sedes;            
+
+//----------------- Agregar factura---------------------------------------//
+            
+            }else if (action.equalsIgnoreCase("Actualizar Datos")) {
                     
                 int usuario = Integer.parseInt(request.getParameter("docuusu")); 
                 int sede = Integer.parseInt(request.getParameter("idsede")); 

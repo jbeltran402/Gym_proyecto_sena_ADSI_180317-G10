@@ -122,7 +122,7 @@
         <!------------------------Listar Juan David------------------------------------->
 
         <div class="container-fluid" style="padding-top: 0%; padding-left: 10%; padding-right: 10%; padding-bottom: 5%;">
-            <h1><center>Usuarios </center></h1>
+            <center><h1>Usuarios</h1></center>
 
             <form method="post" action="Controlador">
                 <div class="form-row">

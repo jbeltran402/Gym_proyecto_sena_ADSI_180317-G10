@@ -361,6 +361,22 @@ public class Operaciones implements Interfaz {
         }
         return list;
     }
+    @Override
+    public boolean add_sede(Constructor_Sedes sed) {
+        
+        String sql = "INSERT INTO sedes VALUES ( default , " + sed.getCod_barrio() + " , '"
+                + sed.getNombre() + "' , '" + sed.getDireccion() + "')";
+
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+
+        }
+        return false;
+    }
     
 //__________________________Operaciones factura___________________________________//
     @Override
