@@ -75,7 +75,7 @@ if (sesion.getAttribute("nivel")== null) {
                 <br>
                 <h1>Agregar Usuario</h1>
                 
-                <form method="post" action="../controlador">
+                <form method="post" action="Controlador">
                     
                     Documento<br>
                     <input class="form-control" type="text" name="txtDocumento"><br>

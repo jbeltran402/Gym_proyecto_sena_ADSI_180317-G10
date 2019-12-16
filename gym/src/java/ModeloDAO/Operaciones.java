@@ -104,16 +104,32 @@ public class Operaciones implements Interfaz {
     @Override
     public boolean edit(Constructor_Usuarios per) {
 
-        contrasena = md5.getEncriptado(per.getContra());
+        String sql = "";
+        
+        if (per.getCon().equals("si")) {
 
-        String sql = "UPDATE usuario SET doc_usuario = " + per.getCambio_doc()
-                + ", Roles_id_roles = " + per.getRol() + ", tipo_documeto = '"
-                + per.getTipo_doc() + "', nombre_1 = '" + per.getNomb_1()
-                + "', nombre_2 = '" + per.getNomb_2() + "', apellido_1 = '"
-                + per.getApel_1() + "', apellido_2 = '" + per.getApel_2()
-                + "', tel_cliente = " + per.getTel() + ", correo = '" + per.getCorreo()
-                + "', contrasena = '" + contrasena + "', estado ='" + 1
-                + "' WHERE doc_usuario=" + per.getDoc();
+            contrasena = md5.getEncriptado(String.valueOf(per.getCambio_doc()));
+
+            sql = "UPDATE usuario SET doc_usuario = " + per.getCambio_doc()
+                    + ", Roles_id_roles = " + per.getRol() + ", tipo_documeto = '"
+                    + per.getTipo_doc() + "', nombre_1 = '" + per.getNomb_1()
+                    + "', nombre_2 = '" + per.getNomb_2() + "', apellido_1 = '"
+                    + per.getApel_1() + "', apellido_2 = '" + per.getApel_2()
+                    + "', tel_cliente = " + per.getTel() + ", correo = '" + per.getCorreo()
+                    + "', contrasena = '" + contrasena + "', estado ='" + 1
+                    + "' WHERE doc_usuario=" + per.getDoc();
+
+        } else if (per.getCon().equals("no")) {
+
+            sql = "UPDATE usuario SET doc_usuario = " + per.getCambio_doc()
+                    + " , Roles_id_roles = " + per.getRol() + " , tipo_documeto = '"
+                    + per.getTipo_doc() + "', nombre_1 = '" + per.getNomb_1()
+                    + "' , nombre_2 = '" + per.getNomb_2() + "', apellido_1 = '"
+                    + per.getApel_1() + "', apellido_2 = '" + per.getApel_2()
+                    + "' , tel_cliente = " + per.getTel() + ", correo = '" + per.getCorreo()
+                    + "' , estado = '1' WHERE doc_usuario=" + per.getDoc();
+
+        }
 
         try {
             conn = cn.conectar();
@@ -121,7 +137,7 @@ public class Operaciones implements Interfaz {
             ps.executeUpdate();
 
             contrasena = "";
-
+            sql = "";
         } catch (Exception e) {
         }
         return false;
@@ -174,8 +190,8 @@ public class Operaciones implements Interfaz {
 
         contrasena = md5.getEncriptado(String.valueOf(per.getDoc()));
 
-        String sql = "INSERT INTO usuario VALUES ( " + per.getDoc() + ",1,'" + 
-                per.getTipo_doc() + "','" + per.getNomb_1()
+        String sql = "INSERT INTO usuario VALUES ( " + per.getDoc() + ",1,'"
+                + per.getTipo_doc() + "','" + per.getNomb_1()
                 + "','" + per.getNomb_2() + "','" + per.getApel_1() + "','"
                 + per.getApel_2() + "'," + per.getTel() + ",'" + per.getCorreo()
                 + "','" + contrasena + "','1')";
@@ -219,9 +235,9 @@ public class Operaciones implements Interfaz {
 
     @Override
     public boolean eliminar_admin(int doc) {
-        
+
         String sql = "UPDATE usuario SET estado = '0' WHERE doc_usuario = " + doc;
-        
+
         try {
             conn = cn.conectar();
             ps = conn.prepareStatement(sql);
@@ -231,9 +247,8 @@ public class Operaciones implements Interfaz {
         }
         return false;
     }
-    
+
 //__________________________Operaciones Administrador___________________________________//
-    
     @Override
     public boolean edit_usu(Constructor_Usuarios per) {
         contrasena = md5.getEncriptado(per.getContra());
@@ -256,6 +271,6 @@ public class Operaciones implements Interfaz {
 
         } catch (Exception e) {
         }
-        return false;        
+        return false;
     }
 }

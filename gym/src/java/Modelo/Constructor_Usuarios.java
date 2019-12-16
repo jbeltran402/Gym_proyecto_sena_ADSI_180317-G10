@@ -13,12 +13,14 @@ public class Constructor_Usuarios {
     String apel_2;
     String correo;
     String contra;
+    String con;
+    
 
     public Constructor_Usuarios() {
 
     }
 
-    public Constructor_Usuarios(int doc, int cambio_doc, int rol, String tipo_doc, String nomb_1, String nomb_2, String apel_1, String apel_2, int tel, String correo, String contra, int estado) {
+    public Constructor_Usuarios(int doc, int cambio_doc, int rol, String tipo_doc, String nomb_1, String nomb_2, String apel_1, String apel_2, int tel, String correo, String contra, int estado, String restablecer) {
         this.doc = doc;
         this.cambio_doc = cambio_doc;
         this.rol = rol;
@@ -31,6 +33,15 @@ public class Constructor_Usuarios {
         this.correo = correo;
         this.contra = contra;
         this.estado = estado;
+        this.con = restablecer;
+    }
+
+    public String getCon() {
+        return con;
+    }
+
+    public void setCon(String con) {
+        this.con = con;
     }
 
     public int getDoc() {

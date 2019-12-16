@@ -30,6 +30,9 @@ public class Operaciones_login implements Interfaz_Login{
                     + log.getUsuario() + " AND contrasena = '" + contrasena_encriptada 
                     + "' AND estado = '1'";
             
+            //Prueba de inyeccion sql
+            //SELECT Roles_id_roles FROM usuario WHERE doc_usuario ='or''='  AND contrasena = ''or''='' AND estado = '1';
+            
             conn = cn.conectar();
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
