@@ -432,15 +432,13 @@ public class Controlador extends HttpServlet {
                         break;
                 }
                 String formapago= request.getParameter("formapago");
-                int mespago = Integer.parseInt(request.getParameter("mespago"));
-                String proxpago = request.getParameter("proxpago");     
+                int mespago = Integer.parseInt(request.getParameter("mespago"));   
 
                 fac.setDoc_usuario(usuario);
                 fac.setSede(sede);
                 fac.setDoc_vendedor(vendedor);
                 fac.setCodigo_compra(compra);
                 fac.setFormapago(formapago);
-                fac.setProxpago(proxpago);
                 fac.setMespago(mespago);
                 fac.setTotal(total);
 

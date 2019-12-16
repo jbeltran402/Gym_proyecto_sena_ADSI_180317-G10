@@ -501,25 +501,37 @@ public class Operaciones implements Interfaz {
 
     @Override
     public boolean add_factura(Constructor_factura fac) {
-    
-                 String sql ="insert into factura values (default,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        String sql="";
+        c1.add(Calendar.MONTH, fac.getMespago());
+        String fecha_proximo_pago = formato.format(c1.getTime());
+        
+        int total_compra= fac.getMespago()*fac.getTotal();
+        
+        int compras = fac.getCodigo_compra();
+        
+        
+        if (compras == 1 || compras == 2 || compras == 3 ) {
+            
+            sql ="insert into factura values (default,"+ fac.getDoc_usuario() 
+                    +","+ fac.getSede() +", "+ fac.getDoc_vendedor() +", "+ compras +", '"
+                    + fecha +"', '"+ hora +"', '"+ fac.getFormapago() +"' , '"+ 
+                    fecha_proximo_pago +"' , "+fac.getMespago()+", "+ total_compra +")";
+            
+        }else if ( compras == 10 || compras == 11 || compras == 12 || compras == 13){
+        
+            sql ="insert into factura values (default,"+ fac.getDoc_usuario() 
+                    +","+ fac.getSede() +", "+ fac.getDoc_vendedor() +", 4 , '"
+                    + fecha +"', '"+ hora +"', '"+ fac.getFormapago() +"' , '"+ 
+                    fecha_proximo_pago +"' , "+fac.getMespago()+", "+ total_compra +")";
+        
+        }
+     
          try {
             conn = cn.conectar();
-            ps = conn.prepareStatement(sql);
+            ps = conn.prepareStatement(sql);           
+            ps.executeUpdate(); 
             
-             
-             ps.setInt(1, fac.getDoc_usuario());
-             ps.setInt(2, fac.getSede());
-             ps.setInt(3, fac.getDoc_vendedor());
-             ps.setString(4, fac.getCompra());
-             ps.setString(5, fac.getFechafactura());
-             ps.setString(6, fac.getHorafactura());
-             ps.setString(7, fac.getHorafactura());
-             ps.setString(8, fac.getProxpago());
-             ps.setInt(9, fac.getMespago());
-             ps.setInt(10, fac.getTotal());
-             
-            rs = ps.executeQuery(); 
          } catch (SQLException e) { 
              
         }

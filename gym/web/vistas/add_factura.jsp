@@ -23,7 +23,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Agregar Usuario</title>
+        <title>Agregar Factura</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="../css/style.css">
         <style>
@@ -50,7 +50,7 @@
                             <a class="dropdown-item" href="Controlador?accion=listar">Usuarios</a>
                             <a class="dropdown-item" href="#">Planes</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">crear administrador</a>
+                            <a class="dropdown-item" href="#">crear Factura</a>
                         </div>
                     </li>
 
@@ -75,11 +75,11 @@
         <div class="container">
             <div class="col-lg-6">
                 <br>
-                <h1>Agregar Usuario</h1>
+                <h1>Agregar Factura</h1>
                 
                 <form method="post" action="Controlador">
                     
-                    Documento Usuario<br>
+                    <br>Documento Usuario<br>
                     <input class="form-control" type="number" name="docuusu" required><br> 
                     Nombre Sede<br>
                     <select class="form-control" id="exampleFormControlSelect1" name="idsede">
