@@ -7,10 +7,11 @@ import Modelo.Constructor_Sedes;
 import Modelo.Constructor_Usuarios;
 import Modelo.Constructor_factura;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Operaciones implements Interfaz {
 
@@ -22,6 +23,27 @@ public class Operaciones implements Interfaz {
     ResultSet rs;
     Constructor_Usuarios p = new Constructor_Usuarios();
     Constructor_Sedes sedes = new Constructor_Sedes();
+    
+    //_______________________________FECHAS__________________________________________//
+        java.util.Date date = new java.util.Date();
+        DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
+        
+            //_______________________VARIABLES___________________________________________//
+        
+            String hora = hourFormat.format(date);
+            String fecha=formato.format(date);
+            
+           //_______________________VARIABLES PROXIMA FECHA_____________________________// 
+            
+            Calendar c1 = Calendar.getInstance();
+            //SUMAR MES
+            //c1.add(Calendar.MONTH, 6);            
+           
+           //_________________________________________________________________ 
+            
+            //codigo para llamar fecha modifiada
+            //String fecha1 = formato.format(c1.getTime());
 
     public void operaciones() {
 
@@ -444,7 +466,14 @@ public class Operaciones implements Interfaz {
     public List listar_factura() {
         
         ArrayList<Constructor_factura> list = new ArrayList<>();
-        String sql = "select f.id_factura, u.nombre_1, s.nombre, uu.nombre_1, c.servicios_id_servicios, f.fecha_factura, f.hora_factura, f.forma_pago, f.proxima_fecha_pago, f.mes_pago, f.total_pago from factura f inner join usuario u on f.usuario_doc_usuario=u.doc_usuario inner join sedes s on f.sedes_id_sedes=s.id_sedes inner join usuario uu on f.usuario_documento_vendedor=uu.doc_usuario inner join compra c on f.compra_id_compra=c.id_compra";
+        String sql = "select f.id_factura, u.nombre_1, s.nombre, uu.nombre_1, "
+                + "c.nom_combos, f.fecha_factura, f.hora_factura, f.forma_pago, "
+                + "f.proxima_fecha_pago, f.meses_pagos, f.total_pago from factura "
+                + "f inner join usuario u on f.usuario_doc_usuario=u.doc_usuario "
+                + "inner join sedes s on f.sedes_id_sedes=s.id_sedes inner join "
+                + "usuario uu on f.usuario_documento_vendedor=uu.doc_usuario "
+                + "inner join paquetes p on f.paquetes_id_paquetes=p.id_paquetes  "
+                + "inner join combos c on c.id_paquetes_de_servicios=p.combos_id_paquetes_de_servicios";
         try {
             conn = cn.conectar();
             ps = conn.prepareStatement(sql);
@@ -454,14 +483,14 @@ public class Operaciones implements Interfaz {
                 fac.setId(rs.getInt("f.id_factura"));
                 fac.setNom_usuario(rs.getString("u.nombre_1"));
                 fac.setNom_sede(rs.getString("s.nombre"));
-                fac.setNom_vendedor(rs.getString("u.nombre_1"));
+                fac.setNom_vendedor(rs.getString("uu.nombre_1"));
                 //fac.setDoc_vendedor(rs.getString("nombre_1"));
-                fac.setCompra(rs.getInt("c.servicios_id_servicios"));
+                fac.setCompra(rs.getString("c.nom_combos"));
                 fac.setHorafactura(rs.getString("f.hora_factura"));
                 fac.setFechafactura(rs.getString("f.fecha_factura"));
                 fac.setFormapago(rs.getString("f.forma_pago"));
                 fac.setProxpago(rs.getString("f.proxima_fecha_pago"));
-                fac.setMespago(rs.getString("f.mes_pago"));
+                fac.setMespago(rs.getInt("f.meses_pagos"));
                 fac.setTotal(rs.getInt("f.total_pago"));
                 list.add(fac);
             }
@@ -482,12 +511,12 @@ public class Operaciones implements Interfaz {
              ps.setInt(1, fac.getDoc_usuario());
              ps.setInt(2, fac.getSede());
              ps.setInt(3, fac.getDoc_vendedor());
-             ps.setInt(4, fac.getCompra());
+             ps.setString(4, fac.getCompra());
              ps.setString(5, fac.getFechafactura());
              ps.setString(6, fac.getHorafactura());
              ps.setString(7, fac.getHorafactura());
              ps.setString(8, fac.getProxpago());
-             ps.setString(9, fac.getMespago());
+             ps.setInt(9, fac.getMespago());
              ps.setInt(10, fac.getTotal());
              
             rs = ps.executeQuery(); 

@@ -170,7 +170,7 @@
                     <tr>
                         <td><%= fac.getId()%></td>
                         <td><%= fac.getNom_usuario()%></td>
-                        <td><%= fac.getSede()%></td>
+                        <td><%= fac.getNom_sede()%></td>
                         <td><%= fac.getNom_vendedor()%></td>
                         <td><%= fac.getCompra()%></td>
                         <td><%= fac.getFechafactura()%></td>

@@ -396,25 +396,49 @@ public class Controlador extends HttpServlet {
 
 //----------------- Agregar factura---------------------------------------//
             
-            }else if (action.equalsIgnoreCase("Actualizar Datos")) {
+            }else if (action.equalsIgnoreCase("Agregar factura")) {
                     
+                int total = 0;
+                
                 int usuario = Integer.parseInt(request.getParameter("docuusu")); 
                 int sede = Integer.parseInt(request.getParameter("idsede")); 
-                int vendedor =Integer.parseInt(request.getParameter("docuvend")); 
-                int compra= Integer.parseInt(request.getParameter("idcompra")); 
-                String fechafactura = request.getParameter("fechafactura"); 
-                String horafactura = request.getParameter("horafactura"); 
+                int vendedor =Integer.parseInt(request.getParameter("docuvend"));
+                
+                int compra = Integer.parseInt(request.getParameter("idcompra")); 
+                
+                switch (compra) { 
+                    case 1:
+                        total = 120000;
+                        break;
+                    case 2:
+                        total = 100000;
+                        break;
+                    case 3:
+                        total = 70000;
+                        break;
+                    case 10:
+                        total = 30000;
+                        break;
+                    case 11:
+                        total = 50000;
+                        break;
+                    case 12:
+                        total = 40000;
+                        break;
+                    case 13:
+                        total = 60000;
+                        break;
+                    default:
+                        break;
+                }
                 String formapago= request.getParameter("formapago");
-                String proxpago = request.getParameter("proxpago");
-                String mespago = request.getParameter("mespago");
-                int total = Integer.parseInt(request.getParameter("total"));
+                int mespago = Integer.parseInt(request.getParameter("mespago"));
+                String proxpago = request.getParameter("proxpago");     
 
                 fac.setDoc_usuario(usuario);
                 fac.setSede(sede);
                 fac.setDoc_vendedor(vendedor);
-                fac.setCompra(compra);
-                fac.setFechafactura(fechafactura);
-                fac.setHorafactura(horafactura);
+                fac.setCodigo_compra(compra);
                 fac.setFormapago(formapago);
                 fac.setProxpago(proxpago);
                 fac.setMespago(mespago);

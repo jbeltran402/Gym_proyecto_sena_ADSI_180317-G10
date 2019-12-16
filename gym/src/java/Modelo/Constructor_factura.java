@@ -9,18 +9,19 @@ public class Constructor_factura {
     int doc_vendedor;
     int doc_usuario;
     String nom_vendedor;
-    int compra;
+    String compra;
+    int codigo_compra;
     String fechafactura;
     String horafactura;
     String formapago;
     String proxpago;
-    String mespago;
+    int mespago;
     int total;
 
     public Constructor_factura() {
     }
 
-    public Constructor_factura(int id, String nom_usuario, int sede, String nom_sede, int doc_vendedor, int doc_usuario, String nom_vendedor, int compra, String fechafactura, String horafactura, String formapago, String proxpago, String mespago, int total) {
+    public Constructor_factura(int id, String nom_usuario, int sede, String nom_sede, int doc_vendedor, int doc_usuario, String nom_vendedor, String compra, String fechafactura, String horafactura, String formapago, String proxpago, int mespago, int total, int codigo_compra) {
         this.id = id;
         this.nom_usuario = nom_usuario;
         this.sede = sede;
@@ -35,6 +36,15 @@ public class Constructor_factura {
         this.proxpago = proxpago;
         this.mespago = mespago;
         this.total = total;
+        this.codigo_compra=codigo_compra;
+    }
+
+    public int getCodigo_compra() {
+        return codigo_compra;
+    }
+
+    public void setCodigo_compra(int codigo_compra) {
+        this.codigo_compra = codigo_compra;
     }
 
     public int getDoc_usuario() {
@@ -93,11 +103,11 @@ public class Constructor_factura {
         this.nom_vendedor = nom_vendedor;
     }
 
-    public int getCompra() {
+    public String getCompra() {
         return compra;
     }
 
-    public void setCompra(int compra) {
+    public void setCompra(String compra) {
         this.compra = compra;
     }
 
@@ -133,11 +143,11 @@ public class Constructor_factura {
         this.proxpago = proxpago;
     }
 
-    public String getMespago() {
+    public int getMespago() {
         return mespago;
     }
 
-    public void setMespago(String mespago) {
+    public void setMespago(int mespago) {
         this.mespago = mespago;
     }
 
@@ -148,7 +158,5 @@ public class Constructor_factura {
     public void setTotal(int total) {
         this.total = total;
     }
-    
-    
     
 }

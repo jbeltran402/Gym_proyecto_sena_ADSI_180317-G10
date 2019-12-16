@@ -71,7 +71,7 @@
             </div>
         </nav>
 
-        <!------------------------Agregar Juan David------------------------------------->        
+        <!------------------------Agregar Factura Wilmer------------------------------------->        
         <div class="container">
             <div class="col-lg-6">
                 <br>
@@ -80,34 +80,34 @@
                 <form method="post" action="Controlador">
                     
                     Documento Usuario<br>
-                    <input class="form-control" type="number" name="docuusu" required><br>
+                    <input class="form-control" type="number" name="docuusu" required><br> 
                     Nombre Sede<br>
                     <select class="form-control" id="exampleFormControlSelect1" name="idsede">
-                        <option value="1001">sede 1</option>
-                        <option value="1002">sede 2</option>
-                        <option value="1003">sede 3</option>                  
+                        <option value="1">Bosa-Piomonte</option>
+                        <option value="2">Kennedy-Oikos</option>
+                        <option value="3">Chapinero-Central</option>                  
                     </select><br>
                     Documento Del vendedor<br>
-                    <input type="text" class="form-control" id="exampleFormControlSelect1" value="<%= sesion.getAttribute("nombre")%>" name="docuvend" readonly="">                        
+                    <input type="number" class="form-control" id="exampleFormControlSelect1" value="<%= sesion.getAttribute("nombre")%>" name="docuvend" readonly=""><br>                        
                     Compra<br>
                     <select class="form-control" id="exampleFormControlSelect1" name="idcompra">
-                        <option value="1021">Combo 1</option>
-                        <option value="1022">Combo 2</option>
-                        <option value="1023">Combo 3</option>                  
-                        <option value="1024">Sin Combo</option>                  
-                    </select><br>
-                    Fecha Actual<br> 
-                    <input class="form-control" class="colrr" type="date" name="fechafactura"><br>
+                        <option value="1">Gold</option>
+                        <option value="2">Silver</option>
+                        <option value="3">Bronze</option>        
+                            <option value="10">valoracion medica</option>
+                            <option value="11">Instructor Personal</option>
+                            <option value="12">Gym</option>                  
+                            <option value="13">Nutricionista</option>
+                    </select><br>                
                     Forma De Pago<br>
-                    <input class="form-control" class="colrr" type="text" name="formapago" required><br>
-                    Proximo Pago<br>
-                    <input class="form-control" class="colrr" type="date" name="proxpago"><br>
-                    Mes Pago<br>
-                    <input class="form-control" class="colrr" type="text" name="mespago"><br>
-                    Total<br>
-                    <input class="form-control" class="colrr" type="text" name="total" required><br> 
+                    <select class="form-control" id="exampleFormControlSelect1" name="formapago">
+                        <option value="tarjeta">tarjeta</option>
+                        <option value="efectivo">efectivo</option>                
+                    </select><br>
+                    Meses A Pagar<br>
+                    <input class="form-control" class="colrr" type="number" name="mespago"><br> 
 
-                    <input class="btn btn-success" type="submit" name="accion" value="Agregar Factura">
+                    <input class="btn btn-success" type="submit" name="accion" value="Agregar factura">
                     <a class="btn btn-danger" href="Controlador?accion=listar">Regresar</a>
                 </form>
             </div>
