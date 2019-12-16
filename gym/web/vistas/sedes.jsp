@@ -9,7 +9,7 @@
     HttpSession sesion = request.getSession();
 
     if (sesion.getAttribute("nivel") == null) {
-        response.sendRedirect("vistas/Login.jsp");
+        response.sendRedirect("Login.jsp");
     } else {
         String nivel = sesion.getAttribute("nivel").toString();
         if (!nivel.equals("3")) {

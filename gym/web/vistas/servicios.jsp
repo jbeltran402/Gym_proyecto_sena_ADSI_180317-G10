@@ -102,7 +102,7 @@
                         <ul class="nav navbar-nav">
                             <li class="active"><a href="super_admin.jsp">Home</a></li>                            
                             <li><a href="Controlador?accion=listar" target="ext">Usuarios</a></li>
-                            <li><a href="Controlador?accion=servicios" target="ext">Planes</a></li>
+                            <li><a href="Controlador?accion=listar_plan" target="ext">Planes</a></li>
                             <li><a href="Controlador?accion=listar_factura" target="ext">Factura</a></li>
                             <li><a href="Controlador?accion=sedes">Sedes</a></li>
                             <li class="dropdown">

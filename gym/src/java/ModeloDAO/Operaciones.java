@@ -21,6 +21,7 @@ public class Operaciones implements Interfaz {
     PreparedStatement ps;
     ResultSet rs;
     Constructor_Usuarios p = new Constructor_Usuarios();
+    Constructor_Sedes sedes = new Constructor_Sedes();
 
     public void operaciones() {
 
@@ -340,7 +341,7 @@ public class Operaciones implements Interfaz {
     public List sedes() {
 
         ArrayList<Constructor_Sedes> list = new ArrayList<>();
-        String sql = "select id_sedes , nombre , direccion , nom_barrio , nom_localidad  from sedes , barrio , localidad  where barrio_id_barrio = id_barrio and localidad_id_localidad = id_localidad;";
+        String sql = "select id_sedes , nombre , direccion , nom_barrio , nom_localidad  from sedes , barrio , localidad  WHERE barrio_id_barrio = id_barrio and localidad_id_localidad = id_localidad AND estado = '1'";
         try {
             conn = cn.conectar();
             ps = conn.prepareStatement(sql);
@@ -361,11 +362,54 @@ public class Operaciones implements Interfaz {
         }
         return list;
     }
+    
+
+    @Override
+    public Constructor_Sedes list_sedes(int id) {
+        
+        String sql = "select id_sedes , nombre , direccion , nom_barrio , "
+                + "nom_localidad  from sedes , barrio , localidad  "
+                + "where barrio_id_barrio = id_barrio and "
+                + "localidad_id_localidad = id_localidad and id_sedes = "+ id +";";
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                sedes.setId(rs.getInt("id_sedes"));
+                sedes.setNombre(rs.getString("nombre"));
+                sedes.setDireccion(rs.getString("direccion"));
+                sedes.setBarrio(rs.getString("nom_barrio"));
+                sedes.setLocalidad(rs.getString("nom_localidad"));
+            }
+        } catch (SQLException e) {
+            
+        }
+        return sedes;
+        
+    }
+    
+    @Override
+    public boolean actualizar_sede(Constructor_Sedes sed) {
+        
+        String sql = "UPDATE sedes SET barrio_id_barrio = "+ sed.getCod_barrio() +" , nombre = '"+sed.getNombre()+"' , direccion = '"+ sed.getDireccion() +"' WHERE id_sedes = "+ sed.getId();
+                
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+            
+        } catch (SQLException e) {
+            
+        }
+        return false;
+    }
+    
     @Override
     public boolean add_sede(Constructor_Sedes sed) {
         
         String sql = "INSERT INTO sedes VALUES ( default , " + sed.getCod_barrio() + " , '"
-                + sed.getNombre() + "' , '" + sed.getDireccion() + "')";
+                + sed.getNombre() + "' , '" + sed.getDireccion() + "' , estado = '1' )";
 
         try {
             conn = cn.conectar();
@@ -377,6 +421,23 @@ public class Operaciones implements Interfaz {
         }
         return false;
     }
+    
+    @Override
+    public boolean eliminar_sede(int id) {
+
+        String sql = "UPDATE sedes SET estado = '0' WHERE  = id_sedes" + id;
+
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+        }
+        return false;
+    }
+
+    
     
 //__________________________Operaciones factura___________________________________//
     @Override
@@ -435,4 +496,5 @@ public class Operaciones implements Interfaz {
         }
          return false;
     }
+
 }

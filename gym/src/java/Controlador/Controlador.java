@@ -31,8 +31,13 @@ public class Controlador extends HttpServlet {
     String Info_admin = "vistas/actualizar_datos.jsp";
     String sedes = "vistas/sedes.jsp";
     String add_sede = "vistas/add_sede.jsp";
+    String edit_sede = "vistas/edit_sede.jsp";
     String listar_factura = "vistas/listar_facturas.jsp";
     String Agregar_Factura = "vistas/add_factura.jsp";
+    
+    String servicios = "vistas/servicios.jsp";
+    String agregar_servicio = "vistas/agregar_servicio.jsp";
+    String Editar_servicio = "vistas/agregar_servicio.jsp";
     
     //Unificar Constructores..................  
     Constructor_Usuarios p = new Constructor_Usuarios();
@@ -57,8 +62,29 @@ public class Controlador extends HttpServlet {
         String acceso = "";
         String action = request.getParameter("accion");
 
-//___________________Operaciones Super Administrador____________________________//
-        if (action.equalsIgnoreCase("listar")) {
+        //___________________Operaciones planes__________________________________________//
+        
+        if (action.equalsIgnoreCase("servicios")) {
+
+            acceso = servicios;
+            
+        } else if (action.equalsIgnoreCase("1")) {
+
+           acceso = add_sede;  
+           
+        } else if (action.equalsIgnoreCase("1")) {
+            request.setAttribute("idsede", request.getParameter("id"));
+            acceso = edit_sede; 
+                
+        } else if (action.equalsIgnoreCase("1")) {
+
+            int id = Integer.parseInt(request.getParameter("id"));
+            sed.setId(id);
+            dao.eliminar_sede(id);
+            acceso = sedes;  
+        
+        //___________________Operaciones Super Administrador____________________________//
+        } else if (action.equalsIgnoreCase("listar")) {
             acceso = listar;
         } else if (action.equalsIgnoreCase("add")) {
             acceso = add;
@@ -76,7 +102,7 @@ public class Controlador extends HttpServlet {
 
         } else if (action.equalsIgnoreCase("actualizar_SuperAdmin")) {
             acceso = Info_admin;
-
+            
         //___________________Operaciones Sedes___________________________________//  
         
         } else if (action.equalsIgnoreCase("sedes")) {
@@ -85,7 +111,19 @@ public class Controlador extends HttpServlet {
             
         } else if (action.equalsIgnoreCase("add_sede")) {
 
-           acceso = add_sede;    
+           acceso = add_sede;  
+           
+        } else if (action.equalsIgnoreCase("editar_sede")) {
+            request.setAttribute("idsede", request.getParameter("id"));
+            acceso = edit_sede; 
+                
+        } else if (action.equalsIgnoreCase("eliminar_sede")) {
+
+            int id = Integer.parseInt(request.getParameter("id"));
+            sed.setId(id);
+            dao.eliminar_sede(id);
+            acceso = sedes;    
+            
         //___________________Operaciones factura_________________________________//    
 
         } else if (action.equalsIgnoreCase("add_factura")) {
@@ -337,7 +375,24 @@ public class Controlador extends HttpServlet {
 
             dao.add_sede(sed);
 
+            acceso = sedes;      
+            
+            } else if (action.equalsIgnoreCase("Editar Sede")) {
+
+            String nombre = request.getParameter("nombre");
+            String direccion = request.getParameter("Direccion");
+            int barrio  = Integer.parseInt(request.getParameter("barrio"));
+            int Id  = Integer.parseInt(request.getParameter("Id"));
+
+            sed.setNombre(nombre);
+            sed.setDireccion(direccion);
+            sed.setCod_barrio(barrio);
+            sed.setId(Id);
+
+            dao.actualizar_sede(sed);
+
             acceso = sedes;            
+            
 
 //----------------- Agregar factura---------------------------------------//
             

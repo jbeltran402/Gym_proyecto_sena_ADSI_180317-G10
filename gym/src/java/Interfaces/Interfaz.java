@@ -34,6 +34,10 @@ public interface Interfaz {
 
     public List sedes();
     public boolean add_sede(Constructor_Sedes sed);
+    public Constructor_Sedes list_sedes(int id);
+    public boolean actualizar_sede (Constructor_Sedes sed);
+    public boolean eliminar_sede(int id); 
+    
     
     //___________________ Operaciones factura ________________________//    
 

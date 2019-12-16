@@ -59,7 +59,7 @@ public class Constructor_Sedes {
     }
 
     public String getDireccion() {
-        return direccion;
+            return direccion;
     }
 
     public void setDireccion(String direccion) {
