@@ -21,7 +21,8 @@
  
 ✅️ IMPRIMIR FACTURA - SUPER ADMINISTRADOR
 
-	✅️ LISTAR FACTURAS - SUPER ADMINISTRADOR
+	✔️ LISTAR FACTURAS - SUPER ADMINISTRADOR
+	✅️ agregar factura - Fecha y hora automaticas.
 	✅️ BUSCAR - OPCIONAL
 	✅️ FILTRAR 
 			 
@@ -56,6 +57,9 @@
 	✅️ MOSTRAR PLAN Y PROXIMA FECHA DE PAGO - USUARIO
 
 
+
+
+
 consultas sql
 
 select id_sedes , nombre , direccion , nom_barrio , nom_localidad 
@@ -63,6 +67,14 @@ select id_sedes , nombre , direccion , nom_barrio , nom_localidad
 where barrio_id_barrio = id_barrio
 	and
 localidad_id_localidad = id_localidad;
+
+
+			⚠️ARREGLOS FUTUROS⚠️
+al momento de añadir una nueva factura se actualizene los datos automaticamente como direccion y nombre de la sede. 
+
+al momento de añadir una nueva factura se actualizene los datos automaticamente como los combos.
+
+
 
 
 

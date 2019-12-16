@@ -1,8 +1,8 @@
-
 package Controlador;
 
 import Modelo.Constructor_Login;
 import Modelo.Constructor_Usuarios;
+import Modelo.Constructor_factura;
 import Modelo.Constructor_recuperar;
 import ModeloDAO.Operaciones;
 import ModeloDAO.Operaciones_login;
@@ -29,7 +29,9 @@ public class Controlador extends HttpServlet {
     String Buscar = "vistas/buscar.jsp";
     String Info_admin = "vistas/actualizar_datos.jsp";
     String sedes = "vistas/sedes.jsp";
-
+    String listar_factura = "vistas/listar_facturas.jsp";
+    String Agregar_Factura = "vistas/add_factura.jsp";
+    
     //Unificar Constructores..................  
     Constructor_Usuarios p = new Constructor_Usuarios();
     Operaciones dao = new Operaciones();
@@ -37,6 +39,7 @@ public class Controlador extends HttpServlet {
     Operaciones_login oper_log = new Operaciones_login();
     Constructor_recuperar rec = new Constructor_recuperar();
     Operaciones_recuperar dao_rec = new Operaciones_recuperar();
+    Constructor_factura fac = new Constructor_factura();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -51,12 +54,10 @@ public class Controlador extends HttpServlet {
         String acceso = "";
         String action = request.getParameter("accion");
 
-        
 //___________________Operaciones Super Administrador____________________________//
-
         if (action.equalsIgnoreCase("listar")) {
             acceso = listar;
-        }else if (action.equalsIgnoreCase("add")) {
+        } else if (action.equalsIgnoreCase("add")) {
             acceso = add;
 
         } else if (action.equalsIgnoreCase("editar")) {
@@ -69,26 +70,31 @@ public class Controlador extends HttpServlet {
             p.setDoc(id);
             dao.eliminar(id);
             acceso = listar;
-                        
+
         } else if (action.equalsIgnoreCase("actualizar_SuperAdmin")) {
-            acceso = Info_admin; 
-        
-//___________________Operaciones Sedes___________________________________//                 
-        
-        }else if (action.equalsIgnoreCase("sedes")) { 
-            
+            acceso = Info_admin;
+
+        //___________________Operaciones Sedes___________________________________//                 
+        } else if (action.equalsIgnoreCase("sedes")) {
+
             acceso = sedes;
-        
-        }
-        
-//___________________Operaciones Administrador___________________________________//     
-        
-        else if (action.equalsIgnoreCase("listar_admin")) {
-            acceso = listar_admin;
-        
-        }else if (action.equalsIgnoreCase("add_admin")) {
-            acceso = add_admin;
+        //___________________Operaciones factura_________________________________//    
+
+        } else if (action.equalsIgnoreCase("add_factura")) {
             
+            acceso = Agregar_Factura;
+        
+        } else if (action.equalsIgnoreCase("listar_factura")) {
+            acceso = listar_factura;
+            
+        //___________________Operaciones Administrador___________________________//
+        
+        }else if (action.equalsIgnoreCase("listar_admin")) {
+            acceso = listar_admin;
+
+        } else if (action.equalsIgnoreCase("add_admin")) {
+            acceso = add_admin;
+
         } else if (action.equalsIgnoreCase("editar_admin")) {
             request.setAttribute("idper", request.getParameter("id"));
             acceso = edit_admin;
@@ -99,229 +105,250 @@ public class Controlador extends HttpServlet {
             dao.eliminar_admin(id);
             acceso = listar_admin;
         }
-            RequestDispatcher vista = request.getRequestDispatcher(acceso);
-            vista.forward(request, response);
-            
-        }
-
-        @Override
-        protected void doPost
-        (HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-            String acceso = "";
-            String action = request.getParameter("accion");
-
-//________________________Operaciones Super Administrador_________________________// 
-
-            if (action.equalsIgnoreCase("Buscar")) {
-
-                int Doc = Integer.parseInt(request.getParameter("buscar"));
-                request.setAttribute("idper", request.getParameter("buscar"));
-                p.setDoc(Doc);
-                dao.buscar(Doc);
-                acceso = Buscar;  
-
-            }else if (action.equalsIgnoreCase("Agregar")) {
-
-                int Doc = Integer.parseInt(request.getParameter("txtDocumento"));
-                int Rol = Integer.parseInt(request.getParameter("txtRol"));
-                String Tipo_Doc = request.getParameter("txtTipo_doc");
-                String Nomb_1 = request.getParameter("txtNom1");
-                String Nomb_2 = request.getParameter("txtNom2");
-                String Apel_1 = request.getParameter("txtApellido");
-                String Apel_2 = request.getParameter("txtApe2");
-                int Tel = Integer.parseInt(request.getParameter("txtTel"));
-                String Correo = request.getParameter("txtCorreo");
-
-                p.setDoc(Doc);
-                p.setRol(Rol);
-                p.setTipo_doc(Tipo_Doc);
-                p.setNomb_1(Nomb_1);
-                p.setNomb_2(Nomb_2);
-                p.setApel_1(Apel_1);
-                p.setApel_2(Apel_2);
-                p.setTel(Tel);
-                p.setCorreo(Correo);
-
-                dao.add(p);
-
-                acceso = listar;
-            } else if (action.equalsIgnoreCase("Actualizar")) {
-
-                int Doc = Integer.parseInt(request.getParameter("txtDocumento"));
-                String Tipo_Doc = request.getParameter("txtTipo_doc");
-                int Rol = Integer.parseInt(request.getParameter("txtRol"));
-                String Nomb_1 = request.getParameter("txtNom1");
-                String Nomb_2 = request.getParameter("txtNom2");
-                String Apel_1 = request.getParameter("txtApellido");
-                String Apel_2 = request.getParameter("txtApe2");
-                int Tel = Integer.parseInt(request.getParameter("txtTel"));
-                String Correo = request.getParameter("txtCorreo");
-                
-                String restablecer="";
-                
-                    if (request.getParameter("contra") != null) {
-                        restablecer= "si";                        
-                    }else{
-                        restablecer= "no";
-                    }
-
-                int id = Integer.parseInt(request.getParameter("txtId"));
-                
-                p.setCambio_doc(Doc);
-                p.setRol(Rol);
-                p.setTipo_doc(Tipo_Doc);
-                p.setNomb_1(Nomb_1);
-                p.setNomb_2(Nomb_2);
-                p.setApel_1(Apel_1);
-                p.setApel_2(Apel_2);
-                p.setTel(Tel);
-                p.setCorreo(Correo);
-                
-                p.setCon(restablecer);
-                
-                p.setDoc(id);
-
-                dao.edit(p);
-                acceso = listar;
-
-            } else if (action.equalsIgnoreCase("Ingresar") && action != null) {
-
-                int nivel = 0;
-                int Doc = Integer.parseInt(request.getParameter("txtusuario"));
-                String con = request.getParameter("txtcontra");
-
-                log.setUsuario(Doc);
-                log.setContrasena(con);
-
-                nivel = oper_log.validar(log);
-
-                request.setAttribute("nivel", nivel);
-                request.setAttribute("nombre", Doc);
-
-                acceso = Login;
-            }
-//_______________________Operaciones Administrador______________________________//            
-
-            if (action.equalsIgnoreCase("Agregar Usuario")) {
-
-                int Doc = Integer.parseInt(request.getParameter("txtDocumento"));
-                String Tipo_Doc = request.getParameter("txtTipo_doc");
-                String Nomb_1 = request.getParameter("txtNom1");
-                String Nomb_2 = request.getParameter("txtNom2");
-                String Apel_1 = request.getParameter("txtApellido");
-                String Apel_2 = request.getParameter("txtApe2");
-                int Tel = Integer.parseInt(request.getParameter("txtTel"));
-                String Correo = request.getParameter("txtCorreo");
-
-                p.setDoc(Doc);
-                p.setTipo_doc(Tipo_Doc);
-                p.setNomb_1(Nomb_1);
-                p.setNomb_2(Nomb_2);
-                p.setApel_1(Apel_1);
-                p.setApel_2(Apel_2);
-                p.setTel(Tel);
-                p.setCorreo(Correo);
-
-                dao.add_admin(p);
-
-                acceso = listar_admin;
-                
-            } else if (action.equalsIgnoreCase("Actualizar Usuario")) {
-
-                int Doc = Integer.parseInt(request.getParameter("txtDocumento"));
-                String Tipo_Doc = request.getParameter("txtTipo_doc");
-                String Nomb_1 = request.getParameter("txtNom1");
-                String Nomb_2 = request.getParameter("txtNom2");
-                String Apel_1 = request.getParameter("txtApellido");
-                String Apel_2 = request.getParameter("txtApe2");
-                int Tel = Integer.parseInt(request.getParameter("txtTel"));
-                String Correo = request.getParameter("txtCorreo");
-                
-                String restablecer="";
-                
-                    if (request.getParameter("contra") != null) {
-                        restablecer= "si";                        
-                    }else{
-                        restablecer= "no";
-                    }
-
-                int id = Integer.parseInt(request.getParameter("txtId"));
-
-                p.setCambio_doc(Doc);
-                p.setTipo_doc(Tipo_Doc);
-                p.setNomb_1(Nomb_1);
-                p.setNomb_2(Nomb_2);
-                p.setApel_1(Apel_1);
-                p.setApel_2(Apel_2);
-                p.setTel(Tel);
-                p.setCorreo(Correo);
-                
-                p.setCon(restablecer);
-                
-                p.setDoc(id);
-
-                dao.edit_admin(p);
-                acceso = listar_admin;
-                
-            }
-            
-//.............................. Actualizar Datos ....................................//            
-            
-             else if (action.equalsIgnoreCase("Actualizar Datos")) {
-
-                int Doc = Integer.parseInt(request.getParameter("Id"));
-                String Tipo_Doc = request.getParameter("txtTipo_doc");
-                String Nomb_1 = request.getParameter("txtNom1");
-                String Nomb_2 = request.getParameter("txtNom2");
-                String Apel_1 = request.getParameter("txtApellido");
-                String Apel_2 = request.getParameter("txtApe2");
-                int Tel = Integer.parseInt(request.getParameter("txtTel"));
-                String Correo = request.getParameter("txtCorreo");             
-                String Contra = request.getParameter("txtContra");
-                
-                    String con;
-                
-                    if (!"".equals(Contra)) {
-                        con = "si";
-                    }else{
-                        con = "no";
-                    }
-                
-                p.setCon(con);
-                p.setTipo_doc(Tipo_Doc);
-                p.setNomb_1(Nomb_1);
-                p.setNomb_2(Nomb_2);
-                p.setApel_1(Apel_1);
-                p.setApel_2(Apel_2);
-                p.setTel(Tel);
-                p.setCorreo(Correo);
-                p.setContra(Contra);
-
-                p.setDoc(Doc);
-
-                dao.edit_usu(p);
-                
-                if (request.getParameter("tipo").equals("1")) {
-                    acceso = Info_admin;  
-                }else if (request.getParameter("tipo").equals("2")) {
-                   //--pendiente acceso = Info_admin;
-                }else{
-                    acceso = Usuario;
-                }
-                
-            }
-            
-            RequestDispatcher vista = request.getRequestDispatcher(acceso);
-            vista.forward(request, response);
-        }
-
-        @Override
-        public String getServletInfo
-        
-            () {
-        return "Short description";
-        }// </editor-fold>
+        RequestDispatcher vista = request.getRequestDispatcher(acceso);
+        vista.forward(request, response);
 
     }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String acceso = "";
+        String action = request.getParameter("accion");
+
+//________________________Operaciones Super Administrador_________________________// 
+        if (action.equalsIgnoreCase("Buscar")) {
+
+            int Doc = Integer.parseInt(request.getParameter("buscar"));
+            request.setAttribute("idper", request.getParameter("buscar"));
+            p.setDoc(Doc);
+            dao.buscar(Doc);
+            acceso = Buscar;
+
+        } else if (action.equalsIgnoreCase("Agregar")) {
+
+            int Doc = Integer.parseInt(request.getParameter("txtDocumento"));
+            int Rol = Integer.parseInt(request.getParameter("txtRol"));
+            String Tipo_Doc = request.getParameter("txtTipo_doc");
+            String Nomb_1 = request.getParameter("txtNom1");
+            String Nomb_2 = request.getParameter("txtNom2");
+            String Apel_1 = request.getParameter("txtApellido");
+            String Apel_2 = request.getParameter("txtApe2");
+            int Tel = Integer.parseInt(request.getParameter("txtTel"));
+            String Correo = request.getParameter("txtCorreo");
+
+            p.setDoc(Doc);
+            p.setRol(Rol);
+            p.setTipo_doc(Tipo_Doc);
+            p.setNomb_1(Nomb_1);
+            p.setNomb_2(Nomb_2);
+            p.setApel_1(Apel_1);
+            p.setApel_2(Apel_2);
+            p.setTel(Tel);
+            p.setCorreo(Correo);
+
+            dao.add(p);
+
+            acceso = listar;
+        } else if (action.equalsIgnoreCase("Actualizar")) {
+
+            int Doc = Integer.parseInt(request.getParameter("txtDocumento"));
+            String Tipo_Doc = request.getParameter("txtTipo_doc");
+            int Rol = Integer.parseInt(request.getParameter("txtRol"));
+            String Nomb_1 = request.getParameter("txtNom1");
+            String Nomb_2 = request.getParameter("txtNom2");
+            String Apel_1 = request.getParameter("txtApellido");
+            String Apel_2 = request.getParameter("txtApe2");
+            int Tel = Integer.parseInt(request.getParameter("txtTel"));
+            String Correo = request.getParameter("txtCorreo");
+
+            String restablecer = "";
+
+            if (request.getParameter("contra") != null) {
+                restablecer = "si";
+            } else {
+                restablecer = "no";
+            }
+
+            int id = Integer.parseInt(request.getParameter("txtId"));
+
+            p.setCambio_doc(Doc);
+            p.setRol(Rol);
+            p.setTipo_doc(Tipo_Doc);
+            p.setNomb_1(Nomb_1);
+            p.setNomb_2(Nomb_2);
+            p.setApel_1(Apel_1);
+            p.setApel_2(Apel_2);
+            p.setTel(Tel);
+            p.setCorreo(Correo);
+
+            p.setCon(restablecer);
+
+            p.setDoc(id);
+
+            dao.edit(p);
+            acceso = listar;
+
+        } else if (action.equalsIgnoreCase("Ingresar") && action != null) {
+
+            int nivel = 0;
+            int Doc = Integer.parseInt(request.getParameter("txtusuario"));
+            String con = request.getParameter("txtcontra");
+
+            log.setUsuario(Doc);
+            log.setContrasena(con);
+
+            nivel = oper_log.validar(log);
+
+            request.setAttribute("nivel", nivel);
+            request.setAttribute("nombre", Doc);
+
+            acceso = Login;
+        }
+//_______________________Operaciones Administrador______________________________//            
+
+        if (action.equalsIgnoreCase("Agregar Usuario")) {
+
+            int Doc = Integer.parseInt(request.getParameter("txtDocumento"));
+            String Tipo_Doc = request.getParameter("txtTipo_doc");
+            String Nomb_1 = request.getParameter("txtNom1");
+            String Nomb_2 = request.getParameter("txtNom2");
+            String Apel_1 = request.getParameter("txtApellido");
+            String Apel_2 = request.getParameter("txtApe2");
+            int Tel = Integer.parseInt(request.getParameter("txtTel"));
+            String Correo = request.getParameter("txtCorreo");
+
+            p.setDoc(Doc);
+            p.setTipo_doc(Tipo_Doc);
+            p.setNomb_1(Nomb_1);
+            p.setNomb_2(Nomb_2);
+            p.setApel_1(Apel_1);
+            p.setApel_2(Apel_2);
+            p.setTel(Tel);
+            p.setCorreo(Correo);
+
+            dao.add_admin(p);
+
+            acceso = listar_admin;
+
+        } else if (action.equalsIgnoreCase("Actualizar Usuario")) {
+
+            int Doc = Integer.parseInt(request.getParameter("txtDocumento"));
+            String Tipo_Doc = request.getParameter("txtTipo_doc");
+            String Nomb_1 = request.getParameter("txtNom1");
+            String Nomb_2 = request.getParameter("txtNom2");
+            String Apel_1 = request.getParameter("txtApellido");
+            String Apel_2 = request.getParameter("txtApe2");
+            int Tel = Integer.parseInt(request.getParameter("txtTel"));
+            String Correo = request.getParameter("txtCorreo");
+
+            String restablecer = "";
+
+            if (request.getParameter("contra") != null) {
+                restablecer = "si";
+            } else {
+                restablecer = "no";
+            }
+
+            int id = Integer.parseInt(request.getParameter("txtId"));
+
+            p.setCambio_doc(Doc);
+            p.setTipo_doc(Tipo_Doc);
+            p.setNomb_1(Nomb_1);
+            p.setNomb_2(Nomb_2);
+            p.setApel_1(Apel_1);
+            p.setApel_2(Apel_2);
+            p.setTel(Tel);
+            p.setCorreo(Correo);
+
+            p.setCon(restablecer);
+
+            p.setDoc(id);
+
+            dao.edit_admin(p);
+            acceso = listar_admin;
+
+        } //.............................. Actualizar Datos ....................................//            
+        else if (action.equalsIgnoreCase("Actualizar Datos")) {
+
+            int Doc = Integer.parseInt(request.getParameter("Id"));
+            String Tipo_Doc = request.getParameter("txtTipo_doc");
+            String Nomb_1 = request.getParameter("txtNom1");
+            String Nomb_2 = request.getParameter("txtNom2");
+            String Apel_1 = request.getParameter("txtApellido");
+            String Apel_2 = request.getParameter("txtApe2");
+            int Tel = Integer.parseInt(request.getParameter("txtTel"));
+            String Correo = request.getParameter("txtCorreo");
+            String Contra = request.getParameter("txtContra");
+
+            String con;
+
+            if (!"".equals(Contra)) {
+                con = "si";
+            } else {
+                con = "no";
+            }
+
+            p.setCon(con);
+            p.setTipo_doc(Tipo_Doc);
+            p.setNomb_1(Nomb_1);
+            p.setNomb_2(Nomb_2);
+            p.setApel_1(Apel_1);
+            p.setApel_2(Apel_2);
+            p.setTel(Tel);
+            p.setCorreo(Correo);
+            p.setContra(Contra);
+
+            p.setDoc(Doc);
+
+            dao.edit_usu(p);
+
+            if (request.getParameter("tipo").equals("1")) {
+                acceso = Info_admin;
+            } else if (request.getParameter("tipo").equals("2")) {
+                //--pendiente acceso = Info_admin;
+            } else {
+                acceso = Usuario;
+            }    
+            //----------------- Agregar factura---------------------------------------//
+            
+        }else if (action.equalsIgnoreCase("Actualizar Datos")) {
+                    
+                int usuario = Integer.parseInt(request.getParameter("docuusu")); 
+                int sede = Integer.parseInt(request.getParameter("idsede")); 
+                int vendedor =Integer.parseInt(request.getParameter("docuvend")); 
+                int compra= Integer.parseInt(request.getParameter("idcompra")); 
+                String fechafactura = request.getParameter("fechafactura"); 
+                String horafactura = request.getParameter("horafactura"); 
+                String formapago= request.getParameter("formapago");
+                String proxpago = request.getParameter("proxpago");
+                String mespago = request.getParameter("mespago");
+                int total = Integer.parseInt(request.getParameter("total"));
+
+                fac.setDoc_usuario(usuario);
+                fac.setSede(sede);
+                fac.setDoc_vendedor(vendedor);
+                fac.setCompra(compra);
+                fac.setFechafactura(fechafactura);
+                fac.setHorafactura(horafactura);
+                fac.setFormapago(formapago);
+                fac.setProxpago(proxpago);
+                fac.setMespago(mespago);
+                fac.setTotal(total);
+
+                dao.add_factura(fac);
+                acceso = listar_factura;
+                
+        }
+        
+        RequestDispatcher vista = request.getRequestDispatcher(acceso);
+        vista.forward(request, response);
+    }
+
+    @Override
+    public String getServletInfo() {
+        return "Short description";
+    }// </editor-fold>
+
+}

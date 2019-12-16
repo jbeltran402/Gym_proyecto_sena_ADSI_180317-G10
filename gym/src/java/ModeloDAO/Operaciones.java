@@ -5,9 +5,12 @@ import Config.Encriptado;
 import Interfaces.Interfaz;
 import Modelo.Constructor_Sedes;
 import Modelo.Constructor_Usuarios;
+import Modelo.Constructor_factura;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Operaciones implements Interfaz {
 
@@ -24,12 +27,11 @@ public class Operaciones implements Interfaz {
     }
 
 //_____________________Operaciones de Super Administrador________________________________//    
-    
     @Override
     public List buscar(int doc) {
-        
+
         ArrayList<Constructor_Usuarios> list = new ArrayList<>();
-        String sql = "SELECT * FROM usuario WHERE estado = '1' and Roles_id_roles != 3 and doc_usuario = " + doc +" ORDER BY Roles_id_roles";
+        String sql = "SELECT * FROM usuario WHERE estado = '1' and Roles_id_roles != 3 and doc_usuario = " + doc + " ORDER BY Roles_id_roles";
         try {
             conn = cn.conectar();
             ps = conn.prepareStatement(sql);
@@ -51,8 +53,8 @@ public class Operaciones implements Interfaz {
         } catch (Exception e) {
         }
         return list;
-    }    
-    
+    }
+
     @Override
     public List listar() {
 
@@ -135,7 +137,7 @@ public class Operaciones implements Interfaz {
     public boolean edit(Constructor_Usuarios per) {
 
         String sql = "";
-        
+
         if (per.getCon().equals("si")) {
 
             contrasena = md5.getEncriptado(String.valueOf(per.getCambio_doc()));
@@ -241,7 +243,7 @@ public class Operaciones implements Interfaz {
     public boolean edit_admin(Constructor_Usuarios per) {
 
         String sql = "";
-        
+
         if (per.getCon().equals("si")) {
 
             contrasena = md5.getEncriptado(String.valueOf(per.getCambio_doc()));
@@ -294,31 +296,31 @@ public class Operaciones implements Interfaz {
 //__________________________Operaciones Administrador___________________________________//
     @Override
     public boolean edit_usu(Constructor_Usuarios per) {
-        
+
         String sql = "";
-        
+
         int Documento = per.getDoc();
-        
+
         if (per.getCon().equals("si")) {
-        
+
             contrasena = md5.getEncriptado(per.getContra());
-            
-            sql= "UPDATE usuario SET tipo_documeto = '"
-                + per.getTipo_doc() + "', nombre_1 = '" + per.getNomb_1()
-                + "', nombre_2 = '" + per.getNomb_2() + "', apellido_1 = '"
-                + per.getApel_1() + "', apellido_2 = '" + per.getApel_2()
-                + "', tel_cliente = " + per.getTel() + ", correo = '" + per.getCorreo()
-                + "', contrasena = '" + contrasena + "', estado ='" + 1
-                + "' WHERE doc_usuario=" + Documento;
-            
-        }else if(per.getCon().equals("no")){
-        
-            sql= "UPDATE usuario SET tipo_documeto = '" + per.getTipo_doc() + "' , nombre_1 = '" 
-                + per.getNomb_1() + "', nombre_2 = '" + per.getNomb_2() 
-                + "', apellido_1 = '"+ per.getApel_1() + "', apellido_2 = '" 
-                + per.getApel_2()+ "', tel_cliente = " + per.getTel() 
-                + ", correo = '" + per.getCorreo() + "', estado ='" + 1
-                + "' WHERE doc_usuario=" + Documento;           
+
+            sql = "UPDATE usuario SET tipo_documeto = '"
+                    + per.getTipo_doc() + "', nombre_1 = '" + per.getNomb_1()
+                    + "', nombre_2 = '" + per.getNomb_2() + "', apellido_1 = '"
+                    + per.getApel_1() + "', apellido_2 = '" + per.getApel_2()
+                    + "', tel_cliente = " + per.getTel() + ", correo = '" + per.getCorreo()
+                    + "', contrasena = '" + contrasena + "', estado ='" + 1
+                    + "' WHERE doc_usuario=" + Documento;
+
+        } else if (per.getCon().equals("no")) {
+
+            sql = "UPDATE usuario SET tipo_documeto = '" + per.getTipo_doc() + "' , nombre_1 = '"
+                    + per.getNomb_1() + "', nombre_2 = '" + per.getNomb_2()
+                    + "', apellido_1 = '" + per.getApel_1() + "', apellido_2 = '"
+                    + per.getApel_2() + "', tel_cliente = " + per.getTel()
+                    + ", correo = '" + per.getCorreo() + "', estado ='" + 1
+                    + "' WHERE doc_usuario=" + Documento;
         }
 
         try {
@@ -333,28 +335,88 @@ public class Operaciones implements Interfaz {
         return false;
     }
 //__________________________Operaciones Sedes___________________________________//
+
     @Override
     public List sedes() {
-        
+
         ArrayList<Constructor_Sedes> list = new ArrayList<>();
-        String sql = "select nombre , direccion , nom_barrio , nom_localidad  from sedes , barrio , localidad  where barrio_id_barrio = id_barrio and localidad_id_localidad = id_localidad;";
+        String sql = "select id_sedes , nombre , direccion , nom_barrio , nom_localidad  from sedes , barrio , localidad  where barrio_id_barrio = id_barrio and localidad_id_localidad = id_localidad;";
         try {
             conn = cn.conectar();
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
-                
+
                 Constructor_Sedes sedes = new Constructor_Sedes();
-                
+
+                sedes.setId(rs.getInt("id_sedes"));
                 sedes.setNombre(rs.getString("nombre"));
                 sedes.setDireccion(rs.getString("direccion"));
                 sedes.setBarrio(rs.getString("nom_barrio"));
                 sedes.setLocalidad(rs.getString("nom_localidad"));
                 list.add(sedes);
-                
+
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
         }
         return list;
+    }
+    
+//__________________________Operaciones factura___________________________________//
+    @Override
+    public List listar_factura() {
+        
+        ArrayList<Constructor_factura> list = new ArrayList<>();
+        String sql = "select f.id_factura, u.nombre_1, s.nombre, uu.nombre_1, c.servicios_id_servicios, f.fecha_factura, f.hora_factura, f.forma_pago, f.proxima_fecha_pago, f.mes_pago, f.total_pago from factura f inner join usuario u on f.usuario_doc_usuario=u.doc_usuario inner join sedes s on f.sedes_id_sedes=s.id_sedes inner join usuario uu on f.usuario_documento_vendedor=uu.doc_usuario inner join compra c on f.compra_id_compra=c.id_compra";
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Constructor_factura fac = new Constructor_factura();
+                fac.setId(rs.getInt("f.id_factura"));
+                fac.setNom_usuario(rs.getString("u.nombre_1"));
+                fac.setNom_sede(rs.getString("s.nombre"));
+                fac.setNom_vendedor(rs.getString("u.nombre_1"));
+                //fac.setDoc_vendedor(rs.getString("nombre_1"));
+                fac.setCompra(rs.getInt("c.servicios_id_servicios"));
+                fac.setHorafactura(rs.getString("f.hora_factura"));
+                fac.setFechafactura(rs.getString("f.fecha_factura"));
+                fac.setFormapago(rs.getString("f.forma_pago"));
+                fac.setProxpago(rs.getString("f.proxima_fecha_pago"));
+                fac.setMespago(rs.getString("f.mes_pago"));
+                fac.setTotal(rs.getInt("f.total_pago"));
+                list.add(fac);
+            }
+        } catch (SQLException e) {
+        } 
+        return list;
+    }
+
+    @Override
+    public boolean add_factura(Constructor_factura fac) {
+    
+                 String sql ="insert into factura values (default,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+         try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            
+             
+             ps.setInt(1, fac.getDoc_usuario());
+             ps.setInt(2, fac.getSede());
+             ps.setInt(3, fac.getDoc_vendedor());
+             ps.setInt(4, fac.getCompra());
+             ps.setString(5, fac.getFechafactura());
+             ps.setString(6, fac.getHorafactura());
+             ps.setString(7, fac.getHorafactura());
+             ps.setString(8, fac.getProxpago());
+             ps.setString(9, fac.getMespago());
+             ps.setInt(10, fac.getTotal());
+             
+            rs = ps.executeQuery(); 
+         } catch (SQLException e) { 
+             
+        }
+         return false;
     }
 }

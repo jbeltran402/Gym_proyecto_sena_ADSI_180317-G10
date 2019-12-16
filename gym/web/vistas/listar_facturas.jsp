@@ -1,3 +1,4 @@
+<%@page import="Modelo.Constructor_factura"%>
 <%@page import="Modelo.Constructor_Usuarios"%>
 <%@page import="ModeloDAO.Operaciones"%>
 <%@page import="java.util.Iterator"%>
@@ -8,7 +9,7 @@
     HttpSession sesion = request.getSession();
 
     if (sesion.getAttribute("nivel") == null) {
-        response.sendRedirect("vistas/Login.jsp");
+        response.sendRedirect("Login.jsp");
     } else {
         String nivel = sesion.getAttribute("nivel").toString();
         if (!nivel.equals("3")) {
@@ -100,10 +101,11 @@
                     </div>
                     <div class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
-                            <li class="active"><a href="super_admin.jsp">Home</a></li>                            
+                            <li class="active"><a href="super_admin.jsp">Home</a></li>
                             <li><a href="Controlador?accion=listar" target="ext">Usuarios</a></li>
-                            <li><a href="Controlador?accion=listar_factura" target="ext">Factura</a></li>
+
                             <li><a href="Controlador?accion=sedes">Sedes</a></li>
+
                             <li class="dropdown">
                                 <a href="#" class="dropdown-menu-left" data-toggle="dropdown">Opciones<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
@@ -122,18 +124,18 @@
         <!------------------------Listar Juan David------------------------------------->
 
         <div class="container-fluid" style="padding-top: 0%; padding-left: 10%; padding-right: 10%; padding-bottom: 5%;">
-            <h1><center>Usuarios </center></h1>
+            <h1><center>Facturas </center></h1>
 
             <form method="post" action="Controlador">
                 <div class="form-row">
                     <div class="form-group col-md-9">
-                        <a class="btn btn-success " href="Controlador?accion=add">Agregar Nuevo</a>
+                        <a class="btn btn-success " href="Controlador?accion=add_factura"><img src="imagenes/add.png" width="65%" height="65%" ></a>
                     </div>
                     <div class="form-group col-md-2">
                         <input type="number" placeholder="Buscar Documento" name="buscar" class="form-control" required="">
                     </div>
                     <div class="form-group col-md-1">
-                    <input class="btn btn-warning" type="submit" value="Buscar" name="accion">
+                        <button class="btn btn-warning" type="submit" value="Buscar" name="accion"><img src="imagenes/search.png" width="65%" height="65%" ></button>
                     </div>
                 </div>
             </form>
@@ -141,46 +143,50 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Documento</th>
-                        <th>Tipo Documento</th>
-                        <th>Rol</th>
-                        <th>Nombres</th>
-                        <th>Apellidos</th>
-                        <th>Telefono</th>
-                        <th>Correo</th>
-                        <th>ACCIONES</th>
+                        <th>Nº factura</th>
+                        <th>Nombre usuario</th>
+                        <th>Sede</th>
+                        <th>Nombre Vendedor</th>
+                        <!--<th>Apellido Vendedor</th>-->
+                        <th>Nº servicio</th>
+                        <th>fecha factura</th>
+                        <th>Hora de facturacion</th>
+                        <th>Forma de pago</th>
+                        <th>Proximo pago</th>
+                        <th>Mes pago</th>
+                        <th>Total</th>
+                        <th>Operaciones</th>
                     </tr>
                 </thead>
                 <%
                     Operaciones dao = new Operaciones();
-                    List<Constructor_Usuarios> list = dao.listar();
-                    Iterator<Constructor_Usuarios> iter = list.iterator();
-                    Constructor_Usuarios per = null;
+                    List<Constructor_factura> list = dao.listar_factura();
+                    Iterator<Constructor_factura> iter = list.iterator();
+                    Constructor_factura fac = null;
                     while (iter.hasNext()) {
-                        per = iter.next();
-                        String roles = "";
-                        if (per.getRol() == 1) {
-                            roles = "Usuario";
-                        } else if (per.getRol() == 2) {
-                            roles = "Administrador";
-                        } else if (per.getRol() == 3) {
-                            roles = "Super administrador";
-                        }
+                        fac = iter.next();
                 %>
                 <tbody>
                     <tr>
-                        <td><%= per.getDoc()%></td>
-                        <td><%= per.getTipo_doc()%></td>
-                        <td><%= roles%></td>
-                        <td><%= per.getNomb_1()%> <%=per.getNomb_2()%></td>
-                        <td><%= per.getApel_1()%> <%= per.getApel_2()%></td>
-                        <td><%= per.getTel()%></td>
-                        <td><%= per.getCorreo()%></td>                        
+                        <td><%= fac.getId()%></td>
+                        <td><%= fac.getNom_usuario()%></td>
+                        <td><%= fac.getSede()%></td>
+                        <td><%= fac.getNom_vendedor()%></td>
+                        <td><%= fac.getCompra()%></td>
+                        <td><%= fac.getFechafactura()%></td>
+                        <td><%= fac.getHorafactura()%></td>
+                        <td><%= fac.getFormapago()%></td>
+                        <td><%= fac.getProxpago()%></td>
+                        <td><%= fac.getMespago()%></td>
+                        <td><%= fac.getTotal()%></td>                       
 
-                        <td>
-                            <a class="btn btn-warning" href="Controlador?accion=editar&id=<%= per.getDoc()%>">Editar</a>                           
+                        <td class="col-md-2">
+                            <a class="btn btn-warning" href="Controlador?accion=editar_factura&id=<%= fac.getId()%>"><img src="imagenes/edit.png" width="80%" height="80%"></a>                           
 
-                            <a class="btn btn-danger" href="Controlador?accion=eliminar&id=<%= per.getDoc()%>">Eliminar</a>
+                            <a class="btn btn-danger" href="Controlador?accion=eliminar_factura&id=<%= fac.getId()%>"><img src="imagenes/drop.png" width="80%" height="80%"></a>
+                            
+                            <a class="btn btn-success" href="Controlador?accion=imprimir_Super_admin&id=<%= fac.getId()%>"><img src="imagenes/Print.png" width="80%" height="80%"></a>
+                            
                         </td>
                     </tr>
                     <%}%>

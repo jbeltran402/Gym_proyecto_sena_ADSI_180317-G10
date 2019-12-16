@@ -129,7 +129,7 @@
             <form method="post" action="Controlador">
                 <div class="form-row">
                     <div class="form-group col-md-9">
-                        <a class="btn btn-success " href="Controlador?accion=add">Agregar Nuevo</a>
+                        <a class="btn btn-success " href="Controlador?accion=add_sede">Agregar Nuevo</a>
                     </div>
                     <div class="form-group col-md-2">
                         <input type="number" placeholder="Buscar Documento" name="buscar" class="form-control" required="">
@@ -147,7 +147,7 @@
                         <th>Dirección</th>
                         <th>Barrio</th>
                         <th>Localidad</th>
-                        <!--<th>ACCIONES</th>-->
+                        <th>ACCIONES</th>
                     </tr>
                 </thead>
                 <%
@@ -164,6 +164,13 @@
                         <td><%= sedes.getDireccion()%></td>
                         <td><%= sedes.getBarrio()%></td>
                         <td><%= sedes.getLocalidad()%></td>                         
+                    
+                        <td>
+                            <a class="btn btn-warning" href="Controlador?accion=editar_sede&id=<%= sedes.getId()%>">Editar</a>                           
+
+                            <a class="btn btn-danger" href="Controlador?accion=eliminar_sede&id=<%= sedes.getId()%>">Eliminar</a>
+                        </td>
+                    
                     </tr>
                     <%}%>
                 </tbody>

@@ -7,13 +7,14 @@ public class Constructor_Sedes {
     String direccion="";
     String barrio="";
     String localidad="";    
-
+    int id= 0;
+    
     public Constructor_Sedes() {
     
     }
+    public Constructor_Sedes(String nombre , String direccion , String barrio , String localidad , int id) {
     
-    public Constructor_Sedes(String nombre , String direccion , String barrio , String localidad) {
-    
+        this.id = id;
         this.nombre = nombre;
         this.direccion = direccion;
         this.barrio = barrio;
@@ -21,6 +22,14 @@ public class Constructor_Sedes {
         
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public String getNombre() {
         return nombre;
     }
