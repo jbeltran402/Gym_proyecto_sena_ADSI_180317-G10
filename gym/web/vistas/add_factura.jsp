@@ -3,7 +3,11 @@
 <%@page import="java.util.List"%>
 <%@page import="ModeloDAO.Operaciones"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%
+response.addHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+response.addHeader("Pragma", "no-cache");
+response.setDateHeader("Expires", 0);
+%>
 <%
     HttpSession sesion = request.getSession();
 
@@ -80,9 +84,9 @@
             <div class="col-lg-6">
                 <br>
                 <h1>Agregar Factura</h1>
-                
+
                 <form method="post" action="Controlador">
-                    
+
                     <br>Documento Usuario<br>
                     <input class="form-control" type="number" name="docuusu" required><br> 
                     Nombre Sede<br>
@@ -95,37 +99,40 @@
                     <input type="number" class="form-control" id="exampleFormControlSelect1" value="<%= sesion.getAttribute("nombre")%>" name="docuvend" readonly=""><br>                        
                     Compra combo<br>
                     <select class="form-control" name="txtPromociones">
-                            <option value="0" selected="">sin combo</option>
-                            <%
-                                Operaciones dao = new Operaciones();
-                                List<Constructor_Servicios> list = dao.select_combos();
-                                Iterator<Constructor_Servicios> iter = list.iterator();
-                                Constructor_Servicios ser = null;
-                                while (iter.hasNext()) {
-                                    ser = iter.next();
-                                    if(ser.getPrecio_combo()!= 0){
-                            %>
-                                    
-                                    <option value="<%= ser.getId_combo() %>"> <%= ser.getNombre_combo() %></option>
-                            
-                            <%}}%>
+                        
+                        <option value="0" title="Solo seleccione esta opción si escoge un servicio."> Sin combo </option>
+                        
+                        <%
+                            Operaciones dao = new Operaciones();
+                            List<Constructor_Servicios> list = dao.select_combos();
+                            Iterator<Constructor_Servicios> iter = list.iterator();
+                            Constructor_Servicios ser = null;
+                            while (iter.hasNext()) {
+                                ser = iter.next();
+                                if (ser.getPrecio_combo() != 0) {
+                        %>
+
+                        <option value="<%= ser.getId_combo()%>"> <%= ser.getNombre_combo()%></option>
+                        <%}
+                                }%>
                     </select><br>
                     Compra servicio<br>
                     <select class="form-control" name="txtServicio">
-                            
-                        <option value="0" selected="">servicio independiente</option>
-                            <%
-                                List<Constructor_Servicios> listar = dao.select_servicios();
-                                Iterator<Constructor_Servicios> iter_2 = listar.iterator();
-                                Constructor_Servicios ser_2 = null;
-                                
-                                while (iter_2.hasNext()) {
-                                    ser_2 = iter_2.next();
-                            %>
-                                    
-                            <option value="<%= ser_2.getId_servicio()%>" title="<%= ser_2.getDescripcion()%>"> <%= ser_2.getServicios()%> </option>
-                            
-                            <%}%>
+                        
+                        <option value="0" title="Solo seleccione esta opción si escoge un combo."> Sin servicio </option>
+                        
+                        <%
+                            List<Constructor_Servicios> listar = dao.select_servicios();
+                            Iterator<Constructor_Servicios> iter_2 = listar.iterator();
+                            Constructor_Servicios ser_2 = null;
+
+                            while (iter_2.hasNext()) {
+                                ser_2 = iter_2.next();
+                        %>
+
+                        <option value="<%= ser_2.getId_servicio()%>" title="<%= ser_2.getDescripcion()%>"> <%= ser_2.getServicios()%> </option>
+
+                        <%}%>
                     </select><br>
                     Forma De Pago<br>
                     <select class="form-control" id="exampleFormControlSelect1" name="formapago">

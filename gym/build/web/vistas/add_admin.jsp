@@ -1,5 +1,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%
+response.addHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+response.addHeader("Pragma", "no-cache");
+response.setDateHeader("Expires", 0);
+%>
 <%
 HttpSession sesion= request.getSession();
 
@@ -12,6 +16,9 @@ if (sesion.getAttribute("nivel")== null) {
         }
     }
 %>
+<!--................................. Funcionamiento Completo  .........................-->
+<!--.................................Resvisado 28/11/19.........................-->
+
 
 <!DOCTYPE html>
 <html>
@@ -73,7 +80,7 @@ if (sesion.getAttribute("nivel")== null) {
                 <form method="post" action="Controlador">
                     
                     Documento<br>
-                    <input class="form-control" type="text" name="txtDocumento"><br>
+                    <input class="form-control" type="number" name="txtDocumento"><br>
                     Tipo de documento<br>
                     <select class="form-control" id="exampleFormControlSelect1" name="txtTipo_doc">
                         <option value="C.C">Cedula</option>
@@ -90,13 +97,13 @@ if (sesion.getAttribute("nivel")== null) {
                     Segundo apellido<br>
                     <input class="form-control" class="colrr" type="text" name="txtApe2"><br>
                     Telefono<br>
-                    <input class="form-control" class="colrr" type="text" name="txtTel"><br>
+                    <input class="form-control" class="colrr" type="number" name="txtTel"><br>
                     Correo electronico<br>
                     <input class="form-control" class="colrr" type="text" name="txtCorreo" required><br>
 
                     <input class="btn btn-success" type="submit" name="accion" value="Agregar Usuario">
                     
-                    <a class="btn btn-danger" href="Controlador?accion=listar">Regresar</a>
+                    <a class="btn btn-danger" href="Controlador?accion=listar_admin">Regresar</a>
                 </form>
             </div>
         </div>

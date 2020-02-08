@@ -4,6 +4,12 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="ISO-8859-1"%>
 
 <%
+response.addHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+response.addHeader("Pragma", "no-cache");
+response.setDateHeader("Expires", 0);
+%>
+
+<%
     HttpSession sesion = request.getSession();
     int nivel = 0;
     if (request.getAttribute("nivel") != null) {

@@ -3,28 +3,32 @@
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <%
-HttpSession sesion= request.getSession();
+response.addHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+response.addHeader("Pragma", "no-cache");
+response.setDateHeader("Expires", 0);
+%>
+<%
+    HttpSession sesion = request.getSession();
 
-if (sesion.getAttribute("nivel")== null) {
-    response.sendRedirect("Login.jsp");
-     }else{   
-    String nivel = sesion.getAttribute("nivel").toString();
-    if (!nivel.equals("3")) {
-        response.sendRedirect("vistas/Login.jsp");            
+    if (sesion.getAttribute("nivel") == null) {
+        response.sendRedirect("vistas/Login.jsp");
+    } else {
+        String nivel = sesion.getAttribute("nivel").toString();
+        if (!nivel.equals("3")) {
+            response.sendRedirect("vistas/Login.jsp");
         }
-}
+    }
 %>
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="es">
     <head>
-        
+
         <title>Listar</title>
         <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
-          
+
         <!--<link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>-->
         <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>  
@@ -35,48 +39,48 @@ if (sesion.getAttribute("nivel")== null) {
 
         <!-- This file has been downloaded from Bootsnipp.com. Enjoy! -->
 
-       <style type="text/css">
-    /*
-        Color fondo: #632432;
-        Color header: 246355;
-        Color borde: 0F362D;
-        Color iluminado: 369681;
-*/
-body{
-    background-color: #0069d9;                
-    font-family: Arial;
-}
+        <style type="text/css">
+            /*
+                Color fondo: #632432;
+                Color header: 246355;
+                Color borde: 0F362D;
+                Color iluminado: 369681;
+            */
+            body{
+                background-color: #0069d9;                
+                font-family: Arial;
+            }
 
-#main-container{
-    margin: 150px auto;
-    width: 600px;
-}
+            #main-container{
+                margin: 150px auto;
+                width: 600px;
+            }
 
-table{
-    background-color: white;
-    text-align: left;
-    border-collapse: collapse;
-    width: 100%;
-}
+            table{
+                background-color: white;
+                text-align: left;
+                border-collapse: collapse;
+                width: 100%;
+            }
 
-th, td{
-    padding: 20px;
-}
+            th, td{
+                padding: 20px;
+            }
 
-thead{
-    background-color: #585858;
-    border-bottom: solid 5px #0F362D;
-    color: white;
-}
+            thead{
+                background-color: #585858;
+                border-bottom: solid 5px #0F362D;
+                color: white;
+            }
 
-tr:nth-child(even){
-    background-color: #ddd;
-}
+            tr:nth-child(even){
+                background-color: #ddd;
+            }
 
-tr:hover td{
-    background-color: #2E64FE;
-    color: white;
-}
+            tr:hover td{
+                background-color: #2E64FE;
+                color: white;
+            }
 
 
 
@@ -100,15 +104,15 @@ tr:hover td{
                     </div>
                     <div class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
-                            <li class="active"><a href="super_admin.jsp">Home</a></li>
+                            <li class="active"><a href="super_admin.jsp">Home</a></li>                            
                             <li><a href="Controlador?accion=listar" target="ext">Usuarios</a></li>
-
-                            <li><a href="">Planes</a></li>
-
+                            <li><a href="Controlador?accion=servicios" target="ext">Planes</a></li>
+                            <li><a href="Controlador?accion=listar_factura" target="ext">Factura</a></li>
+                            <li><a href="Controlador?accion=sedes">Sedes</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-menu-left" data-toggle="dropdown">Opciones<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Modificar Info</a></li>
+                                    <li><a href="Controlador?accion=actualizar_SuperAdmin">Mi Perfil</a></li>
                                     <li><a href="#">.........</a></li>
                                     <li class="divider"></li>
                                     <li><a href="vistas/Login.jsp?cerrar=true">Cerrar sesion</a></li>
@@ -122,11 +126,23 @@ tr:hover td{
         </div>
         <!------------------------Listar Juan David------------------------------------->
 
-        <div class="container-fluid" style="padding-top: 2%; padding-left: 10%; padding-right: 10% ">
-            <h1><center>Usuarios </center></h1>
-            <a class="btn btn-success " href="Controlador?accion=add">Agregar Nuevo</a>
-            <br>
-            <br>
+        <div class="container-fluid" style="padding-top: 0%; padding-left: 10%; padding-right: 10%; padding-bottom: 5%;">
+            <center><h1>Usuarios</h1></center>
+
+            <form method="post" action="Controlador">
+                <div class="form-row">
+                    <div class="form-group col-md-9">
+                        <a class="btn btn-success " href="Controlador?accion=add">Agregar Nuevo</a>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <input type="number" placeholder="Buscar Documento" name="buscar" class="form-control" required="">
+                    </div>
+                    <div class="form-group col-md-1">
+                    <input class="btn btn-warning" type="submit" value="Buscar" name="accion">
+                    </div>
+                </div>
+            </form>
+
             <table>
                 <thead>
                     <tr>
@@ -168,7 +184,7 @@ tr:hover td{
 
                         <td>
                             <a class="btn btn-warning" href="Controlador?accion=editar&id=<%= per.getDoc()%>">Editar</a>                           
-                            
+
                             <a class="btn btn-danger" href="Controlador?accion=eliminar&id=<%= per.getDoc()%>">Eliminar</a>
                         </td>
                     </tr>

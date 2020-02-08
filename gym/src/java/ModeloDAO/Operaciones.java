@@ -468,7 +468,7 @@ public class Operaciones implements Interfaz {
                 + "inner join sedes s on f.sedes_id_sedes=s.id_sedes inner join "
                 + "usuario uu on f.usuario_documento_vendedor=uu.doc_usuario "
                 + "inner join paquetes p on f.paquetes_id_paquetes=p.id_paquetes  "
-                + "inner join combos c on c.id_paquetes_de_servicios=p.combos_id_paquetes_de_servicios";
+                + "inner join combos c on c.id_paquetes_de_servicios=p.combos_id_paquetes_de_servicios order by f.id_factura desc";
         try {
             conn = cn.conectar();
             ps = conn.prepareStatement(sql);
@@ -503,26 +503,17 @@ public class Operaciones implements Interfaz {
 
         if (fac.getCombo() != 0) {
 
-            int pago = fac.getPrecio_compra();
-        
-            int total_compra = fac.getMespago() * pago;
-            
-
             sql = "insert into factura values (default," + fac.getDoc_usuario()
                     + "," + fac.getSede() + ", " + fac.getDoc_vendedor() + ", " + fac.getCombo() + ", '"
                     + fecha + "', '" + hora + "', '" + fac.getFormapago() + "' , '"
-                    + fecha_proximo_pago + "' , " + fac.getMespago() + ", " + total_compra + ")";
+                    + fecha_proximo_pago + "' , " + fac.getMespago() + ", (select (precio * "+ fac.getMespago() +") from combos where id_paquetes_de_servicios = "+ fac.getCombo() +"))";
 
         } else if (fac.getServicio() != 0) {
-            
-            int pago = fac.getToprecio_servicio();
         
-            int total_compra = fac.getMespago() * pago;
-
             sql = "insert into factura values (default," + fac.getDoc_usuario()
                     + "," + fac.getSede() + ", " + fac.getDoc_vendedor() + ", 4 , '"
                     + fecha + "', '" + hora + "', '" + fac.getFormapago() + "' , '"
-                    + fecha_proximo_pago + "' , " + fac.getMespago() + ", " + total_compra + ")";
+                    + fecha_proximo_pago + "' , " + fac.getMespago() + ", (select (precio * "+ fac.getMespago() +") from servicios where id_paquetes_de_servicios = "+ fac.getServicio()+"))";
 
         }
 

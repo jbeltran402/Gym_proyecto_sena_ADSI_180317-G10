@@ -4,6 +4,12 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="ISO-8859-1"%>
 
 <%
+response.addHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+response.addHeader("Pragma", "no-cache");
+response.setDateHeader("Expires", 0);
+%>
+
+<%
     HttpSession sesion = request.getSession();
     int nivel = 0;
     if (request.getAttribute("nivel") != null) {
@@ -101,7 +107,7 @@
                                                 <i class="now-ui-icons users_circle-08"></i>
                                             </span>
                                         </div>
-                                        <input type="text" class="form-control" placeholder="Documento" name="txtusuario" required/>
+                                        <input type="number" class="form-control" placeholder="Documento" name="txtusuario" required/>
                                     </div>
                                     <div class="input-group no-border input-lg">
                                         <div class="input-group-prepend">

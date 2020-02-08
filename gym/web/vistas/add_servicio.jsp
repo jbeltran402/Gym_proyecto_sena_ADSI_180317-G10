@@ -3,7 +3,11 @@
 <%@page import="java.util.List"%>
 <%@page import="ModeloDAO.Operaciones"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%
+response.addHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+response.addHeader("Pragma", "no-cache");
+response.setDateHeader("Expires", 0);
+%>
 <%
     HttpSession sesion = request.getSession();
 
@@ -100,7 +104,6 @@
                             %>
                                     
                                     <option value="<%= ser.getId_combo() %>"> <%= ser.getNombre_combo() %></option>
-                                    <input type="hidden" value="<%= ser.getPrecio_combo()%>" name="txtPrecio_combo">
                             <%}}%>
                         </select>
 
@@ -125,7 +128,6 @@
                             %>
                                     
                             <option value="<%= ser_2.getId_servicio()%>" title="<%= ser_2.getDescripcion()%>"> <%= ser_2.getServicios()%> </option>
-                            <input type="hidden" value="<%= ser_2.getPrecio_servicio()%>" name="txtPrecio_combo">
                             
                             <%}%>
                         </select>

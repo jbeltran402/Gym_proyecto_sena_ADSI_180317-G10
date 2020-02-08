@@ -1,7 +1,11 @@
 <%@page import="Modelo.Constructor_Usuarios"%>
 <%@page import="ModeloDAO.Operaciones"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%
+response.addHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+response.addHeader("Pragma", "no-cache");
+response.setDateHeader("Expires", 0);
+%>
 <%
     HttpSession sesion = request.getSession();
 

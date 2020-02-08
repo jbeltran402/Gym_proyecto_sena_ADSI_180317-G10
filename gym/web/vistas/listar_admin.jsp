@@ -3,7 +3,11 @@
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%
+response.addHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+response.addHeader("Pragma", "no-cache");
+response.setDateHeader("Expires", 0);
+%>
 <%
     HttpSession sesion = request.getSession();
 
@@ -21,9 +25,14 @@
 
 <html lang="es">
     <head>
-        
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+ 
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
         <title>Listar</title>
-        <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+       
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
           
         <!--<link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>-->
         <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -84,46 +93,36 @@ tr:hover td{
         </style>
     </head>
     <body>
-        <br><br>
-        <div class="navbar-wrapper">
-            <div class="container">
-                <div class="navbar navbar-inverse navbar-static-top">
-
-                    <div class="navbar-header">
-
-                        <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </a>
-                        <a class="navbar-brand" href="#"><img src="img/logo.png" style="width: 83px; position: relative; top:-19px; "/></a>
-                    </div>
-                    <div class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav">
-                            <li class="active"><a href="administrador.jsp">Home</a></li>
-                            <li><a href="Controlador?accion=listar_admin" target="ext">Usuarios</a></li>
-
-                            <li><a href="">Planes</a></li>
-
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-menu-left" data-toggle="dropdown">Opciones<b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Modificar Info</a></li>
-                                    <li><a href="#">.........</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="vistas/Login.jsp?cerrar=true">Cerrar sesion</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-
-                </div>
-            </div><!-- /container -->
+     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#"><img src="img/logo.png" style="width: 90px; position: "/></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+          <a class="nav-link" href="administrador.jsp" style="font-size: 23px;">Home<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="Controlador?accion=listar_admin" style="font-size: 23px;">Usuarios</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 23px;">
+          Opciones
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href="#">Perfil</a>
+          <a class="dropdown-item" href="#">.....</a>
+          <a class="dropdown-item" href="vistas/Login.jsp?cerrar=true">Cerrar sesion</a>
         </div>
+      </li>
+    </ul>
+  </div>
+        </nav>
         <!------------------------Listar Juan David------------------------------------->
-
+        <br><br>
         <div class="container-fluid" style="padding-top: 0.5%; padding-left: 10%; padding-right: 10%; padding-bottom: 5%;">
-            <h1>Usuarios</h1>
+            <center> <h1>Usuarios</h1> </center>
             <a class="btn btn-success " href="Controlador?accion=add_admin">Agregar Nuevo</a>
             <br>
             <br>

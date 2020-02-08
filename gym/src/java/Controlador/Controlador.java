@@ -436,17 +436,13 @@ public class Controlador extends HttpServlet {
 //----------------- Agregar factura---------------------------------------//
             
             }else if (action.equalsIgnoreCase("Agregar factura")) {
-                    
-                int total = 0;
                 
                 int usuario = Integer.parseInt(request.getParameter("docuusu")); 
                 int sede = Integer.parseInt(request.getParameter("idsede")); 
                 int vendedor =Integer.parseInt(request.getParameter("docuvend"));
                 
-                int combo = Integer.parseInt(request.getParameter("txtPromociones")); 
-                int precio_compra = Integer.parseInt(request.getParameter("txtPrecio_combo"));
+                int combo = Integer.parseInt(request.getParameter("txtPromociones"));
                 int servicio = Integer.parseInt(request.getParameter("txtServicio"));
-                int precio_servicio = Integer.parseInt(request.getParameter("txtPrecio_combo"));
                 
                 String formapago= request.getParameter("formapago");
                 int mespago = Integer.parseInt(request.getParameter("mespago"));   
@@ -454,12 +450,8 @@ public class Controlador extends HttpServlet {
                 fac.setDoc_usuario(usuario);
                 fac.setSede(sede);
                 fac.setDoc_vendedor(vendedor);
-
                 fac.setCombo(combo);
-                fac.setPrecio_compra(precio_compra);
                 fac.setServicio(servicio);
-                fac.setToprecio_servicio(precio_servicio);
-                
                 fac.setFormapago(formapago);
                 fac.setMespago(mespago);
                 //fac.setTotal(total);

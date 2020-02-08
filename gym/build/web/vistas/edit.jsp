@@ -1,7 +1,11 @@
 <%@page import="Modelo.Constructor_Usuarios"%>
 <%@page import="ModeloDAO.Operaciones"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%
+response.addHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+response.addHeader("Pragma", "no-cache");
+response.setDateHeader("Expires", 0);
+%>
 <%
     HttpSession sesion = request.getSession();
 
@@ -15,9 +19,9 @@
     }
 %>
 
-<!--..................................... Revisar cambiar documento .................................................-->
-<!--..................................... Revisar enlaces .................................................-->
+<!--..................................... Revisar cambiar documento no mayor a 10 digitos.................................................-->
 <!--..................................... 27/11/2019 .................................................-->
+<!--..................................... 27/11/2019 Funcionamiento Aceptable .................................................-->
 
 <!DOCTYPE html>
 <html>
@@ -84,19 +88,19 @@
                         int doc = Integer.parseInt((String) request.getAttribute("idper"));
                         Constructor_Usuarios p = (Constructor_Usuarios) dao.list(doc);
                     %>
-                    <h1>Moficar Persona</h1>
+                    <h1>Moficar Usuario</h1>
                     <form method="post" action="Controlador">
                         Documento<br>
                         <input class="form-control" type="text" name="txtDocumento" value="<%= p.getDoc()%>"><br>
                         Tipo de documento<br>
-                        <select name="txtTipo_doc">
+                        <select class="form-control" id="exampleFormControlSelect1" name="txtTipo_doc">
                             <option value="C.C">Cedula</option>
                             <option value="T.I">Tarjeta de identidad</option>
                             <option value="P.A">Pasaporte</option>
                             <option value="C.E">Cedula de extranjeria</option>
                         </select><br>
                         Rol<br>
-                        <select name="txtRol">
+                        <select class="form-control" id="exampleFormControlSelect1" name="txtRol">
                             <option value="1">Usuario</option>
                             <option value="2">Administrador</option>
                         </select><br>                        
@@ -112,7 +116,6 @@
                         <input class="form-control" type="text" name="txtTel" value="<%= p.getTel()%>"><br>
                         Correo electronico<br>
                         <input class="form-control" type="text" name="txtCorreo" value="<%= p.getCorreo()%>"><br>
-                        Contraseña nueva<br>
                         <div class="alert alert-primary" role="alert">
 
                             <input type="checkbox" name="contra" value="con">
@@ -122,8 +125,8 @@
                         
                         <input type="hidden" name="txtId" value="<%= p.getDoc()%>">
 
-                        <input class="btn btn-primary" type="submit" name="accion" value="Actualizar"><br>
-                        <a href="Controlador?accion=listar_admin">Regresar</a>
+                        <input class="btn btn-primary" type="submit" name="accion" value="Actualizar">
+                        <a class="btn btn-danger" href="Controlador?accion=listar">Regresar</a>
                     </form>
                 </div>
             </div>

@@ -1,7 +1,11 @@
 <%@page import="Modelo.Constructor_Usuarios"%>
 <%@page import="ModeloDAO.Operaciones"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%
+response.addHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+response.addHeader("Pragma", "no-cache");
+response.setDateHeader("Expires", 0);
+%>
 <%
 HttpSession sesion= request.getSession();
 
@@ -100,11 +104,11 @@ if (sesion.getAttribute("nivel")==null) {
                     Segundo apellido<br>
                     <input class="form-control" type="text" name="txtApe2" value="<%= p.getApel_2()%>"><br>
                     Telefono<br>
-                    <input class="form-control" type="text" name="txtTel" value="<%= p.getTel()%>"><br>
+                    <input class="form-control" type="number" name="txtTel" value="<%= p.getTel()%>"><br>
                     Correo electronico<br>
-                    <input class="form-control" type="text" name="txtCorreo" value="<%= p.getCorreo()%>" required=""><br>
+                    <input class="form-control" type="email" name="txtCorreo" value="<%= p.getCorreo()%>" required=""><br>
                     Contraseña Nueva<br>
-                    <input class="form-control" type="text" name="txtContra"><br>
+                    <input class="form-control" type="password" name="txtContra"><br>
  
                     <input type="hidden" name="Id" value="<%= p.getDoc()%>">
 
