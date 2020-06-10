@@ -11,6 +11,36 @@
         </webroots>
       </configuration>
     </facet>
+    <facet type="web" name="Web2">
+      <configuration>
+        <descriptors>
+          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/Librerias/javamail-1.4.5/demo/webapp/src/docroot/WEB-INF/web.xml" />
+        </descriptors>
+        <webroots>
+          <root url="file://$MODULE_DIR$/Librerias/javamail-1.4.5/demo/webapp/src/docroot" relative="/" />
+        </webroots>
+      </configuration>
+    </facet>
+    <facet type="web" name="Web3">
+      <configuration>
+        <descriptors>
+          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/web/WEB-INF/Librerias/javamail-1.4.5/demo/webapp/src/docroot/WEB-INF/web.xml" />
+        </descriptors>
+        <webroots>
+          <root url="file://$MODULE_DIR$/web/WEB-INF/Librerias/javamail-1.4.5/demo/webapp/src/docroot" relative="/" />
+        </webroots>
+      </configuration>
+    </facet>
+    <facet type="web" name="Web4">
+      <configuration>
+        <descriptors>
+          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/web/WEB-INF/Librerias/javamail-1.4.7/demo/webapp/src/docroot/WEB-INF/web.xml" />
+        </descriptors>
+        <webroots>
+          <root url="file://$MODULE_DIR$/web/WEB-INF/Librerias/javamail-1.4.7/demo/webapp/src/docroot" relative="/" />
+        </webroots>
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
@@ -20,5 +50,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 9.0.35" level="application_server_libraries" />
+    <orderEntry type="library" name="mysql:mysql-connector-java:8.0.20" level="project" />
+    <orderEntry type="library" name="com.itextpdf.maven:itextdoc:2.0.0" level="project" />
+    <orderEntry type="library" name="mail" level="project" />
   </component>
 </module>

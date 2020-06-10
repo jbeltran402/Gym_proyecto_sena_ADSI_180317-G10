@@ -1,6 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="Gym_WAR">
-    <output-path>$PROJECT_DIR$/out/artifacts/Gym_WAR</output-path>
-    <root id="archive" name="Gym_WAR.war" />
-  </artifact>
-</component>

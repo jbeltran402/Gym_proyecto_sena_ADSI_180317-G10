@@ -35,40 +35,30 @@ public class controlador_Ajax extends HttpServlet {
 
         response.setContentType("text/html; charset=iso-8859-1");
         PrintWriter out = response.getWriter();
+
         String correo = request.getParameter("CorreoAjax");
 
         rec.setCorreo(correo);
 
-        //String c = rec.getCorreo_rec();
-        //String C = rec.getCorreo();
-        if (dao_rec.enviar(correo)) {
+        if (dao_rec.enviar(rec)) {
 
-            dao_rec.cambiar(correo);
+            dao_rec.cambiar(rec);
 
             out.println("<div class='alert alert-success alert-dismissible fade show' role='alert'>");
             out.println("La contraseña de recuperación se ha enviado satisfactoriamente al correo " + correo);
-            out.print("<button type='button' class='close' data-dismiss='alert' aria-label='Close'>");
-            out.print("<span aria-hidden='true'>&times;</span>");
-            out.print("</button>");
-            out.print("</div>");
-            
+
 
         } else {
 
             out.println("<div class='alert alert-danger alert-dismissible fade show' role='alert'>");
             out.println("La cuenta de correo " + correo + " no es correcta");
-            out.print("<button type='button' class='close' data-dismiss='alert' aria-label='Close'>");
-            out.print("<span aria-hidden='true'>&times;</span>");
-            out.print("</button>");
-            out.print("</div>");
-            
 
-        }      
-    }
 
-    @Override
-    public String getServletInfo() {
-        return "Short description";
+        }
+        out.print("<button type='button' class='close' data-dismiss='alert' aria-label='Close'>");
+        out.print("<span aria-hidden='true'>&times;</span>");
+        out.print("</button>");
+        out.print("</div>");
     }
 
 }

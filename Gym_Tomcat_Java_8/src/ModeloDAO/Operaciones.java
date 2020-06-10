@@ -10,9 +10,7 @@ import Modelo.Constructor_factura;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 public class Operaciones implements Interfaz {
 
@@ -25,27 +23,13 @@ public class Operaciones implements Interfaz {
     Constructor_Usuarios p = new Constructor_Usuarios();
     Constructor_Sedes sedes = new Constructor_Sedes();
     Constructor_Servicios servicio = new Constructor_Servicios();
-
-    //_______________________________FECHAS__________________________________________//
-    java.util.Date date = new java.util.Date();
-    DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
-    SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
-
-    //_______________________VARIABLES___________________________________________//
-    String hora = hourFormat.format(date);
-    String fecha = formato.format(date);
-
-    //_______________________VARIABLES PROXIMA FECHA_____________________________// 
-    Calendar c1 = Calendar.getInstance();
-    //SUMAR MES
-    //c1.add(Calendar.MONTH, 6);            
-
-    //_________________________________________________________________ 
-    //codigo para llamar fecha modifiada
-    //String fecha1 = formato.format(c1.getTime());
+    
     public void operaciones() {
 
     }
+    //_______________________VARIABLES___________________________________________//
+
+    String fecha_proximo_pago= "";
 
 //_____________________Operaciones de Super Administrador________________________________//    
     @Override
@@ -80,7 +64,7 @@ public class Operaciones implements Interfaz {
     public List listar() {
 
         ArrayList<Constructor_Usuarios> list = new ArrayList<>();
-        String sql = "SELECT * FROM usuario WHERE estado = '1' and Roles_id_roles = 1 or Roles_id_roles = 2 ORDER BY Roles_id_roles";
+        String sql = "SELECT * FROM usuario WHERE estado = 1 and Roles_id_roles = 1 or estado = 1 and Roles_id_roles = 2 ORDER BY Roles_id_roles";
         try {
             conn = cn.conectar();
             ps = conn.prepareStatement(sql);
@@ -459,16 +443,9 @@ public class Operaciones implements Interfaz {
 //__________________________Operaciones factura___________________________________//
     @Override
     public List listar_factura() {
-
+        
         ArrayList<Constructor_factura> list = new ArrayList<>();
-        String sql = "select f.id_factura, u.nombre_1, s.nombre, uu.nombre_1, "
-                + "c.nom_combos, f.fecha_factura, f.hora_factura, f.forma_pago, "
-                + "f.proxima_fecha_pago, f.meses_pagos, f.total_pago from factura "
-                + "f inner join usuario u on f.usuario_doc_usuario=u.doc_usuario "
-                + "inner join sedes s on f.sedes_id_sedes=s.id_sedes inner join "
-                + "usuario uu on f.usuario_documento_vendedor=uu.doc_usuario "
-                + "inner join paquetes p on f.paquetes_id_paquetes=p.id_paquetes  "
-                + "inner join combos c on c.id_paquetes_de_servicios=p.combos_id_paquetes_de_servicios order by f.id_factura desc";
+        String sql = "select f.id_factura, u.nombre_1, s.nombre, uu.nombre_1, c.nom_combos, f.fecha_factura, f.hora_factura, f.forma_pago, f.proxima_fecha_pago, f.meses_pagos, f.total_pago from factura f inner join usuario u on f.usuario_doc_usuario=u.doc_usuario inner join sedes s on f.sedes_id_sedes=s.id_sedes inner join usuario uu on f.usuario_documento_vendedor=uu.doc_usuario inner join paquetes p on f.paquetes_id_paquetes=p.id_paquetes inner join combos c on c.id_paquetes_de_servicios=p.combos_id_paquetes_de_servicios where f.estado = 1 order by f.id_factura desc;";
         try {
             conn = cn.conectar();
             ps = conn.prepareStatement(sql);
@@ -496,24 +473,62 @@ public class Operaciones implements Interfaz {
 
     @Override
     public boolean add_factura(Constructor_factura fac) {
+       
+        //_______________________________FECHAS__________________________________________//
+    
+    java.util.Date date = new java.util.Date();
+    DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
+    SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd");
+
+    //_______________________VARIABLES___________________________________________//
+    String hora = hourFormat.format(date);
+    String fecha = formato.format(date);
+
+    //_______________________VARIABLES PROXIMA FECHA_____________________________// 
+    Calendar c1 = Calendar.getInstance();
+    
+    //SUMAR MES
+    //c1.add(Calendar.MONTH, 6);            
+
+    //_________________________________________________________________ 
+    //codigo para llamar fecha modifiada
+    //String fecha1 = formato.format(c1.getTime());
+        
+        int meses_pagos = 0;
 
         String sql = "";
-        c1.add(Calendar.MONTH, fac.getMespago());
-        String fecha_proximo_pago = formato.format(c1.getTime());
+        
+        meses_pagos = fac.getMespago();
+        c1.add(Calendar.MONTH, meses_pagos);
+        fecha_proximo_pago = formato.format(c1.getTime());
+        int id_combo = 0;
 
         if (fac.getCombo() != 0) {
 
+        String sql_codigo = "select id_paquetes from paquetes , combos where combos_id_paquetes_de_servicios = id_paquetes_de_servicios and combos_id_paquetes_de_servicios = "+ fac.getCombo();
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql_codigo);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                id_combo = rs.getInt("id_paquetes");
+            }
             sql = "insert into factura values (default," + fac.getDoc_usuario()
-                    + "," + fac.getSede() + ", " + fac.getDoc_vendedor() + ", " + fac.getCombo() + ", '"
+                    + "," + fac.getSede() + ", " + fac.getDoc_vendedor() + ", " + id_combo + ", '"
                     + fecha + "', '" + hora + "', '" + fac.getFormapago() + "' , '"
-                    + fecha_proximo_pago + "' , " + fac.getMespago() + ", (select (precio * "+ fac.getMespago() +") from combos where id_paquetes_de_servicios = "+ fac.getCombo() +"))";
+                    + fecha_proximo_pago + "' , " + fac.getMespago() + ", (select (precio * "+ fac.getMespago() +") from combos where id_paquetes_de_servicios = "+ fac.getCombo() +") , 1)";
+            
+        } catch (SQLException e) {
+
+        }
+            
 
         } else if (fac.getServicio() != 0) {
         
             sql = "insert into factura values (default," + fac.getDoc_usuario()
                     + "," + fac.getSede() + ", " + fac.getDoc_vendedor() + ", 4 , '"
                     + fecha + "', '" + hora + "', '" + fac.getFormapago() + "' , '"
-                    + fecha_proximo_pago + "' , " + fac.getMespago() + ", (select (precio * "+ fac.getMespago() +") from servicios where id_paquetes_de_servicios = "+ fac.getServicio()+"))";
+                    + fecha_proximo_pago + "' , " + fac.getMespago() + ", (select (precio * "+ fac.getMespago() +") from servicios where id_paquetes_de_servicios = "+ fac.getServicio()+") , 1)";
 
         }
 
@@ -773,5 +788,75 @@ public class Operaciones implements Interfaz {
         }
         
         return false;
+    }
+
+    @Override
+    public boolean eliminar_factura(int id) {
+        String sql = "UPDATE factura SET estado = 0 WHERE id_factura = " + id;
+
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+
+        }
+        return false; 
+    }
+
+    @Override
+    public List buscar_factura(int doc) {
+        
+            ArrayList<Constructor_factura> list = new ArrayList<>();
+        String sql = "select f.id_factura, u.nombre_1, s.nombre, uu.nombre_1, c.nom_combos, f.fecha_factura, f.hora_factura, f.forma_pago, f.proxima_fecha_pago, f.meses_pagos, f.total_pago from factura f inner join usuario u on f.usuario_doc_usuario=u.doc_usuario inner join sedes s on f.sedes_id_sedes=s.id_sedes inner join usuario uu on f.usuario_documento_vendedor=uu.doc_usuario inner join paquetes p on f.paquetes_id_paquetes=p.id_paquetes inner join combos c on c.id_paquetes_de_servicios=p.combos_id_paquetes_de_servicios where f.estado = 1 and usuario_doc_usuario = "+ doc +" order by f.id_factura desc;";
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Constructor_factura fac = new Constructor_factura();
+                fac.setId(rs.getInt("f.id_factura"));
+                fac.setNom_usuario(rs.getString("u.nombre_1"));
+                fac.setNom_sede(rs.getString("s.nombre"));
+                fac.setNom_vendedor(rs.getString("uu.nombre_1"));
+                //fac.setDoc_vendedor(rs.getString("nombre_1"));
+                fac.setCompra(rs.getString("c.nom_combos"));
+                fac.setHorafactura(rs.getString("f.hora_factura"));
+                fac.setFechafactura(rs.getString("f.fecha_factura"));
+                fac.setFormapago(rs.getString("f.forma_pago"));
+                fac.setProxpago(rs.getString("f.proxima_fecha_pago"));
+                fac.setMespago(rs.getInt("f.meses_pagos"));
+                fac.setTotal(rs.getInt("f.total_pago"));
+                list.add(fac);
+            }
+        } catch (SQLException e) {
+        }
+        return list;
+    }
+
+    @Override
+    public List select_Sedes() {
+        
+        ArrayList<Constructor_Sedes> list = new ArrayList<>();
+
+        String sql = "select * from sedes where estado = 1";
+
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+
+                Constructor_Sedes sed = new Constructor_Sedes();
+
+                sed.setId(rs.getInt("id_sedes"));
+                sed.setNombre(rs.getString("nombre"));
+                
+                list.add(sed);
+            }
+        } catch (Exception e) {
+        }
+        return list;
     }
 }

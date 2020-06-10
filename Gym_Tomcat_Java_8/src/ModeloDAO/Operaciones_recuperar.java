@@ -23,29 +23,49 @@ public class Operaciones_recuperar implements Interfaces.Interfaz_Recuperar {
     ResultSet rs = null;
 
     @Override
-    public boolean enviar(String Correo) {
+    public boolean enviar(Constructor_recuperar rec) {
+        try{
 
-        String sql = "SELECT correo FROM usuario WHERE correo = '" + Correo + "'";
-
-        try {
-
+            String sql = "select correo from usuario where correo = '"+ rec.getCorreo() +"'";
+            String consulta = "";
             conn = con.conectar();
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
-            
-            if (rs.absolute(1)) {
+
+            while (rs.next()) {
+                consulta = rs.getString("correo");
+            }
+            if (consulta.equals(rec.getCorreo())){
                 return true;
+            }else{
+                return false;
             }
 
         } catch (Exception e) {
+            return false;
         }
+    }
 
-        return false;
+    private final Properties properties = new Properties();
 
+    private String password;
+
+    private Session session;
+
+    private void init() {
+
+        properties.put("mail.smtp.host", "mail.gmail.com");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.port",25);
+        properties.put("mail.smtp.mail.sender","emisor@gmail.com");
+        properties.put("mail.smtp.user", "usuario");
+        properties.put("mail.smtp.auth", "true");
+
+        session = Session.getDefaultInstance(properties);
     }
 
     @Override
-    public boolean cambiar(String correo) {
+    public boolean cambiar(Constructor_recuperar rec) {
         try {
 
             String va = "";
@@ -78,7 +98,8 @@ public class Operaciones_recuperar implements Interfaces.Interfaz_Recuperar {
                 Con_encrip = md5.getEncriptado(va);
             
 //------------------------ENVIAR CORREO------------------------//
-            Properties propiedad = new Properties();
+
+            /*Properties propiedad = new Properties();
             propiedad.setProperty("mail.smtp.host", "smtp.gmail.com");
             propiedad.setProperty("mail.smtp.starttls.enable", "true");
             propiedad.setProperty("mail.smtp.port", "587");
@@ -88,7 +109,7 @@ public class Operaciones_recuperar implements Interfaces.Interfaz_Recuperar {
 
             String correoEnvia = "gimnasiogym04@gmail.com";
             String contrasena = "adsisenagym12345";
-            String destinatario = correo;
+            String destinatario = rec.getCorreo();
             String asunto = "Recuperacion de contraseña";
             String mensaje = "La solicitud de cambio de contraseña a sido satisfactoria. \nTu nueva contraseña es: " + va;
 
@@ -102,10 +123,24 @@ public class Operaciones_recuperar implements Interfaces.Interfaz_Recuperar {
             Transport transporte = sesion.getTransport("smtp");
             transporte.connect(correoEnvia, contrasena);
             transporte.sendMessage(mail, mail.getRecipients(Message.RecipientType.TO));
-            transporte.close();
+            transporte.close();*/
 
-            //------------------------------------------------//   
-            String sql = "update usuario set contrasena = '" + Con_encrip + "' where correo = '" + correo + "'";
+                session = Session.getDefaultInstance(properties);
+
+            MimeMessage message = new MimeMessage(session);
+
+            message.setFrom(new InternetAddress((String)properties.get("gimnasiogym04@gmail.com")));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress("rec.getCorreo()"));
+            message.setSubject("Recuperacion de contraseña");
+            message.setText("La solicitud de cambio de contraseña a sido satisfactoria. \n \n Tu nueva contraseña es: "+ va);
+            Transport t = session.getTransport("smtp");
+            t.connect((String)properties.get("gimnasiogym04@gmail.com"), "adsisenagym12345");
+            t.sendMessage(message, message.getAllRecipients());
+            t.close();
+
+//-----------------------------------------------------------//
+
+            String sql = "update usuario set contrasena = '" + Con_encrip + "' where correo = '" + rec.getCorreo() + "'";
 
             conn = con.conectar();
             ps = conn.prepareStatement(sql);

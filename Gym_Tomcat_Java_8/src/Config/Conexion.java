@@ -1,12 +1,11 @@
 package Config;
 
-import com.mysql.jdbc.Connection;
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conexion {
-    
-    String con="";
+
     Connection conn;
    
     public Connection conectar() {
@@ -19,11 +18,11 @@ public class Conexion {
             
                 conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto","root","");
             
-            System.out.println("conexion satisfactoria");
+            //System.out.println("conexion satisfactoria");
                 
         } catch (ClassNotFoundException | SQLException e) {
         
-            System.err.println("Conexion erronea");
+            //System.err.println("Conexion erronea");
             
         }
      return conn;

@@ -45,6 +45,11 @@ public class Controlador extends HttpServlet {
     String Listar_promociones = "vistas/listar_promociones.jsp";
     String Listar_servicios = "vistas/listar_servicios.jsp";
     
+    String Listar_Factura_Admin = "vistas/listar_factura_admin.jsp";
+    String Add_Factura_Admin = "vistas/add_factura_admin.jsp";
+    
+    String Buscar_factura= "vistas/buscar_factura_admin.jsp";
+    
     //Unificar Constructores..................  
     Constructor_Usuarios p = new Constructor_Usuarios();
     Operaciones dao = new Operaciones();
@@ -187,7 +192,21 @@ public class Controlador extends HttpServlet {
             dao.eliminar_admin(id);
             acceso = listar_admin;
 
-        } 
+        } else if (action.equalsIgnoreCase("Listar_Factura_Admin")) {
+            acceso = Listar_Factura_Admin;
+        } else if (action.equalsIgnoreCase("Add_Factura_Admin")) {
+            acceso= Add_Factura_Admin;
+        } else if (action.equalsIgnoreCase("eliminar_factura")) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            fac.setId(id);
+            dao.eliminar_factura(id);
+            acceso=Listar_Factura_Admin;
+        }else if (action.equalsIgnoreCase("eliminar_factura_superadmin")) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            fac.setId(id);
+            dao.eliminar_factura(id);
+            acceso=listar_factura;
+        }
         //___________________Operaciones Administrador___________________________//
         
         RequestDispatcher vista = request.getRequestDispatcher(acceso);
@@ -201,8 +220,8 @@ public class Controlador extends HttpServlet {
 
         String acceso = "";
         String action = request.getParameter("accion");
-
-//________________________Operaciones Super Administrador_________________________// 
+        
+//________________________Operaciones Busquedas_________________________________// 
         if (action.equalsIgnoreCase("Buscar")) {
 
             int Doc = Integer.parseInt(request.getParameter("buscar"));
@@ -211,7 +230,18 @@ public class Controlador extends HttpServlet {
             dao.buscar(Doc);
             acceso = Buscar;
 
-        } else if (action.equalsIgnoreCase("Agregar")) {
+        }
+        else if (action.equalsIgnoreCase("buscar_factura")) {
+
+            int Doc = Integer.parseInt(request.getParameter("Buscar"));
+            request.setAttribute("documento", request.getParameter("Buscar"));
+            //request.setAttribute("doc", Doc);
+            
+            acceso = Buscar_factura;
+
+        }
+//________________________Operaciones Super Administrador_________________________// 
+         else if (action.equalsIgnoreCase("Agregar")) {
 
             int Doc = Integer.parseInt(request.getParameter("txtDocumento"));
             int Rol = Integer.parseInt(request.getParameter("txtRol"));
@@ -437,13 +467,21 @@ public class Controlador extends HttpServlet {
             
             }else if (action.equalsIgnoreCase("Agregar factura")) {
                 
+                int combo = 0;
+                
+                int servicio = 0;
+                
                 int usuario = Integer.parseInt(request.getParameter("docuusu")); 
                 int sede = Integer.parseInt(request.getParameter("idsede")); 
                 int vendedor =Integer.parseInt(request.getParameter("docuvend"));
-                
-                int combo = Integer.parseInt(request.getParameter("txtPromociones"));
-                int servicio = Integer.parseInt(request.getParameter("txtServicio"));
-                
+                try {
+                    combo = Integer.parseInt(request.getParameter("txtPromociones"));
+                } catch (Exception e) {
+                }
+                try {
+                servicio = Integer.parseInt(request.getParameter("txtServicio"));
+                } catch (Exception e) {
+                }
                 String formapago= request.getParameter("formapago");
                 int mespago = Integer.parseInt(request.getParameter("mespago"));   
 
@@ -523,11 +561,31 @@ public class Controlador extends HttpServlet {
                     ser.setId_servicio(id_servicio);
                     
                     dao.add_paquete(ser);
-                    acceso = servicios;
-                                
-                            
-                    
-        }
+                    acceso = servicios;          
+                } else if (action.equalsIgnoreCase("Agregar factura Admin")) {
+                
+                    int usuario = Integer.parseInt(request.getParameter("docuusu")); 
+                    int sede = Integer.parseInt(request.getParameter("idsede")); 
+                    int vendedor =Integer.parseInt(request.getParameter("docuvend"));
+
+                    int combo = Integer.parseInt(request.getParameter("txtPromociones"));
+                    int servicio = Integer.parseInt(request.getParameter("txtServicio"));
+
+                    String formapago= request.getParameter("formapago");
+                    int mespago = Integer.parseInt(request.getParameter("mespago"));   
+
+                    fac.setDoc_usuario(usuario);
+                    fac.setSede(sede);
+                    fac.setDoc_vendedor(vendedor);
+                    fac.setCombo(combo);
+                    fac.setServicio(servicio);
+                    fac.setFormapago(formapago);
+                    fac.setMespago(mespago);
+                    //fac.setTotal(total);
+
+                    dao.add_factura(fac);
+                    acceso = Listar_Factura_Admin; 
+                }
         
         RequestDispatcher vista = request.getRequestDispatcher(acceso);
         vista.forward(request, response);

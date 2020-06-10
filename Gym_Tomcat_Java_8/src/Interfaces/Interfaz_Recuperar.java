@@ -4,7 +4,7 @@ import Modelo.Constructor_recuperar;
 
 public interface Interfaz_Recuperar {
     
-    public boolean enviar (String correo);
-    public boolean cambiar(String correo);
+    public boolean enviar (Constructor_recuperar rec);
+    public boolean cambiar(Constructor_recuperar rec);
     
 }

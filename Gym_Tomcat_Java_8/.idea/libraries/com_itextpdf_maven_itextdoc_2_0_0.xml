@@ -1,0 +1,22 @@
+<component name="libraryTable">
+  <library name="com.itextpdf.maven:itextdoc:2.0.0" type="repository">
+    <properties maven-id="com.itextpdf.maven:itextdoc:2.0.0" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/Librerias/itextdoc-2.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/Librerias/itextpdf-5.1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/Librerias/xmlworker-1.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/Librerias/commons-io-2.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/Librerias/maven-plugin-api-3.0.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/Librerias/maven-model-3.0.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/Librerias/plexus-utils-2.0.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/Librerias/maven-artifact-3.0.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/Librerias/sisu-inject-plexus-2.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/Librerias/plexus-component-annotations-1.5.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/Librerias/plexus-classworlds-2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/Librerias/sisu-inject-bean-2.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/WEB-INF/Librerias/sisu-guice-2.9.4-no_aop.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
