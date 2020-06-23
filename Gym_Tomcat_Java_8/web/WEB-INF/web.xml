@@ -12,6 +12,16 @@
         <servlet-name>Controlador</servlet-name>
         <url-pattern>/Controlador</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Controlador_Login</servlet-name>
+        <servlet-class>Controlador.Controlador_Login</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Controlador_Login</servlet-name>
+        <url-pattern>/Controlador.Controlador_Login</url-pattern>
+    </servlet-mapping>
+
     <session-config>
         <session-timeout>
             30

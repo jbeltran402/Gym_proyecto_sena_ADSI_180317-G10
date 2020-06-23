@@ -1,13 +1,11 @@
 package Controlador;
 
-import Modelo.Constructor_Login;
 import Modelo.Constructor_Sedes;
 import Modelo.Constructor_Servicios;
 import Modelo.Constructor_Usuarios;
 import Modelo.Constructor_factura;
 import Modelo.Constructor_recuperar;
 import ModeloDAO.Operaciones;
-import ModeloDAO.Operaciones_login;
 import ModeloDAO.Operaciones_recuperar;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -53,8 +51,6 @@ public class Controlador extends HttpServlet {
     //Unificar Constructores..................  
     Constructor_Usuarios p = new Constructor_Usuarios();
     Operaciones dao = new Operaciones();
-    Constructor_Login log = new Constructor_Login();
-    Operaciones_login oper_log = new Operaciones_login();
     Constructor_recuperar rec = new Constructor_recuperar();
     Operaciones_recuperar dao_rec = new Operaciones_recuperar();
     Constructor_factura fac = new Constructor_factura();
@@ -305,25 +301,10 @@ public class Controlador extends HttpServlet {
             dao.edit(p);
             acceso = listar;
 
-        } else if (action.equalsIgnoreCase("Ingresar") && action != null) {
-
-            int nivel = 0;
-            int Doc = Integer.parseInt(request.getParameter("txtusuario"));
-            String con = request.getParameter("txtcontra");
-
-            log.setUsuario(Doc);
-            log.setContrasena(con);
-
-            nivel = oper_log.validar(log);
-
-            request.setAttribute("nivel", nivel);
-            request.setAttribute("nombre", Doc);
-
-            acceso = Login;
         }
 //_______________________Operaciones Administrador______________________________//            
 
-        if (action.equalsIgnoreCase("Agregar Usuario")) {
+        else if (action.equalsIgnoreCase("Agregar Usuario")) {
 
             int Doc = Integer.parseInt(request.getParameter("txtDocumento"));
             String Tipo_Doc = request.getParameter("txtTipo_doc");
@@ -474,14 +455,15 @@ public class Controlador extends HttpServlet {
                 int usuario = Integer.parseInt(request.getParameter("docuusu")); 
                 int sede = Integer.parseInt(request.getParameter("idsede")); 
                 int vendedor =Integer.parseInt(request.getParameter("docuvend"));
-                try {
-                    combo = Integer.parseInt(request.getParameter("txtPromociones"));
-                } catch (Exception e) {
-                }
-                try {
-                servicio = Integer.parseInt(request.getParameter("txtServicio"));
-                } catch (Exception e) {
-                }
+
+                    try {
+                        combo = Integer.parseInt(request.getParameter("txtPromociones"));
+                    } catch (Exception e) {
+                    }
+                    try {
+                        servicio = Integer.parseInt(request.getParameter("txtServicio"));
+                    } catch (Exception e) {
+                    }
                 String formapago= request.getParameter("formapago");
                 int mespago = Integer.parseInt(request.getParameter("mespago"));   
 

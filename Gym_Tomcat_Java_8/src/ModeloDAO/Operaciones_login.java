@@ -22,11 +22,15 @@ public class Operaciones_login implements Interfaz_Login{
         
         String con = log.getContrasena();
         int nivel = 0;
+        String nombre_1 = "";
+        String apellido_1 = "";
+        String usuario = "";
+
         String contrasena_encriptada = md5.getEncriptado(con);
         
         try {
             
-            String sql = "SELECT Roles_id_roles FROM usuario WHERE doc_usuario =" 
+            String sql = "SELECT Roles_id_roles , nombre_1 , apellido_1 FROM usuario WHERE doc_usuario ="
                     + log.getUsuario() + " AND contrasena = '" + contrasena_encriptada 
                     + "' AND estado = '1'";
             
@@ -39,8 +43,14 @@ public class Operaciones_login implements Interfaz_Login{
             while (rs.next()) {
                 
                 nivel = rs.getInt(1);
+                nombre_1 = rs.getString("nombre_1");
+                apellido_1 = rs.getString("apellido_1");
                 
             }
+
+            usuario = nombre_1 + " " + apellido_1;
+            log.setNombre(usuario);
+
             conn.close();
             rs.close();
             return nivel;

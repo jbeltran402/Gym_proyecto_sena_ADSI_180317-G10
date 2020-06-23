@@ -11,29 +11,8 @@ response.setDateHeader("Expires", 0);
 
 <%
     HttpSession sesion = request.getSession();
-    int nivel = 0;
-    if (request.getAttribute("nivel") != null) {
-        nivel = (Integer) request.getAttribute("nivel");
-
-        if (nivel == 1) {
-            sesion.setAttribute("nombre", request.getAttribute("nombre"));
-            sesion.setAttribute("nivel", nivel);
-            response.sendRedirect("usuario.jsp");
-        } else if (nivel == 2) {
-            sesion.setAttribute("nombre", request.getAttribute("nombre"));
-            sesion.setAttribute("nivel", nivel);
-            response.sendRedirect("administrador.jsp");
-        } else if (nivel == 3) {
-            int doc = (Integer) request.getAttribute("nombre");
-            sesion.setAttribute("nombre", doc);
-            sesion.setAttribute("nivel", nivel);
-            response.sendRedirect("super_admin.jsp");
-        }
-    }
     if (request.getParameter("cerrar") != null) {
-
-        session.invalidate();
-        System.out.println(nivel);
+        sesion.invalidate();
     }
 %>
 
@@ -41,40 +20,13 @@ response.setDateHeader("Expires", 0);
 <html lang="es">
     <head>
         <meta charset="utf-8">
-        <title>Login</title>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-        <script src="http://code.jquery.com/jquery-latest.js"></script>
-
-        <!--..................................Recuperar contraseña............................-->       
-        <script>
-            $(document).ready(function () {
-                $('#submit').click(function (event) {
-
-                    var correo_rec = $('#correo').val();
-
-                    // Si en vez de por post lo queremos 
-                    // hacer por get, cambiamos el $.post por $.get
-
-                    $.post('../controlador_Ajax', {
-
-                        CorreoAjax: correo_rec
-
-                    }, function (responseText) {
-                        $('#Alert').html(responseText);
-                    });
-                });
-            });
-        </script>
-        
+        <title>Login</title>
         <link href="http://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
-
         <link href="../css/Estilos.css" rel="stylesheet" type="text/css"/>
-        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    </head>
-    <body>
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
         <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    </head>
     <body class="login-page sidebar-collapse">
         <nav class="navbar navbar-expand-lg bg-primary fixed-top navbar-transparent " color-on-scroll="400">
             <div class="container">
@@ -94,21 +46,25 @@ response.setDateHeader("Expires", 0);
                 <div class="container">
                     <div class="col-md-4 ml-auto mr-auto">
                         <div class="card card-login card-plain">
-                            <!-- formulario -->
-                            <form class="form" method="post" action="../Controlador">
+
+                            <!---------------------------------- formulario Login-------------------------------------->
                                 <div class="card-header text-center">
                                     <div class="logo-container">
                                         <img src="../img/logo.png" alt="">
                                     </div>
                                 </div>
+
                                 <div class="card-body">
+                                    <div id="Error">
+
+                                    </div>
                                     <div class="input-group no-border input-lg">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
                                                 <i class="now-ui-icons users_circle-08"></i>
                                             </span>
                                         </div>
-                                        <input type="number" class="form-control" placeholder="Documento" name="txtusuario" required/>
+                                        <input type="text" class="form-control" placeholder="Documento" id="txtusuario" required/>
                                     </div>
                                     <div class="input-group no-border input-lg">
                                         <div class="input-group-prepend">
@@ -116,14 +72,16 @@ response.setDateHeader("Expires", 0);
                                                 <i class="now-ui-icons text_caps-small"></i>
                                             </span>
                                         </div>
-                                        <input type="password" placeholder="contraseña" class="form-control" name="txtcontra" required/>
+                                        <input type="password" placeholder="contraseña" class="form-control" id="txtcontra" required/>
                                     </div>
                                     <a href="javascript:;" class="forget" data-toggle="modal" data-target=".forget-modal">¿Olvidaste tu contraseña?</a>  <!-- recuperar contraseña -->
                                 </div>
                                 <div class="card-footer text-center">
-                                    <input type="submit" class="btn btn-primary btn-round btn-lg btn-block" name="accion" value="Ingresar" >
-                                    </form> 
+                                    <input type="submit" class="btn btn-primary btn-round btn-lg btn-block" id="ingresar" value="Ingresar">
                                 </div>
+
+                            <!--------------------------------- /formulario Login-------------------------------------->
+
                         </div>
                     </div>
                 </div>
@@ -158,7 +116,7 @@ response.setDateHeader("Expires", 0);
                                 </button>
                             </div>
 
-                            <form id="alert">
+                            <form>
                                 <div class="modal-body">
                                     <p>Ingrese el correo electronico asosiado a la cuenta que desea recuperar la contraseña </p>
                                     <input type="email" name="Correo" id="correo" class="form-control" autocomplete="off">
@@ -179,19 +137,13 @@ response.setDateHeader("Expires", 0);
                 </div>
                 </footer>
             </div>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        </div>
+
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="../js/Login.js"></script>
+
     </body>
-    <script type="text/javascript">
-            function showPassword() {
-                var key_attr = $('#key').attr('type');
-                if (key_attr !== 'text') {
-                    $('.checkbox').addClass('show');
-                    $('#key').attr('type', 'text');
-                } else {
-                    $('.checkbox').removeClass('show');
-                    $('#key').attr('type', 'password');
-                }
-            }
-    </script>
-</body>
 </html>

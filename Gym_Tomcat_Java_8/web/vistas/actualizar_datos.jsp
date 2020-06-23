@@ -11,6 +11,7 @@ response.setDateHeader("Expires", 0);
 <%
     HttpSession sesion = request.getSession();
 
+
     if (sesion.getAttribute("nivel") == null) {
         response.sendRedirect("vistas/Login.jsp");
     } else {

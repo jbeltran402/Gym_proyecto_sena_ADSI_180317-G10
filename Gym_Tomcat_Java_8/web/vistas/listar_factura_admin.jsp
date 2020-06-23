@@ -32,7 +32,7 @@ response.setDateHeader("Expires", 0);
 
         <!--<link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>-->
         <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>  
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
         <!-------------------------menú WILMER----------------------------------->
 
@@ -48,7 +48,7 @@ response.setDateHeader("Expires", 0);
                 Color iluminado: 369681;
             */
             body{
-                background-color: #0069d9;                
+                background-color: #0069d9;
                 font-family: Arial;
             }
 
