@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 public class Controlador extends HttpServlet {
 
     //MODIFICAR RUTAS.........................
+
     String listar = "vistas/listar.jsp";
     String listar_admin = "vistas/listar_admin.jsp";
     String add = "vistas/add.jsp";
@@ -46,9 +47,11 @@ public class Controlador extends HttpServlet {
     String Listar_Factura_Admin = "vistas/listar_factura_admin.jsp";
     String Add_Factura_Admin = "vistas/add_factura_admin.jsp";
     
-    String Buscar_factura= "vistas/buscar_factura_admin.jsp";
+    String Buscar_factura_admin = "vistas/buscar_factura_admin.jsp";
+    String Buscar_factura = "vistas/buscar_factura.jsp";
     
-    //Unificar Constructores..................  
+    //Unificar Constructores..................
+
     Constructor_Usuarios p = new Constructor_Usuarios();
     Operaciones dao = new Operaciones();
     Constructor_recuperar rec = new Constructor_recuperar();
@@ -118,7 +121,13 @@ public class Controlador extends HttpServlet {
             
             ser.setId_servicio(id);
             dao.eliminar_combo(id);
-            acceso = Listar_promociones;    
+            acceso = Listar_promociones;
+        } else if (action.equalsIgnoreCase("eliminar_paquete")) {
+
+            int id = Integer.parseInt(request.getParameter("id"));
+
+            dao.eliminar_paquete(id);
+            acceso = servicios;
         
         //___________________Operaciones Super Administrador____________________________//
         } else if (action.equalsIgnoreCase("listar")) {
@@ -220,18 +229,14 @@ public class Controlador extends HttpServlet {
 //________________________Operaciones Busquedas_________________________________// 
         if (action.equalsIgnoreCase("Buscar")) {
 
-            int Doc = Integer.parseInt(request.getParameter("buscar"));
             request.setAttribute("idper", request.getParameter("buscar"));
-            p.setDoc(Doc);
-            dao.buscar(Doc);
             acceso = Buscar;
 
         }
-        else if (action.equalsIgnoreCase("buscar_factura")) {
 
-            int Doc = Integer.parseInt(request.getParameter("Buscar"));
-            request.setAttribute("documento", request.getParameter("Buscar"));
-            //request.setAttribute("doc", Doc);
+        else if (action.equalsIgnoreCase("Buscar Documento")) {
+
+            request.setAttribute("Documento", request.getParameter("buscar"));
             
             acceso = Buscar_factura;
 

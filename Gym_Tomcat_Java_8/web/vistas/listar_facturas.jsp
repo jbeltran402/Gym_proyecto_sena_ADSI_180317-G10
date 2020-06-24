@@ -127,7 +127,7 @@ response.setDateHeader("Expires", 0);
                         <input type="number" placeholder="Buscar Documento" name="buscar" class="form-control" required="">
                     </div>
                     <div class="form-group col-md-1">
-                        <button class="btn btn-warning" type="submit" value="Buscar" name="accion"><img src="imagenes/search.png" width="65%" height="65%" ></button>
+                        <button class="btn btn-warning" type="submit" value="Buscar Documento" name="accion"><img src="imagenes/search.png" width="65%" height="65%" ></button>
                     </div>
                 </div>
             </form>
@@ -139,7 +139,6 @@ response.setDateHeader("Expires", 0);
                         <th>Nombre usuario</th>
                         <th>Sede</th>
                         <th>Nombre Vendedor</th>
-                        <!--<th>Apellido Vendedor</th>-->
                         <th>Nº servicio</th>
                         <th>fecha factura</th>
                         <th>Hora de facturacion</th>

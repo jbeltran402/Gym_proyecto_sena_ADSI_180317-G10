@@ -27,7 +27,7 @@ response.setDateHeader("Expires", 0);
 <html lang="es">
     <head>
 
-        <title>Listar</title>
+        <title>Listar Planes</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
         <style type="text/css">
             body{
@@ -116,21 +116,8 @@ response.setDateHeader("Expires", 0);
     </nav>
     <!------------------------ Listar ------------------------------------->
     <div style="padding: 2% 5% 5%;">
-        <center><h1>Paquetes</h1></center>
-            <form method="post" action="Controlador">
-                <div class="form-row">
-                    <div class="form-group col-md-9">
-                        <a class="btn btn-success " href="Controlador?accion=add_servicio">Agregar Nuevo</a>
-                    </div>
-                    <div class="form-group col-md-2">
-                        <input type="number" placeholder="Buscar Documento" name="buscar" class="form-control" required="">
-                    </div>
-                    <div class="form-group col-md-1">
-                    <input class="btn btn-warning" type="submit" value="Buscar" name="accion">
-                    </div>
-                </div>
-            </form>
-
+        <center><h1>Planes</h1></center>
+            <br>
             <table>
                 <thead>
                     <tr>
@@ -158,9 +145,9 @@ response.setDateHeader("Expires", 0);
                         <td><%= ser.getPrecio_combinado() %></td>                        
 
                         <td>
-                            <a class="btn btn-warning" href="Controlador?accion=editar&id=<%= ser.getId() %>">Editar</a>                           
+                            <a class="btn btn-warning" href="Controlador?accion=editar_paquete&id=<%= ser.getId() %>">Editar</a>
 
-                            <a class="btn btn-danger" href="Controlador?accion=eliminar&id=<%= ser.getId() %>">Eliminar</a>
+                            <a class="btn btn-danger" href="Controlador?accion=eliminar_paquete&id=<%= ser.getId() %>">Eliminar</a>
                         </td>
                     </tr>
                     <%}%>

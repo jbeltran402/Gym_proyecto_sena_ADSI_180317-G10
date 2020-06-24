@@ -63,6 +63,7 @@ public interface Interfaz {
     public boolean eliminar_servicio(int id);
     
     public boolean add_paquete(Constructor_Servicios ser);
+    public boolean eliminar_paquete(int id);
     
     //___________________ Select's________________________// 
     public List select_servicios();

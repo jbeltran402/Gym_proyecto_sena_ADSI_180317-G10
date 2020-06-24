@@ -31,7 +31,7 @@ public class Operaciones implements Interfaz {
 
     String fecha_proximo_pago= "";
 
-//_____________________Operaciones de Super Administrador________________________________//    
+    //_____________________Operaciones de Super Administrador________________________________//
     @Override
     public List buscar(int doc) {
 
@@ -473,8 +473,8 @@ public class Operaciones implements Interfaz {
 
     @Override
     public boolean add_factura(Constructor_factura fac) {
-       
-        //_______________________________FECHAS__________________________________________//
+
+    //_______________________________FECHAS__________________________________________//
     
     java.util.Date date = new java.util.Date();
     DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss");
@@ -484,16 +484,9 @@ public class Operaciones implements Interfaz {
     String hora = hourFormat.format(date);
     String fecha = formato.format(date);
 
-    //_______________________VARIABLES PROXIMA FECHA_____________________________// 
+    //_______________________VARIABLES PROXIMA FECHA_____________________________//
     Calendar c1 = Calendar.getInstance();
-    
-    //SUMAR MES
-    //c1.add(Calendar.MONTH, 6);            
 
-    //_________________________________________________________________ 
-    //codigo para llamar fecha modifiada
-    //String fecha1 = formato.format(c1.getTime());
-        
         int meses_pagos = 0;
 
         String sql = "";
@@ -501,35 +494,52 @@ public class Operaciones implements Interfaz {
         meses_pagos = fac.getMespago();
         c1.add(Calendar.MONTH, meses_pagos);
         fecha_proximo_pago = formato.format(c1.getTime());
-        int id_combo = 0;
+
+        int id_paquete = 0;
+
+            //_______________________________ Agregar Factura Combo __________________________________________//
 
         if (fac.getCombo() != 0) {
 
         String sql_codigo = "select id_paquetes from paquetes , combos where combos_id_paquetes_de_servicios = id_paquetes_de_servicios and combos_id_paquetes_de_servicios = "+ fac.getCombo();
+
         try {
             conn = cn.conectar();
             ps = conn.prepareStatement(sql_codigo);
             rs = ps.executeQuery();
             while (rs.next()) {
-                id_combo = rs.getInt("id_paquetes");
+                id_paquete = rs.getInt("id_paquetes");
             }
             sql = "insert into factura values (default," + fac.getDoc_usuario()
-                    + "," + fac.getSede() + ", " + fac.getDoc_vendedor() + ", " + id_combo + ", '"
+                    + "," + fac.getSede() + ", " + fac.getDoc_vendedor() + ", " + id_paquete + ", '"
                     + fecha + "', '" + hora + "', '" + fac.getFormapago() + "' , '"
                     + fecha_proximo_pago + "' , " + fac.getMespago() + ", (select (precio * "+ fac.getMespago() +") from combos where id_paquetes_de_servicios = "+ fac.getCombo() +") , 1)";
             
         } catch (SQLException e) {
 
         }
-            
+
+            //_______________________________ Agregar Factura Servicio __________________________________________//
 
         } else if (fac.getServicio() != 0) {
-        
-            sql = "insert into factura values (default," + fac.getDoc_usuario()
-                    + "," + fac.getSede() + ", " + fac.getDoc_vendedor() + ", 4 , '"
-                    + fecha + "', '" + hora + "', '" + fac.getFormapago() + "' , '"
-                    + fecha_proximo_pago + "' , " + fac.getMespago() + ", (select (precio * "+ fac.getMespago() +") from servicios where id_paquetes_de_servicios = "+ fac.getServicio()+") , 1)";
 
+            String sql_codigo = "select id_paquetes from paquetes , combos where combos_id_paquetes_de_servicios = id_paquetes_de_servicios and combos_id_paquetes_de_servicios = 4 and servicios_id_servicios =" + fac.getServicio();
+
+            try {
+                conn = cn.conectar();
+                ps = conn.prepareStatement(sql_codigo);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    id_paquete = rs.getInt("id_paquetes");
+                }
+                sql = "insert into factura values (default," + fac.getDoc_usuario()
+                        + "," + fac.getSede() + ", " + fac.getDoc_vendedor() + ", "+ id_paquete +" , '"
+                        + fecha + "', '" + hora + "', '" + fac.getFormapago() + "' , '"
+                        + fecha_proximo_pago + "' , " + fac.getMespago() + ", (select (precio * "+ fac.getMespago() +") from servicios where id_servicios = "+ fac.getServicio()+") , 1)";
+
+            } catch (SQLException e) {
+
+            }
         }
 
         try {
@@ -544,14 +554,12 @@ public class Operaciones implements Interfaz {
     }
 
 //__________________________Operaciones servicios___________________________________//
-    /*--------------------SQL-------------------*/
-    //select * from combos;
-    //select * from servicios;
+
     @Override
     public List listar_servicios() {
 
         ArrayList<Constructor_Servicios> list = new ArrayList<>();
-        String sql = "select id_paquetes , combos_id_paquetes_de_servicios , nom_combos , servicios_id_servicios , combos.precio as precios_c  , nom_servicios , servicios.precio as precios_s from paquetes , servicios , combos  where servicios_id_servicios = id_servicios  and  combos_id_paquetes_de_servicios = id_paquetes_de_servicios  group by id_paquetes";
+        String sql = "select id_paquetes , combos_id_paquetes_de_servicios , nom_combos , servicios_id_servicios , combos.precio as precios_c  , nom_servicios , servicios.precio as precios_s from paquetes , servicios , combos  where servicios_id_servicios = id_servicios  and  combos_id_paquetes_de_servicios = id_paquetes_de_servicios and paquetes.estado = 1 group by id_paquetes";
         try {
             conn = cn.conectar();
             ps = conn.prepareStatement(sql);
@@ -635,18 +643,57 @@ public class Operaciones implements Interfaz {
 
     @Override
     public boolean add_servicio(Constructor_Servicios ser) {
-        
-        String sql = "INSERT INTO servicios VALUES ( default , '"+ ser.getServicios() +"' , "+ ser.getPrecio_servicio()+" , '"+ ser.getDescripcion() +"' , 1)";
-        
-        try {
-            
-            conn = cn.conectar();
-            ps = conn.prepareStatement(sql);
-            ps.executeUpdate();
-            
-        } catch (Exception e) {
+
+        String sql = "";
+        int a = 0;
+
+        if (a == 0) {
+
+            try {
+
+                sql = "INSERT INTO servicios VALUES ( default , '" + ser.getServicios() + "' , " + ser.getPrecio_servicio() + " , '" + ser.getDescripcion() + "' , 1)";
+
+                conn = cn.conectar();
+                ps = conn.prepareStatement(sql);
+                ps.executeUpdate();
+
+                a = 1;
+
+            } catch (Exception e) {
+            }
+
         }
-        
+
+        if (a == 1){
+
+            String Agregar_a_personalizado = "";
+            int id_servicios = 0;
+
+            try {
+
+                String buscar_servicio = "select max(id_servicios) as id_servicios from servicios";
+
+                conn = cn.conectar();
+                ps = conn.prepareStatement(buscar_servicio);
+                rs = ps.executeQuery();
+
+                while (rs.next()) {
+                    id_servicios = rs.getInt("id_servicios");
+                }
+            }catch (Exception e){
+            }
+            try {
+
+                Agregar_a_personalizado = "insert into paquetes values ( default , "+ id_servicios +" , 4 , 1 )";
+
+                conn = cn.conectar();
+                ps = conn.prepareStatement(Agregar_a_personalizado);
+                ps.executeUpdate();
+
+            }catch (Exception e){
+            }
+
+        }
         return false;
     }
     
@@ -791,6 +838,22 @@ public class Operaciones implements Interfaz {
     }
 
     @Override
+    public boolean eliminar_paquete(int id) {
+
+        String sql = "UPDATE paquetes SET estado = 0 WHERE id_paquetes = " + id;
+
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+
+        }
+        return false;
+    }
+
+    @Override
     public boolean eliminar_factura(int id) {
         String sql = "UPDATE factura SET estado = 0 WHERE id_factura = " + id;
 
@@ -820,7 +883,6 @@ public class Operaciones implements Interfaz {
                 fac.setNom_usuario(rs.getString("u.nombre_1"));
                 fac.setNom_sede(rs.getString("s.nombre"));
                 fac.setNom_vendedor(rs.getString("uu.nombre_1"));
-                //fac.setDoc_vendedor(rs.getString("nombre_1"));
                 fac.setCompra(rs.getString("c.nom_combos"));
                 fac.setHorafactura(rs.getString("f.hora_factura"));
                 fac.setFechafactura(rs.getString("f.fecha_factura"));
