@@ -26,7 +26,7 @@ public interface Interfaz {
     //___________________Operaciones Administrador________________________//
     
     public List listar_Admin();
-    //public Constructor_Usuarios list(int doc);
+    public List buscar_admin(int doc);
     public boolean add_admin(Constructor_Usuarios per);
     public boolean edit_admin(Constructor_Usuarios per);
     public boolean eliminar_admin(int doc); 

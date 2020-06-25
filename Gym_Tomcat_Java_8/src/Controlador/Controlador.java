@@ -30,6 +30,8 @@ public class Controlador extends HttpServlet {
     String Usuario = "usuario.jsp";
 
     String Buscar = "vistas/buscar.jsp";
+    String Buscar_admin = "vistas/buscar_admin.jsp";
+
     String Info_admin = "vistas/actualizar_datos.jsp";
     String sedes = "vistas/sedes.jsp";
     String add_sede = "vistas/add_sede.jsp";
@@ -239,10 +241,20 @@ public class Controlador extends HttpServlet {
             dao.eliminar_factura(id);
             acceso=Listar_Factura_Admin;
         }else if (action.equalsIgnoreCase("eliminar_factura_superadmin")) {
+
             int id = Integer.parseInt(request.getParameter("id"));
             fac.setId(id);
             dao.eliminar_factura(id);
-            acceso=listar_factura;
+
+            sesion = request.getSession();
+
+            String nivel = sesion.getAttribute("nivel").toString();
+            int rol = Integer.parseInt(nivel);
+                if (rol == 2){
+                    acceso =listar_factura_admin;
+                }else if (rol == 3){
+                    acceso=listar_factura;
+                }
         }
         //___________________Operaciones Administrador___________________________//
         
@@ -261,17 +273,33 @@ public class Controlador extends HttpServlet {
 //________________________Operaciones Busquedas_________________________________// 
         if (action.equalsIgnoreCase("Buscar")) {
 
-            request.setAttribute("idper", request.getParameter("buscar"));
-            acceso = Buscar;
+            sesion = request.getSession();
 
+            String nivel = sesion.getAttribute("nivel").toString();
+            int rol = Integer.parseInt(nivel);
+
+            request.setAttribute("idper", request.getParameter("buscar"));
+
+            if (rol == 2){
+                acceso = Buscar_admin;
+            }else if (rol == 3){
+                acceso = Buscar;
+            }
         }
 
         else if (action.equalsIgnoreCase("Buscar Documento")) {
+            sesion = request.getSession();
+
+            String nivel = sesion.getAttribute("nivel").toString();
+            int rol = Integer.parseInt(nivel);
 
             request.setAttribute("Documento", request.getParameter("buscar"));
-            
-            acceso = Buscar_factura;
 
+            if (rol == 2){
+                acceso = Buscar_factura_admin;
+            }else if (rol == 3){
+                acceso = Buscar_factura;
+            }
         }
 //________________________Operaciones Super Administrador_________________________// 
          else if (action.equalsIgnoreCase("Agregar")) {

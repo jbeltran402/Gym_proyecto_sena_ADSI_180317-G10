@@ -119,10 +119,10 @@ response.setDateHeader("Expires", 0);
                         <a class="btn btn-success " href="Controlador?accion=Add_Factura_Admin"><img src="imagenes/add.png" width="65%" height="65%" ></a>
                     </div>
                     <div class="form-group col-md-2">
-                        <input type="number" placeholder="Buscar Por Documento" name="Buscar" class="form-control" required="">
+                        <input type="number" placeholder="Buscar Por Documento" name="buscar" class="form-control" required="">
                     </div>
                     <div class="form-group col-md-1">
-                        <button class="btn btn-warning" type="submit" value="buscar_factura" name="accion"><img src="imagenes/search.png" width="65%" height="65%" ></button>
+                        <button class="btn btn-warning" type="submit" value="Buscar Documento" name="accion"><img src="imagenes/search.png" width="65%" height="65%" ></button>
                     </div>
                 </div>
             </form>
@@ -134,6 +134,7 @@ response.setDateHeader("Expires", 0);
                 <th>Nombre usuario</th>
                 <th>Sede</th>
                 <th>Nombre Vendedor</th>
+                <!--<th>Apellido Vendedor</th>-->
                 <th>Nº servicio</th>
                 <th>fecha factura</th>
                 <th>Hora de facturacion</th>
@@ -146,7 +147,8 @@ response.setDateHeader("Expires", 0);
             </thead>
             <%
                 Operaciones dao = new Operaciones();
-                List<Constructor_factura> list = dao.listar_factura();
+                int doc = Integer.parseInt((String) request.getAttribute("Documento"));
+                List<Constructor_factura> list = dao.buscar_factura(doc);
                 Iterator<Constructor_factura> iter = list.iterator();
                 Constructor_factura fac = null;
                 while (iter.hasNext()) {
@@ -167,17 +169,15 @@ response.setDateHeader("Expires", 0);
                 <td><%= fac.getTotal()%></td>
 
                 <td class="col-md-2">
-                        <center>
-                            <a class="btn btn-danger" href="Controlador?accion=eliminar_factura&id=<%= fac.getId()%>"><img src="imagenes/drop.png" width="80%" height="80%"></a>                           
-                            <a href="pdf?id=<%= fac.getId()%>" class="btn btn-info" target="_blank"> <img src='imagenes/Print.png' width='80%' height='80%'> </a>
-                        </center>        
-                    </td>
-                    </tr>
-                    <%}%>
-                </tbody>
-            </table>
-
-        </div>
+                    <center>
+                        <a class="btn btn-danger" href="Controlador?accion=eliminar_factura_superadmin&id=<%= fac.getId()%>"><img src="imagenes/drop.png" width="80%" height="80%"></a>
+                        <a href="pdf?id=<%= fac.getId()%>" class="btn btn-info" target="_blank"> <img src='imagenes/Print.png' width='80%' height='80%'> </a>
+                    </center>
+                </td>
+            </tr>
+            <%}%>
+        </table>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

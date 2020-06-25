@@ -225,6 +225,34 @@ public class Operaciones implements Interfaz {
     }
 
     @Override
+    public List buscar_admin(int doc) {
+
+        ArrayList<Constructor_Usuarios> list = new ArrayList<>();
+        String sql = "SELECT * FROM usuario WHERE estado = '1' AND Roles_id_roles = 1 and doc_usuario = "+ doc +" ORDER BY Roles_id_roles";
+
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Constructor_Usuarios per = new Constructor_Usuarios();
+                per.setDoc(rs.getInt("doc_usuario"));
+                per.setTipo_doc(rs.getString("tipo_documeto"));
+                per.setNomb_1(rs.getString("nombre_1"));
+                per.setNomb_2(rs.getString("nombre_2"));
+                per.setApel_1(rs.getString("apellido_1"));
+                per.setApel_2(rs.getString("apellido_2"));
+                per.setTel(rs.getInt("tel_cliente"));
+                per.setCorreo(rs.getString("correo"));
+                per.setEstado(rs.getInt("estado"));
+                list.add(per);
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
+    @Override
     public boolean add_admin(Constructor_Usuarios per) {
 
         contrasena = md5.getEncriptado(String.valueOf(per.getDoc()));

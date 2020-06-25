@@ -124,10 +124,10 @@
                 <a class="btn btn-success " href="Controlador?accion=add_factura"><img src="imagenes/add.png" width="65%" height="65%" ></a>
             </div>
             <div class="form-group col-md-2">
-                <input type="number" placeholder="Buscar Documento" name="buscar" class="form-control" required="">
+                <input type="number" placeholder="Buscar Por Documento" name="buscar" class="form-control" required="">
             </div>
             <div class="form-group col-md-1">
-                <button class="btn btn-warning" type="submit" value="Buscar" name="accion"><img src="imagenes/search.png" width="65%" height="65%" ></button>
+                <button class="btn btn-warning" type="submit" value="Buscar Documento" name="accion"><img src="imagenes/search.png" width="65%" height="65%" ></button>
             </div>
         </div>
     </form>

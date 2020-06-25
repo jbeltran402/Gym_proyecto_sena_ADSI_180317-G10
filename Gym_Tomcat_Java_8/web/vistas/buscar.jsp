@@ -171,8 +171,7 @@ response.setDateHeader("Expires", 0);
                         <td><%= per.getCorreo()%></td>                        
 
                         <td>
-                            <a class="btn btn-warning" href="Controlador?accion=editar&id=<%= per.getDoc()%>">Editar</a>                           
-
+                            <a class="btn btn-warning" href="Controlador?accion=editar&id=<%= per.getDoc()%>">Editar</a>
                             <a class="btn btn-danger" href="Controlador?accion=eliminar&id=<%= per.getDoc()%>">Eliminar</a>
                         </td>
                     </tr>

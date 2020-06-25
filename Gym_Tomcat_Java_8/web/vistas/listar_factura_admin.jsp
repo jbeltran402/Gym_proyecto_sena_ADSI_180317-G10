@@ -119,10 +119,10 @@ response.setDateHeader("Expires", 0);
                         <a class="btn btn-success " href="Controlador?accion=Add_Factura_Admin"><img src="imagenes/add.png" width="65%" height="65%" ></a>
                     </div>
                     <div class="form-group col-md-2">
-                        <input type="number" placeholder="Buscar Por Documento" name="Buscar" class="form-control" required="">
+                        <input type="number" placeholder="Buscar Por Documento" name="buscar" class="form-control" required="">
                     </div>
                     <div class="form-group col-md-1">
-                        <button class="btn btn-warning" type="submit" value="buscar_factura" name="accion"><img src="imagenes/search.png" width="65%" height="65%" ></button>
+                        <button class="btn btn-warning" type="submit" value="Buscar Documento" name="accion"><img src="imagenes/search.png" width="65%" height="65%" ></button>
                     </div>
                 </div>
             </form>
@@ -167,11 +167,11 @@ response.setDateHeader("Expires", 0);
                         <td><%= fac.getTotal()%></td>                       
 
                         <td class="col-md-2">
-                        <center>
-                            <a class="btn btn-danger" href="Controlador?accion=eliminar_factura&id=<%= fac.getId()%>"><img src="imagenes/drop.png" width="80%" height="80%"></a>                           
-                            <a href="pdf?id=<%= fac.getId()%>" class="btn btn-info" target="_blank"> <img src='imagenes/Print.png' width='80%' height='80%'> </a>
-                        </center>        
-                    </td>
+                            <center>
+                                <a class="btn btn-danger" href="Controlador?accion=eliminar_factura_superadmin&id=<%= fac.getId()%>"><img src="imagenes/drop.png" width="80%" height="80%"></a>
+                                <a href="pdf?id=<%= fac.getId()%>" class="btn btn-info" target="_blank"> <img src='imagenes/Print.png' width='80%' height='80%'> </a>
+                            </center>
+                        </td>
                     </tr>
                     <%}%>
                 </tbody>
