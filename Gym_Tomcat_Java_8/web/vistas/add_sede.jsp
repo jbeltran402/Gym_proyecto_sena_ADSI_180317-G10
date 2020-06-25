@@ -1,4 +1,10 @@
+<%@ page import="Modelo.Constructor_Sedes" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page import="ModeloDAO.Operaciones" %>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <%
     response.addHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     response.addHeader("Pragma", "no-cache");
@@ -81,28 +87,43 @@
     <!------------------------ Formulario ------------------------------------->
 
     <div class="container" style="padding-bottom: 2%">
-            <div class="col-lg-6">
-                <br>
-                <h1>Agregar Sede</h1>
-                
-                <form method="post" action="Controlador">
-                    
-                    Nombre de la sede<br>
-                    <input class="form-control" type="text" name="nombre" required><br>
-                    Dirección de la sede<br>
-                    <input class="form-control" type="text" name="Direccion" required><br>
-                    Barrio<br>
-                    <select class="form-control" id="exampleFormControlSelect1" name="barrio">
-                        <option value="20">Bosa piamonte</option>
-                        <option value="30">Carvajal</option>
-                        <option value="40">Los Olivos</option>
-                    </select><br>
-                    
-                    <input class="btn btn-success" type="submit" name="accion" value="Agregar Sede">
-                    <a class="btn btn-danger" href="Controlador?accion=sedes">Regresar</a>
-                </form>
-            </div>
+        <div class="col-lg-6">
+            <br>
+            <h1>Agregar Sede</h1>
+
+            <form method="post" action="Controlador">
+
+                Nombre de la sede<br>
+                <input class="form-control" type="text" name="nombre" required><br>
+                Dirección de la sede<br>
+                <input class="form-control" type="text" name="Direccion" required><br>
+                Barrio<br>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <a href="Controlador?accion=listar_barrios" class="btn btn-warning" title="Listar Barrios"><img src="imagenes/lista.png" width="90%" height="90%" ></a>
+                    </div>
+                    <select class="form-control" name="barrio">
+                        <%
+                            Operaciones dao = new Operaciones();
+                            List<Constructor_Sedes> listar = dao.select_barrio();
+                            Iterator<Constructor_Sedes> iter_2 = listar.iterator();
+                            Constructor_Sedes barrio = null;
+
+                            while (iter_2.hasNext()) {
+                                barrio = iter_2.next();
+                        %>
+
+                        <option value="<%= barrio.getCod_barrio()%>" title="Este barrio pertenece a la localidad - <%= barrio.getLocalidad()%>"> <%= barrio.getBarrio()%> </option>
+
+                        <%}%>
+                    </select>
+                </div>
+
+                <input class="btn btn-success" type="submit" name="accion" value="Agregar Sede">
+                <a class="btn btn-danger" href="Controlador?accion=sedes">Regresar</a>
+            </form>
         </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

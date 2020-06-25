@@ -1,30 +1,33 @@
-<%@page import="Modelo.Constructor_Usuarios"%>
-<%@page import="ModeloDAO.Operaciones"%>
+<%@ page import="Modelo.Constructor_Sedes" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Iterator" %>
+<%@ page import="ModeloDAO.Operaciones" %>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <%
-response.addHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-response.addHeader("Pragma", "no-cache");
-response.setDateHeader("Expires", 0);
+    response.addHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    response.addHeader("Pragma", "no-cache");
+    response.setDateHeader("Expires", 0);
 %>
 <%
-HttpSession sesion= request.getSession();
+    HttpSession sesion = request.getSession();
 
-if (sesion.getAttribute("nivel")==null) {
-    response.sendRedirect("vistas/Login.jsp");
-     }else{
-    
-    String nivel = sesion.getAttribute("nivel").toString();
-    if (!nivel.equals("1")) {
-        response.sendRedirect("vistas/Login.jsp");            
+    if (sesion.getAttribute("nivel") == null) {
+        response.sendRedirect("vistas/Login.jsp");
+    } else {
+        String nivel = sesion.getAttribute("nivel").toString();
+        if (!nivel.equals("3")) {
+            response.sendRedirect("vistas/Login.jsp");
         }
-}
+    }
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Editar Perfil</title>
+    <title>Agregar Barrio</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <style type="text/css">
         body{
@@ -37,13 +40,27 @@ if (sesion.getAttribute("nivel")==null) {
 <!------------------------ Menu --------------------------------------->
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="padding: 0% 5% 0%;">
-    <a class="navbar-brand" href="usuario.jsp"><img src="img/logo.png" style="width: 83px;"/></a>
+    <a class="navbar-brand" href="super_admin.jsp"><img src="img/logo.png" style="width: 83px;"/></a>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="Controlador?accion=listar"> Usuarios </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="Controlador?accion=servicios"> Planes </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="Controlador?accion=listar_factura"> Factura </a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="Controlador?accion=sedes"> Sedes </a>
+            </li>
+        </ul>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -56,9 +73,10 @@ if (sesion.getAttribute("nivel")==null) {
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     <center>
                         <h1 class="dropdown-header"><%= sesion.getAttribute("nombre") %></h1>
-                        <h1 class="dropdown-header">Usuario</h1>
+                        <h1 class="dropdown-header">Super Administrador</h1>
                     </center>
                     <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="Controlador?accion=actualizar_SuperAdmin">Mi Perfil</a>
                     <a class="dropdown-item" href="vistas/Login.jsp?cerrar=true">Cerrar Sesión</a>
                 </div>
             </li>
@@ -69,45 +87,33 @@ if (sesion.getAttribute("nivel")==null) {
 <!------------------------ Formulario ------------------------------------->
 
 <div class="container" style="padding-bottom: 2%">
-    <div class="col-lg-6" style="padding-top:2%; margin-bottom: 5%;">
-        <%
-            Operaciones dao = new Operaciones();
-            String doc = sesion.getAttribute("documento").toString();
-            int docu = Integer.parseInt(doc);
-            Constructor_Usuarios p = (Constructor_Usuarios) dao.list(docu);
-        %>
-        <h1> Editar Usuario </h1>
+    <div class="col-lg-6">
+        <br>
+        <h1>Agregar Barrio</h1>
+
         <form method="post" action="Controlador">
-            Documento<br>
-            <input class="form-control" type="text" value="<%= p.getDoc()%>" disabled="true"><br>
-            Tipo de documento<br>
-            <select class="form-control" id="exampleFormControlSelect1" name="txtTipo_doc" required="">
-                <option value="C.C">Cedula</option>
-                <option value="T.I">Tarjeta de identidad</option>
-                <option value="P.A">Pasaporte</option>
-                <option value="C.E">Cedula de extranjeria</option>
-            </select><br>
-            Primer nombre<br>
-            <input class="form-control" type="text" name="txtNom1" value="<%= p.getNomb_1()%>" required=""><br>
-            Segundo nombre<br>
-            <input class="form-control" type="text" name="txtNom2" value="<%= p.getNomb_2()%>"><br>
-            Primer apellido<br>
-            <input class="form-control" type="text" name="txtApellido" value="<%= p.getApel_1()%>" required=""><br>
-            Segundo apellido<br>
-            <input class="form-control" type="text" name="txtApe2" value="<%= p.getApel_2()%>"><br>
-            Telefono<br>
-            <input class="form-control" type="text" name="txtTel" value="<%= p.getTel()%>"><br>
-            Correo electronico<br>
-            <input class="form-control" type="email" name="txtCorreo" value="<%= p.getCorreo()%>" required=""><br>
-            Contraseña Nueva<br>
-            <input class="form-control" type="password" name="txtContra"><br>
 
-            <input type="hidden" name="Id" value="<%= p.getDoc()%>">
+            Nombre de barrio<br>
+            <input class="form-control" type="text" name="barrio" required><br>
+            Localidad<br>
+            <select class="form-control" name="txtLocalidad">
+                <%
+                    Operaciones dao = new Operaciones();
+                    List<Constructor_Sedes> listar = dao.select_localidad();
+                    Iterator<Constructor_Sedes> iter_2 = listar.iterator();
+                    Constructor_Sedes localidad = null;
 
-            <input type="hidden" name="tipo" value="1">
+                    while (iter_2.hasNext()) {
+                        localidad = iter_2.next();
+                %>
 
-            <input class="btn btn-success" type="submit" name="accion" value="Actualizar Datos">
+                <option value="<%= localidad.getCod_localidad()%>"> <%= localidad.getLocalidad()%> </option>
 
+                <%}%>
+            </select>
+            <br>
+            <input class="btn btn-success" type="submit" name="accion" value="Agregar barrio">
+            <a class="btn btn-danger" href="Controlador?accion=listar_barrios">Regresar</a>
         </form>
     </div>
 </div>

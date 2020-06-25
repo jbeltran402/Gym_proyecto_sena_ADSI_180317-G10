@@ -1,31 +1,39 @@
-
+<%@page import="Modelo.Constructor_Usuarios"%>
+<%@page import="ModeloDAO.Operaciones"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <%
-response.addHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-response.addHeader("Pragma", "no-cache");
-response.setDateHeader("Expires", 0);
+    response.addHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    response.addHeader("Pragma", "no-cache");
+    response.setDateHeader("Expires", 0);
 %>
+
 <%
-HttpSession sesion= request.getSession();
+    HttpSession sesion = request.getSession();
 
-if (sesion.getAttribute("nivel")==null) {
-    response.sendRedirect("vistas/Login.jsp");
-     }else{
 
-    String nivel = sesion.getAttribute("nivel").toString();
-    if (!nivel.equals("2")) {
+    if (sesion.getAttribute("nivel") == null) {
         response.sendRedirect("vistas/Login.jsp");
+    } else {
+        String nivel = sesion.getAttribute("nivel").toString();
+        if (!nivel.equals("2")) {
+            response.sendRedirect("vistas/Login.jsp");
         }
-}
+    }
 %>
 
 <!DOCTYPE html>
-
-<html lang="es">
+<html>
 <head>
-    <meta charset="utf-8">
-    <title>Inicio-Administrador</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Editar Usuario</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style type="text/css">
+        body{
+            background-color: #0069d9;
+            font-family: Arial;
+        }
+    </style>
 </head>
 <body>
 
@@ -69,68 +77,50 @@ if (sesion.getAttribute("nivel")==null) {
         </ul>
     </div>
 </nav>
-<!------------------------ carrusel --------------------------------------->
 
-<div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-        <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
-        <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
-        <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
-    </ol>
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="img/breadcrumb-bg.jpg" class="d-block w-100">
-            <div class="carousel-caption d-none d-md-block">
-                <h1>Bienvenido Administrador</h1>
-                <p></p><br><br>
-            </div>
-        </div>
-        <div class="carousel-item">
-            <img src="img/footer-bg.jpg" style="height: 370px" class="d-block w-100">
-            <div class="carousel-caption d-none d-md-block">
-                <h1>Bienvenido Administrador</h1>
-                <p></p><br><br>
-            </div>
-        </div>
-        <div class="carousel-item">
-            <img src="img/elements/element-bg.jpg" class="d-block w-100">
-            <div class="carousel-caption d-none d-md-block">
-                <h1>Bienvenido Administrador</h1>
-                <p></p><br><br>
-            </div>
-        </div>
-    </div>
-    <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
-</div>
+<!------------------------ Formulario ------------------------------------->
 
-<!------------------------ texto e imagenes --------------------------------------->
+<div class="container" style="padding-bottom: 2%">
+    <div class="col-lg-6" style="padding-top:2%; margin-bottom: 5%;">
+        <%
+            Operaciones dao = new Operaciones();
+            String doc = sesion.getAttribute("documento").toString();
+            int docu = Integer.parseInt(doc);
+            Constructor_Usuarios p = (Constructor_Usuarios) dao.list(docu);
+        %>
+        <h1> Editar Usuario </h1>
+        <form method="post" action="Controlador">
+            Documento<br>
+            <input class="form-control" type="text" value="<%= p.getDoc()%>" disabled="true"><br>
+            Tipo de documento<br>
+            <select class="form-control" id="exampleFormControlSelect1" name="txtTipo_doc" required="">
+                <option value="C.C">Cedula</option>
+                <option value="T.I">Tarjeta de identidad</option>
+                <option value="P.A">Pasaporte</option>
+                <option value="C.E">Cedula de extranjeria</option>
+            </select><br>
+            Primer nombre<br>
+            <input class="form-control" type="text" name="txtNom1" value="<%= p.getNomb_1()%>" required=""><br>
+            Segundo nombre<br>
+            <input class="form-control" type="text" name="txtNom2" value="<%= p.getNomb_2()%>"><br>
+            Primer apellido<br>
+            <input class="form-control" type="text" name="txtApellido" value="<%= p.getApel_1()%>" required=""><br>
+            Segundo apellido<br>
+            <input class="form-control" type="text" name="txtApe2" value="<%= p.getApel_2()%>"><br>
+            Telefono<br>
+            <input class="form-control" type="text" name="txtTel" value="<%= p.getTel()%>"><br>
+            Correo electronico<br>
+            <input class="form-control" type="email" name="txtCorreo" value="<%= p.getCorreo()%>" required=""><br>
+            Contraseña Nueva<br>
+            <input class="form-control" type="password" name="txtContra"><br>
 
-<div class="container marketing" style="margin-top: 2%;">
-    <div class="row">
-        <div class="col-md-4 text-center">
-            <img class="img-circle" src="img/features/feature-1.jpg">
-            <h2>AMBIENTES AGRADABLES</h2>
-            <p>El ambiente de nuestras son muy agradables para realizar varias actividades fisicas.</p>
-        </div>
-        <div class="col-md-4 text-center">
-            <img class="img-circle" src="img/features/feature-2.jpg">
-            <h2>ENTRENADORES CALIFICADOS</h2>
-            <p>Los entrenadores que se encuentran en nuestras sedes son calificados y saben que entrenamiento es idoneo para cada cliente.
-            </p>
-        </div>
-        <div class="col-md-4 text-center">
-            <img class="img-circle" src="img/features/feature-3.jpg">
-            <h2>NUTRICION</h2>
-            <p>En cada sede se encuentran instructores con conocimientos en nutricion. Esto para brindar al usuario un mejor resultado en sus entrenamientos.</p>
+            <input type="hidden" name="Id" value="<%= p.getDoc()%>">
 
-        </div>
+            <input type="hidden" name="tipo" value="1">
+
+            <input class="btn btn-success" type="submit" name="accion" value="Actualizar Datos">
+
+        </form>
     </div>
 </div>
 

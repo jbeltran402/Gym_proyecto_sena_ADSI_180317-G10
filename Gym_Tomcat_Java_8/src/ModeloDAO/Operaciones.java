@@ -7,6 +7,8 @@ import Modelo.Constructor_Sedes;
 import Modelo.Constructor_Servicios;
 import Modelo.Constructor_Usuarios;
 import Modelo.Constructor_factura;
+
+import javax.servlet.http.HttpSession;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,7 +25,7 @@ public class Operaciones implements Interfaz {
     Constructor_Usuarios p = new Constructor_Usuarios();
     Constructor_Sedes sedes = new Constructor_Sedes();
     Constructor_Servicios servicio = new Constructor_Servicios();
-    
+
     public void operaciones() {
 
     }
@@ -299,6 +301,7 @@ public class Operaciones implements Interfaz {
     }
 
 //__________________________Operaciones Administrador___________________________________//
+
     @Override
     public boolean edit_usu(Constructor_Usuarios per) {
 
@@ -345,7 +348,7 @@ public class Operaciones implements Interfaz {
     public List sedes() {
 
         ArrayList<Constructor_Sedes> list = new ArrayList<>();
-        String sql = "select id_sedes , nombre , direccion , nom_barrio , nom_localidad  from sedes , barrio , localidad  WHERE barrio_id_barrio = id_barrio and localidad_id_localidad = id_localidad AND estado = '1'";
+        String sql = "select id_sedes , nombre , direccion , nom_barrio , nom_localidad  from sedes , barrio , localidad  WHERE barrio_id_barrio = id_barrio and localidad_id_localidad = id_localidad AND sedes.estado = '1'";
         try {
             conn = cn.conectar();
             ps = conn.prepareStatement(sql);
@@ -412,7 +415,7 @@ public class Operaciones implements Interfaz {
     public boolean add_sede(Constructor_Sedes sed) {
 
         String sql = "INSERT INTO sedes VALUES ( default , " + sed.getCod_barrio() + " , '"
-                + sed.getNombre() + "' , '" + sed.getDireccion() + "' , estado = '1' )";
+                + sed.getNombre() + "' , '" + sed.getDireccion() + "' , 1 )";
 
         try {
             conn = cn.conectar();
@@ -428,7 +431,7 @@ public class Operaciones implements Interfaz {
     @Override
     public boolean eliminar_sede(int id) {
 
-        String sql = "UPDATE sedes SET estado = '0' WHERE  = id_sedes" + id;
+        String sql = "UPDATE sedes SET estado = '0' WHERE id_sedes = " + id;
 
         try {
             conn = cn.conectar();
@@ -440,7 +443,55 @@ public class Operaciones implements Interfaz {
         return false;
     }
 
-//__________________________Operaciones factura___________________________________//
+    @Override
+    public boolean agregar_barrio(Constructor_Sedes sed) {
+
+        String sql = "INSERT INTO barrio VALUES ( default , "+ sed.getCod_localidad() +" , '"+ sed.getBarrio() +"' , 1)";
+
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+
+        }
+        return false;
+    }
+
+    @Override
+    public boolean editar_barrio(Constructor_Sedes sed) {
+
+        String sql = "UPDATE barrio SET localidad_id_localidad = "+ sed.getCod_localidad() +" , nom_barrio = '"+ sed.getBarrio() +"' where id_barrio ="+sed.getCod_barrio();
+
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+
+        }
+        return false;
+    }
+
+    @Override
+    public boolean eliminar_barrio(int id) {
+
+        String sql = "UPDATE barrio SET estado = '0' WHERE id_barrio =" + id;
+
+        try {
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+        }
+        return false;
+    }
+
+
+    //__________________________Operaciones factura___________________________________//
     @Override
     public List listar_factura() {
         
@@ -915,6 +966,61 @@ public class Operaciones implements Interfaz {
                 sed.setId(rs.getInt("id_sedes"));
                 sed.setNombre(rs.getString("nombre"));
                 
+                list.add(sed);
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
+    @Override
+    public List select_barrio() {
+
+        ArrayList<Constructor_Sedes> list = new ArrayList<>();
+
+        String sql = "select id_barrio , nom_barrio , nom_localidad from barrio , localidad where localidad_id_localidad = id_localidad and barrio.estado = 1";
+
+        try {
+
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                Constructor_Sedes sed = new Constructor_Sedes();
+
+                sed.setCod_barrio(rs.getInt("id_barrio"));
+                sed.setBarrio(rs.getString("nom_barrio"));
+                sed.setLocalidad(rs.getString("nom_localidad"));
+
+                list.add(sed);
+            }
+        } catch (Exception e) {
+        }
+        return list;
+    }
+
+    @Override
+    public List select_localidad() {
+
+        ArrayList<Constructor_Sedes> list = new ArrayList<>();
+
+        String sql = "select * from localidad";
+
+        try {
+
+            conn = cn.conectar();
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                Constructor_Sedes sed = new Constructor_Sedes();
+
+                sed.setCod_localidad(rs.getInt("id_localidad"));
+                sed.setLocalidad(rs.getString("nom_localidad"));
+
                 list.add(sed);
             }
         } catch (Exception e) {

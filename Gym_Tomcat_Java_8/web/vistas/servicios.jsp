@@ -117,7 +117,9 @@ response.setDateHeader("Expires", 0);
     <!------------------------ Listar ------------------------------------->
     <div style="padding: 2% 5% 5%;">
         <center><h1>Planes</h1></center>
-            <br>
+            <div class="form-group col-md-9">
+                <a class="btn btn-success " href="Controlador?accion=add_servicio">Agregar Nuevo</a>
+            </div>
             <table>
                 <thead>
                     <tr>
@@ -145,8 +147,6 @@ response.setDateHeader("Expires", 0);
                         <td><%= ser.getPrecio_combinado() %></td>                        
 
                         <td>
-                            <a class="btn btn-warning" href="Controlador?accion=editar_paquete&id=<%= ser.getId() %>">Editar</a>
-
                             <a class="btn btn-danger" href="Controlador?accion=eliminar_paquete&id=<%= ser.getId() %>">Eliminar</a>
                         </td>
                     </tr>

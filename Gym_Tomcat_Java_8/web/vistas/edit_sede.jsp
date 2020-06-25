@@ -1,5 +1,7 @@
 <%@page import="Modelo.Constructor_Sedes"%>
 <%@page import="ModeloDAO.Operaciones"%>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Iterator" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
 response.addHeader("Cache-Control", "no-cache, no-store, must-revalidate");
@@ -100,10 +102,19 @@ response.setDateHeader("Expires", 0);
                 Dirección de la sede<br>
                 <input class="form-control" type="text" name="Direccion" value="<%= sed.getDireccion() %>" required><br>
                 Barrio<br>
-                <select class="form-control" id="exampleFormControlSelect1" name="barrio">
-                    <option value="20">Bosa piamonte</option>
-                    <option value="30">Carvajal</option>
-                    <option value="40">Los Olivos</option>
+                <select class="form-control" name="barrio">
+                    <%
+                        List<Constructor_Sedes> listar = dao.select_barrio();
+                        Iterator<Constructor_Sedes> iter_2 = listar.iterator();
+                        Constructor_Sedes barrio = null;
+
+                        while (iter_2.hasNext()) {
+                            barrio = iter_2.next();
+                    %>
+
+                    <option value="<%= barrio.getCod_barrio()%>" title="Este barrio pertenece a la localidad - <%= barrio.getLocalidad()%>"> <%= barrio.getBarrio()%> </option>
+
+                    <%}%>
                 </select><br>
 
                 <input class="btn btn-success" type="submit" name="accion" value="Editar Sede">

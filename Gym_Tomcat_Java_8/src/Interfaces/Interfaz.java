@@ -41,8 +41,11 @@ public interface Interfaz {
     public boolean add_sede(Constructor_Sedes sed);
     public Constructor_Sedes list_sedes(int id);
     public boolean actualizar_sede (Constructor_Sedes sed);
-    public boolean eliminar_sede(int id); 
-    
+    public boolean eliminar_sede(int id);
+
+    public boolean agregar_barrio(Constructor_Sedes sed);
+    public boolean editar_barrio(Constructor_Sedes sed);
+    public boolean eliminar_barrio(int id);
     
     //___________________ Operaciones factura ________________________//    
 
@@ -65,9 +68,11 @@ public interface Interfaz {
     public boolean add_paquete(Constructor_Servicios ser);
     public boolean eliminar_paquete(int id);
     
-    //___________________ Select's________________________// 
+    //___________________ Select's________________________//
+
     public List select_servicios();
     public List select_combos();
     public List select_Sedes();
-    
+    public List select_barrio();
+    public List select_localidad();
 }
