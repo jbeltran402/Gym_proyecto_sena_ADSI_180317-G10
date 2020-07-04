@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="war" name="Gym">
-    <output-path>$USER_HOME$/Escritorio</output-path>
+    <output-path>$PROJECT_DIR$/..</output-path>
     <root id="archive" name="Gym_Tomcat_Java_8_war exploded.war">
       <element id="javaee-facet-resources" facet="Gym_Tomcat_Java_8/web/Web" />
       <element id="directory" name="WEB-INF">

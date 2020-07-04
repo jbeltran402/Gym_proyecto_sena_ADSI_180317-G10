@@ -41,7 +41,7 @@ response.setDateHeader("Expires", 0);
             </div>
         </nav>
         <div class="page-header clear-filter" filter-color="orange">
-            <div class="page-header-image" style="background-image:url('https://images4.alphacoders.com/608/608034.jpg')"></div>
+            <div class="page-header-image" style="background-image:url('../imagenes/Login.jpg')"></div>
             <div class="content">
                 <div class="container">
                     <div class="col-md-4 ml-auto mr-auto">

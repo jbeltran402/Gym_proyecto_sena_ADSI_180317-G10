@@ -16,13 +16,13 @@ public class Conexion {
             
             Class.forName("com.mysql.jdbc.Driver");
             
-                conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto","root","");
+                conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/proyecto","root","12345");
             
-            //System.out.println("conexion satisfactoria");
+            System.out.println("conexion satisfactoria");
                 
         } catch (ClassNotFoundException | SQLException e) {
         
-            //System.err.println("Conexion erronea");
+            System.err.println("Conexion erronea");
             
         }
      return conn;
