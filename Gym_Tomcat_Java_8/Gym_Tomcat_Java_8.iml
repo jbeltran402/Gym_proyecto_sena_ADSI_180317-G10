@@ -50,9 +50,9 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 9.0.35" level="application_server_libraries" />
-    <orderEntry type="library" name="mysql:mysql-connector-java:8.0.20" level="project" />
-    <orderEntry type="library" name="com.itextpdf.maven:itextdoc:2.0.0" level="project" />
-    <orderEntry type="library" name="mail" level="project" />
-    <orderEntry type="library" name="Java EE 6-Java EE 6" level="project" />
+    <orderEntry type="library" name="com.sun.mail:javax.mail:1.6.2" level="project" />
+    <orderEntry type="library" name="com.sun.activation:javax.activation:1.2.0" level="project" />
+    <orderEntry type="library" name="com.itextpdf:itextpdf:5.5.13.1" level="project" />
+    <orderEntry type="library" name="mysql:mysql-connector-java:8.0.21" level="project" />
   </component>
 </module>
