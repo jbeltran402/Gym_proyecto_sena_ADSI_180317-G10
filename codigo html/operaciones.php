@@ -7,6 +7,9 @@ class BaseDatos
   	public $conexion;
   	public $db;
   	public $bandera=1;
+    public $ingreso;
+    public $usu;
+    public $pas;
 
     public function setRegistrar($usu,$con,$rol)
     {
@@ -18,7 +21,7 @@ class BaseDatos
   	{
   	  $this->conexion=mysqli_connect("localhost","root","");
   	    if ($this->conexion) {
-  	    	$this->db=mysqli_select_db($this->conexion,"gimnasio");
+  	    	$this->db=mysqli_select_db($this->conexion,"proyecto");
   	    	if ($this->db) {
   	    		//echo "conexion a base de datos OK"."<br>";
   	    		return $this->db;
@@ -35,19 +38,41 @@ class BaseDatos
            // echo $this->contrasena."<br>";
            // echo $this->rol."<br>";
 
-  	  $consultar="select * from usuario where doc_usu = '$this->usuario' and clave = '$this->contrasena' and id_rol_id = '$this->rol';";   
+  	 //8$consultar="select * from usuario where contrasena= '$this->contrasena'  and  doc_usuario=$this->usuario;";   
          //echo $consultar;
-        $ingreso=mysqli_query($this->conexion,$consultar);
-	        $res=mysqli_fetch_assoc($ingreso);
 
-	        if ($res) {
+        $this->ingreso=mysqli_query($this->conexion,"select * from usuario where doc_usuario=$this->usuario and contrasena='$this->contrasena';");
+	        #$res=mysqli_fetch_assoc($ingreso);
+
+        $fila=mysqli_fetch_assoc($this->ingreso);
+        $this->usu=$fila['doc_usuario'];
+        $this->pas=$fila['contrasena'];
+        
+    if ($this->usuario==$this->usu  and $this->contrasena==$this->pas)
+    {
+
+    echo "<h1>Ingreso Exitoso</h1>";
+          echo "<hr>";
+          echo "<h5><strong>USUARIO: </strong></h5>".$usu;
+          echo "<h5><strong>CONTRASEÑA: </strong></h5>".$pas;
+          echo "<hr>";
+          echo "<h4><strong>Usuarios Registrados</strong></h4>";
+    } else {
+      /*echo'<script type="text/javascript">
+        alert("Tarea Guardada");
+        window.location.href="login.html";
+        </script>';*/
+    }
+
+
+	        /*if ($res) {
 
 	        	echo "consulta exitosa";
-	        	header('Location: productos.php');
+	        	#header('Location: productos.php');
 	        	
 	        }else{
 	        	echo "no se pudo realizar la consulta";
-	        }
+	        }*/
 	    
 	     /*   
 	        while ($res=mysqli_fetch_assoc($ingreso)) {
